@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Timetable Login</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#confirm1").click(function(){
+               $("#input2").fadeIn();
+               $("#input1").toggle();
+            });
+        }); 
+    </script>
+  </head>
+  <body>
+  <div id="input1">
+    <table id='rooms' border='1' align='center' bgcolor='#F0F8FF'>
+                <tr>
+                        <th colspan=2 align='center'> Rooms </th>
+                </tr>
+                <tr>
+                  <td>
+                    <input type=radio name=room>CC.0.11 - James France<br>
+                    <input type=radio name=room>D.1.02  - James France<br>
+                    <input type=radio name=room>BE.0.25 Sir Richard Morris
+                  </td>  
+                </tr>
+                <tr>
+                <td colspan=2 align='center'>
+                <button type="button" id='confirm1'>confirm</button> 
+                </td>
+                </tr>
+        </table>
+    </div>
+  <div id=input2 style="display:none;">
+    <table id='results' border='1' align='center' bgcolor='#F0F8FF'>
+        <tr>
+            <td>
+                Department
+            </td>
+            <td>
+                Computer Science
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Year Group
+            </td>
+            <td>
+                A
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Module
+            </td>
+            <td>
+                Module A
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Day
+            </td>
+            <td>
+                Tuesday
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Start Time                
+            </td>
+            <td>
+                10:00
+            </td>
+        </tr>
+        <tr>
+            <td>
+                End time
+            </td>
+            <td>
+                10:50
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Week start
+            </td>
+            <td>
+                1
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Week end
+            </td>
+            <td>
+                12
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of students
+            </td>
+            <td>
+                30
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Number of rooms
+            </td>
+            <td>
+                1
+            </td>
+        </tr>
+        <tr>
+            <td>
+                priority
+            </td>
+            <td>
+                yes
+            </td>
+        </tr>
+    </table>
+  </div>
+  </body>
+</html>
