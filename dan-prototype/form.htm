@@ -2,15 +2,16 @@
 <html>
   <head>
     <title>Timetable Login</title>
-<!--<style type="text/css">
-    .input2
+	<style type="text/css">
+    #add
     {
-        visibility:hidden;
+        font-weight:bold;
     }
-    </style>-->
+    </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>
         $(function(){
+			$("#input1").fadeIn();
             $("#confirm1").click(function(){
                $("#input2").fadeIn();
                $("#input1").toggle();
@@ -18,7 +19,11 @@
             $("#confirm2").click(function(){
                $("#input3").fadeIn();
                $("#input2").toggle();
-            });            
+            });
+            $("#confirm3").click(function(){
+               $("#input4").fadeIn();
+               $("#input3").toggle();
+            });                    
             $("#back1").click(function(){
                $("#input2").toggle();
                $("#input1").fadeIn();
@@ -28,8 +33,8 @@
                $("#input3").toggle();
             });
             $("#back3").click(function(){
-               $("#input2").fadeIn();
-               $("#input3").toggle();
+               $("#input3").fadeIn();
+               $("#input4").toggle();
             });
         }); 
     </script>
@@ -38,14 +43,14 @@
   <div>
 	<table table id='menu' border='0' align='center' bgcolor='#F0F8FF'>
     <tr>
-        <td>View bookings |</td><td> Add bookings |</td><td> Help</td>
+        <td><a href='rooms.htm'>View bookings</a> |<a href='form.htm'><span id='add'> Add bookings</span></a> | <a href='login.htm'>Logout</a></td>
     </tr>
 	</table>
 	<br>
 	<br>
 	<br>
   </div>
-  <div id="input1">
+  <div id="input1" style="display:none;">
     <table id='Tessential' border='1' align='center' bgcolor='#F0F8FF'>
                 <tr>
                         <th colspan=4 align='center'> Team 4 </th>
@@ -217,12 +222,31 @@
                                 <tr>
                                 <td colspan=2 align=center>
                         <button type="button" id='back2'>back</button> 
-                        <button type="button" id='confirm3' onclick="location.href='rooms.htm'">view rooms</button>
+                        <button type="button" id='confirm3'>view rooms</button>
                     </td>
                                 </tr>
 </table>
                     
   </div>
-  
+    <div id="input4" style="display:none;">
+    <table id='input4' border='1' align='center' bgcolor='#F0F8FF'>
+                <tr>
+                        <th colspan=2 align='center'> Rooms </th>
+                </tr>
+                <tr>
+                  <td>
+                    <input type=radio name=room>CC.0.11 - James France<br>
+                    <input type=radio name=room>D.1.02  - James France<br>
+                    <input type=radio name=room>BE.0.25 Sir Richard Morris
+                  </td>  
+                </tr>
+                <tr>
+                <td colspan=2 align='center'>
+				<button type="button" id='back3'>back</button> 
+                <button type="button" id='confirm1' onclick="location.href='rooms.htm'">confirm</button> 
+                </td>
+                </tr>
+        </table>
+    </div>
   </body>
 </html>

@@ -2,37 +2,31 @@
 <html>
   <head>
     <title>Timetable Login</title>
+	<style type="text/css">
+    #view
+    {
+        font-weight:bold;
+    }
+    </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>
         $(function(){
-            $("#confirm1").click(function(){
-               $("#input2").fadeIn();
-               $("#input1").toggle();
-            });
+               $("#results").fadeIn();
         }); 
     </script>
   </head>
   <body>
-  <div id="input1">
-    <table id='rooms' border='1' align='center' bgcolor='#F0F8FF'>
-                <tr>
-                        <th colspan=2 align='center'> Rooms </th>
-                </tr>
-                <tr>
-                  <td>
-                    <input type=radio name=room>CC.0.11 - James France<br>
-                    <input type=radio name=room>D.1.02  - James France<br>
-                    <input type=radio name=room>BE.0.25 Sir Richard Morris
-                  </td>  
-                </tr>
-                <tr>
-                <td colspan=2 align='center'>
-                <button type="button" id='confirm1'>confirm</button> 
-                </td>
-                </tr>
-        </table>
-    </div>
-  <div id=input2 style="display:none;">
+  <div>
+	<table table id='menu' border='0' align='center' bgcolor='#F0F8FF'>
+    <tr>
+        <td><a href='rooms.htm'><span id='view'>View bookings</span></a> |<a href='form.htm'> Add bookings</a> | <a href='login.htm'>Logout</a></td>
+    </tr>
+	</table>
+	<br>
+	<br>
+	<br>
+  </div>
+  <div id=results style="display:none;">
     <table id='results' border='1' align='center' bgcolor='#F0F8FF'>
         <tr>
             <td>
