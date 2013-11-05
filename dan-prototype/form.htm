@@ -3,6 +3,18 @@
 	<head>
 		<title>Add Entry Page</title>
 		<style type="text/css">
+		#main
+		{
+			margin: 0 auto;
+			width: 1000px;
+			background: #F6F6F6;
+		}
+		#navBar
+		{
+			margin: 0 auto;
+			width: 1000px;
+			
+		}
 		.progressbar
 		{
 			width: 150px;
@@ -13,7 +25,6 @@
 			margin:10px;
 			padding:0;
 			overflow:hidden;
-			align: center;
 		}
 		
 		li
@@ -24,10 +35,10 @@
 		a:link,a:visited
 		{
 			display:block;
-			width:160px;
+			width:170px;
 			font-weight:bold;
 			color:#FFFFFF;
-			background-color:#98bf21;
+			background-color: #7707A8;
 			text-align:center;
 			padding:4px;
 			text-decoration:none;
@@ -35,8 +46,9 @@
 		}
 		a:hover,a:active
 		{
-			background-color:#7A991A;
+			background-color:#B20BF9;
 		}
+		
 		</style>
 	
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -50,7 +62,6 @@
 					value: 37
 				});
 				
-				
 				// ------------ ACCORDIAN ------------ //
 				$( "#EntryForm" ).accordion({
 					heightStyle: "content",
@@ -62,22 +73,19 @@
 		</script>
 	</head>
 	<body>
-		<!-- begin container --    http://www.ixtendo.com/html5css3-gray-navigation-menu/ -->
-		<div id="navBar" >
+	<div id="navBar" >
 			<ul>
-				<li><a href="#home">View Requests</a></li>
-				<li><a href="#news">Add New Request</a></li>
-				<li><a href="#contact">Help</a></li>
-				<li><a href="#about">Logout</a></li>
+				<li><a href="#View">View Requests</a></li>
+				<li><a href="#Add">Add New Request</a></li>
+				<li><a href="#Help">Help</a></li>
+				<li><a href="#Logout">Logout</a></li>
 			</ul>
-		</div>
-		<br>
-		<br>
-		<br>
+	</div>
+	<div id="main">
 		<div>
 			<h3>Current Progress</h3>
 		</div>
-		<div id="progressbar"></div>
+		<div id="progressbar" style="width: 600px"></div>
 		<div>
 			<h3>Form</h3>
 		</div>
@@ -276,5 +284,6 @@
 				<button type="button" id="toModule" name="toModule" >Submit Entry</button>
 			</div>
 		</div>
+	</div>
 	</body>
 </html>
