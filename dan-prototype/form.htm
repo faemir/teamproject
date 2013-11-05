@@ -3,23 +3,42 @@
 	<head>
 		<title>Add Entry Page</title>
 		<style type="text/css">
-		#add
-		{
-			font-weight:bold;
-		}
 		.progressbar
 		{
 			width: 150px;
 		}
+		ul
+		{
+			list-style-type:none;
+			margin:10px;
+			padding:0;
+			overflow:hidden;
+			align: center;
+		}
 		
+		li
+		{
+			float:left;
+		}
+		
+		a:link,a:visited
+		{
+			display:block;
+			width:160px;
+			font-weight:bold;
+			color:#FFFFFF;
+			background-color:#98bf21;
+			text-align:center;
+			padding:4px;
+			text-decoration:none;
+			text-transform:uppercase;
+		}
+		a:hover,a:active
+		{
+			background-color:#7A991A;
+		}
 		</style>
-		
-		<!-- begin CSS -->
-		<link href="css/style.css" type="text/css" rel="stylesheet">
-		<link href="css/html5-reset.css" type="text/css" rel="stylesheet">
-		<!-- end CSS -->
-
-		
+	
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
@@ -44,22 +63,17 @@
 	</head>
 	<body>
 		<!-- begin container --    http://www.ixtendo.com/html5css3-gray-navigation-menu/ -->
-		<div id="container">
-			<!-- begin navigation -->
-			
-			<nav id="navigation" >
-				<ul>
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Services</a></li>
-					<li><a href="#">Portfolio</a></li>
-					<li><a href="#">About</a></li>
-					<li><a href="#">Blog</a></li>
-					<li><a href="#">Contact</a></li>
-				</ul>
-			</nav>
-			<!-- end navigation -->
+		<div id="navBar" >
+			<ul>
+				<li><a href="#home">View Requests</a></li>
+				<li><a href="#news">Add New Request</a></li>
+				<li><a href="#contact">Help</a></li>
+				<li><a href="#about">Logout</a></li>
+			</ul>
 		</div>
-
+		<br>
+		<br>
+		<br>
 		<div>
 			<h3>Current Progress</h3>
 		</div>
