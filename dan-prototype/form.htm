@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Add New Request</title>
+        <head>
+                <title>Add New Request</title>
                 <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,400' rel='stylesheet' type='text/css'>
                 <style type="text/css">
 		html *
@@ -11,17 +11,42 @@
 		#main
 		{
 			margin: 0 auto;
-			width: 1000px;
+			width: 900px;
 			background: #F6F6F6;
                         moz-border-radius: 10px;
                         border-radius: 10px;
                         padding:5px;
 		}
+                #progressfooter
+                {
+                            position:absolute;
+                            bottom:0;
+                            width:99%;
+                            height:60px;   /* Height of the footer */
+                }
+                #progressbar
+                {
+                        width: 99%;
+                        text-align: center;
+                        overflow: hidden;
+                        position: relative;
+                        vertical-align: middle;
+                        line-height: 35px;
+                }
+                #progresstitle
+                {
+                        float: left;
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        color:#FFF;
+                        vertical-align: middle;
+                }
 		#navBar
 		{
                         font-weight: 400;
 			margin: 0 auto;
-			width: 1000px;
+			width: 800px;
 		}
 		#navBar li:first-child a
 		{
@@ -41,10 +66,6 @@
                         moz-border-radius-bottomright:5px;
                         webkit-border-bottom-right-radius:5px;
                 }
-		.progressbar
-		{
-			width: 150px;
-		}
 		ul
 		{
 			list-style-type:none;
@@ -52,7 +73,6 @@
 			padding:0;
 			overflow:hidden;
 		}
-		
 		li
 		{
 			float:left;
@@ -95,7 +115,6 @@
 				$( "#progressbar" ).progressbar({
 					value: 0
 				});
-				// ------------ ACCORDIAN ------------ //
 				$( "#EntryForm" ).accordion({
 					heightStyle: "content",
 					collapsible: true, 
@@ -140,25 +159,17 @@
 		</script>
 	</head>
 	<body>
-	<div id="logo">
-                <ul>
-                        
-                </ul>
 	</div>
 	<div id='titlelogo'>LU Timetables  &nbsp;</div>
 	<div id="navBar" >
 			<ul>
-				<li><a href="#View">View Requests</a></li>
-				<li><a href="#Add">Add New Request</a></li>
+				<li><a href="rooms.htm">View Requests</a></li>
+				<li><a href="form.htm">Add New Request</a></li>
 				<li><a href="#Help">Help</a></li>
 				<li><a href="login.htm">Logout</a></li>
 			</ul>
 	</div>
 	<div id="main">
-		<div>
-			<h3>Current Progress</h3>
-		</div>
-		<div id="progressbar" style="width: 600px"></div>
 		<div>
 			<h3>Form</h3>
 		</div>
@@ -360,4 +371,9 @@
 		</div>
 	</div>
 	</body>
+	<footer>
+    <div id="progressfooter">
+                <div id="progressbar"><div id="progresstitle">Current Progress</div></div>
+        </div>
+	</footer>
 </html>

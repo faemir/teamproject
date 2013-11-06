@@ -1,12 +1,76 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Timetable Login</title>
-	<style type="text/css">
-    #view
-    {
-        font-weight:bold;
-    }
+        <head>
+                <title>Room Bookings</title>
+                <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,400' rel='stylesheet' type='text/css'>
+                <style type="text/css">
+                html *
+                {
+                        font-family: 'Open Sans', sans-serif;
+                }
+                #view
+                {
+                        font-weight:bold;
+                }
+                #navBar
+                {
+                        font-weight: 400;
+                        margin: 0 auto;
+                        width: 800px;
+                }
+                #navBar li:first-child a
+                {
+                        moz-border-radius-topleft:5px;
+                        border-top-left-radius: 5px;
+                        webkit-border-top-left-radius:5px;
+                        moz-border-radius-bottomleft:5px;
+                        border-bottom-left-radius:5px;
+                        webkit-border-bottom-left-radius:5px;
+                }
+                 #navBar li:last-child a
+                {
+                        moz-border-radius-topright:5px;
+                        border-top-right-radius:5px;
+                        webkit-border-top-right-radius:5px;
+                        border-bottom-right-radius:5px;
+                        moz-border-radius-bottomright:5px;
+                        webkit-border-bottom-right-radius:5px;
+                }
+                ul
+                {
+                        list-style-type:none;
+                        margin:10px;
+                        padding:0;
+                        overflow:hidden;
+                }
+                li
+                {
+                        float:left;
+                }
+                #titlelogo
+                {
+                        float:left;
+                        font-weight:bold;
+                        padding:4px;
+                        text-transform:uppercase;
+                        color:#7707A8;
+                }
+                a:link,a:visited
+                {
+                        display:block;
+                        width:170px;
+                        font-weight:bold;
+                        color:#FFFFFF;
+                        background-color: #7707A8;
+                        text-align:center;
+                        padding:4px;
+                        text-decoration:none;
+                        text-transform:uppercase;
+                }
+                a:hover,a:active
+                {
+                        background-color:#B20BF9;
+                }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>
@@ -16,16 +80,15 @@
     </script>
   </head>
   <body>
-  <div>
-	<table table id='menu' border='0' align='center' bgcolor='#F0F8FF'>
-    <tr>
-        <td><a href='rooms.htm'><span id='view'>View bookings</span></a> |<a href='form.htm'> Add bookings</a> | <a href='login.htm'>Logout</a></td>
-    </tr>
-	</table>
-	<br>
-	<br>
-	<br>
-  </div>
+<div id='titlelogo'>LU Timetables  &nbsp;</div>
+        <div id="navBar" >
+                        <ul>
+                                <li><a href="rooms.htm">View Requests</a></li>
+                                <li><a href="form.htm">Add New Request</a></li>
+                                <li><a href="#Help">Help</a></li>
+                                <li><a href="login.htm">Logout</a></li>
+                        </ul>
+        </div>
   <div id=results style="display:none;">
     <table id='results' border='1' align='center' bgcolor='#F0F8FF'>
         <tr>
