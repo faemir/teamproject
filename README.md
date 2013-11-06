@@ -1,6 +1,8 @@
 teamproject
 ===========
 
-team project work
+###Current status
 
-If anyone has any problems with getting git working, just send me a message or whatever, it has a learning curve/cliff.
+* The submission page is almost complete
+* The view requests page needs a makeover
+* The login page needs heavy work
