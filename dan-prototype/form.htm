@@ -1,111 +1,113 @@
 <!DOCTYPE html>
 <html>
-        <head>
-                <title>Add New Request</title>
-                <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,400' rel='stylesheet' type='text/css'>
-                <style type="text/css">
-		html *
-		{
-                        font-family: 'Open Sans', sans-serif;
-		}
-		#main
-		{
-			margin: 0 auto;
-			width: 900px;
-			background: #F6F6F6;
-                        moz-border-radius: 10px;
-                        border-radius: 10px;
-                        padding:5px;
-		}
-                #progressfooter
-                {
-                            position:absolute;
-                            bottom:0;
-                            width:99%;
-                            height:60px;   /* Height of the footer */
-                }
-                #progressbar
-                {
-                        width: 99%;
-                        text-align: center;
-                        overflow: hidden;
-                        position: relative;
-                        vertical-align: middle;
-                        line-height: 35px;
-                }
-                #progresstitle
-                {
-                        float: left;
-                        width: 100%;
-                        height: 100%;
-                        position: absolute;
-                        color:#FFF;
-                        vertical-align: middle;
-                }
-		#navBar
-		{
-                        font-weight: 400;
-			margin: 0 auto;
-			width: 800px;
-		}
-		#navBar li:first-child a
-		{
-                        moz-border-radius-topleft:5px;
-                        border-top-left-radius: 5px;
-                        webkit-border-top-left-radius:5px;
-                        moz-border-radius-bottomleft:5px;
-                        border-bottom-left-radius:5px;
-                        webkit-border-bottom-left-radius:5px;
-		}
-		 #navBar li:last-child a
-                {
-                        moz-border-radius-topright:5px;
-                        border-top-right-radius:5px;
-                        webkit-border-top-right-radius:5px;
-                        border-bottom-right-radius:5px;
-                        moz-border-radius-bottomright:5px;
-                        webkit-border-bottom-right-radius:5px;
-                }
-		ul
-		{
-			list-style-type:none;
-			margin:10px;
-			padding:0;
-			overflow:hidden;
-		}
-		li
-		{
-			float:left;
-		}
-		#titlelogo
-                {
-                        float:left;
-                        font-weight:bold;
-                        padding:4px;
-                        text-transform:uppercase;
-                        color:#7707A8;
-                }
-		a:link,a:visited
-		{
-			display:block;
-			width:170px;
-			font-weight:bold;
-			color:#FFFFFF;
-			background-color: #7707A8;
-			text-align:center;
-			padding:4px;
-			text-decoration:none;
-			text-transform:uppercase;
-		}
-		a:hover,a:active
-		{
-			background-color:#B20BF9;
-		}
-                #progressbar .ui-progressbar-value
-                {
-                        background: #7707A8;
-                }
+    <head>
+		<title>Add New Request</title>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:700,400' rel='stylesheet' type='text/css'>
+		<style type="text/css">
+			html *
+			{
+				font-family: 'Open Sans', sans-serif;
+			}
+			#main
+			{
+				margin: 0 auto;
+				width: 900px;
+				background: #F6F6F6;
+				moz-border-radius: 10px;
+				border-radius: 10px;
+				padding:5px;
+			}
+            #progressfooter
+			{
+				position:absolute;
+				bottom:0;
+				margin: 0 auto;
+				width: 99%;
+				height:60px;   /* Height of the footer */
+			}
+			#progressbar
+			{
+				width: 99%;
+				text-align: center;
+				overflow: hidden;
+				position: relative;
+				vertical-align: middle;
+				line-height: 35px;
+			}
+			#progresstitle
+			{
+				float: left;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				color:#FFF;
+				vertical-align: middle;
+			}
+			#navBar
+			{
+				font-weight: 400;
+				margin: 0 auto;
+				width: 800px;
+			}
+			#navBar li:first-child a
+			{
+				moz-border-radius-topleft:5px;
+				border-top-left-radius: 5px;
+				webkit-border-top-left-radius:5px;
+				moz-border-radius-bottomleft:5px;
+				border-bottom-left-radius:5px;
+				webkit-border-bottom-left-radius:5px;
+			}
+			 #navBar li:last-child a
+			{
+				moz-border-radius-topright:5px;
+				border-top-right-radius:5px;
+				webkit-border-top-right-radius:5px;
+				border-bottom-right-radius:5px;
+				moz-border-radius-bottomright:5px;
+				webkit-border-bottom-right-radius:5px;
+			}
+			ul
+			{
+				list-style-type:none;
+				margin:10px;
+				padding:0;
+				overflow:hidden;
+			}
+			li
+			{
+				float:left;
+			}
+			#titlelogo
+			{
+				float:left;
+				font-weight:bold;
+				padding:4px;
+				text-transform:uppercase;
+				color:#7707A8;
+			}
+			a:link,a:visited
+			{
+				display:block;
+				width:170px;
+				font-weight:bold;
+				color:#FFFFFF;
+				background-color: #7707A8;
+				text-align:center;
+				padding:4px;
+				text-decoration:none;
+				text-transform:uppercase;
+			}
+			a:hover,a:active
+			{
+				background-color:#B20BF9;
+			}
+			#progressbar .ui-progressbar-value
+			{
+				background: #7707A8;
+			}
 		</style>
+		<! -- JQUERY REFERENCES -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -118,7 +120,7 @@
 				$( "#EntryForm" ).accordion({
 					heightStyle: "content",
 					collapsible: true, 
-					active: false
+					
 				});
 				$("#Bdepartment").click( function () {
 				$( "#EntryForm" ).accordion( "option", "active", 1 );
@@ -159,217 +161,217 @@
 		</script>
 	</head>
 	<body>
-	</div>
-	<div id='titlelogo'>LU Timetables  &nbsp;</div>
-	<div id="navBar" >
-			<ul>
-				<li><a href="rooms.htm">View Requests</a></li>
-				<li><a href="form.htm">Add New Request</a></li>
-				<li><a href="#Help">Help</a></li>
-				<li><a href="login.htm">Logout</a></li>
-			</ul>
-	</div>
-	<div id="main">
-		<div>
-			<h3>Form</h3>
 		</div>
-		<div id="EntryForm" name="EntryForm">
-			<!-- FIRST -->
-			<h3>Department:</h3>
+		<div id='titlelogo'>LU Timetables  &nbsp;</div>
+		<div id="navBar" >
+				<ul>
+					<li><a href="rooms.htm">View Requests</a></li>
+					<li><a href="form.htm">Add New Request</a></li>
+					<li><a href="#Help">Help</a></li>
+					<li><a href="login.htm">Logout</a></li>
+				</ul>
+		</div>
+		<div id="main">
 			<div>
-				<tr>
-					<td><label for='dept'>Department Information</label></td>
-					<td>
-						<form action=''>
-							<select name='department'>
-								<option value='computer_science'>Computer Science</option>
-								<option value='chemistry'>Chemistry</option>
-								<option value='biology'>Biology</option>
-								<option value='aero'>Aeronautical Engineering</option>
-							</select>
-						</form>
-					</td>
-				</tr>
-				<button type="button" id="Bdepartment" name="toModule" >Next Section</button>
+				<h3>Form</h3>
 			</div>
-			<!-- SECOND -->
-			<h3>Module Information:</h3>
-			<div>
-				<tr>
-					<td><label for='year'>Year Group:</label></td>
-					<td>
-						<form action=''>
-							<select name='year_group'>
-								<option value='a'>A</option>
-								<option value='b'>B</option>
-								<option value='i'>I</option>
-								<option value='c'>C</option>
-								<option value='d'>D</option>
-								<option value='p'>P</option>
-							</select>
-						</form>
-					</td>
-				</tr>
-				<tr>
-					<td><label for='module'>Module:</label></td>
-					<td>
-						<form action=''>
-							<select name='module'>
-								<option value='module_a'>Module A</option>
-								<option value='module_a'>Module B</option>
-								<option value='module_a'>Module C</option>
-							</select>
-						</form>
-					</td>
-				</tr>
-				<button type="button" id="BmoduleBack" name="toModule" >Back</button>
-				<button type="button" id="Bmodule" name="toModule" >Next Section</button>
-			</div>
-			<!-- THIRD -->
-			<h3>Day and Time Information:</h3>
-			<div>
-				<tr>
-					<td><label for='day'>Day:</label></td>
-					<td>
-						<form action=''>
-							<select name='day'>
-								<option value='mon'>Monday</option>
-								<option value='tues'>Tuesday</option>
-								<option value='wed'>Wednesday</option>
-								<option value='thurs'>Thursday</option>
-								<option value='fri'>Friday</option>
-							</select>
-						</form>
-					</td>
-				</tr>
-				<tr>
-					<td><label for='start_time'>Start Time:</label>
-						<form action=''>
-							<select name='start_time'>
-								<option value='9'>09:00</option>
-								<option value='10'>10:00</option>
-								<option value='11'>11:00</option>
-								<option value='12'>12:00</option>
-								<option value='13'>13:00</option>
-								<option value='14'>14:00</option>
-								<option value='15'>15:00</option>
-								<option value='16'>16:00</option>
-								<option value='17'>17:00</option>
-							</select>
-						</form>
-					</td>
-					<td><label for='end_time'>End Time:</label>
-						<form action=''>
-							<select name='end_time'>
-								<option value='0950'>09:50</option>
-								<option value='1050'>10:50</option>
-								<option value='1150'>11:50</option>
-								<option value='1250'>12:50</option>
-								<option value='1350'>13:50</option>
-								<option value='1450'>14:50</option>
-								<option value='1550'>15:50</option>
-								<option value='1650'>16:50</option>
-								<option value='1750'>17:50</option>
-							</select>
-						</form>
-					</td>
-				</tr>
-				<tr>
-					<td><label for='week_start'>Week Start:</label>
-						<form action=''>
-							<select name='week_start'>
-								<option value='1'>1</option>
-								<option value='2'>2</option>
-								<option value='3'>3</option>
-								<option value='4'>4</option>
-								<option value='5'>5</option>
-								<option value='6'>6</option>
-								<option value='7'>7</option>
-								<option value='8'>8</option>
-								<option value='9'>9</option>
-								<option value='10'>10</option>
-								<option value='11'>11</option>
-								<option value='12'>12</option>
-							</select>
-						</form>
-					</td>
-					<td><label for='week_end'>Week End:</label>
-						<form action=''>
-							<select name='week_end'>
-								<option value='1'>1</option>
-								<option value='2'>2</option>
-								<option value='3'>3</option>
-								<option value='4'>4</option>
-								<option value='5'>5</option>
-								<option value='6'>6</option>
-								<option value='7'>7</option>
-								<option value='8'>8</option>
-								<option value='9'>9</option>
-								<option value='10'>10</option>
-								<option value='11'>11</option>
-								<option value='12'>12</option>
-							</select>
-						</form>
-					</td>
-				</tr>
-				<button type="button" id="BdaytimeBack" name="toModule" >Back</button>
-				<button type="button" id="Bdaytime" name="toModule" >Next Section</button>
-			</div>
-			<!-- FOURTH -->
-			<h3>Room Preference Information:</h3>
-			<div>
-				<tr>
-					<td>
-						<label for='no_students'>Number Of Students:</label>
-						<input name='no_students' type='text' id='no_students' value=' ' size='14' />
-					</td>
-					<td>
-						<label for='no_rooms'>Number Of Rooms:</label>
-						<input name='no_rooms' type='text' id='no_rooms' value=' ' size='14' />
-					</td>
-				</tr>
-				<table id='input4' border='1' align='center' bgcolor='#F0F8FF'>
+			<div id="EntryForm" name="EntryForm">
+				<!-- FIRST -->
+				<h3>Department:</h3>
+				<div>
 					<tr>
-						<th colspan=2 align='center'> Rooms </th>
+						<td><label for='dept'>Department Information</label></td>
+						<td>
+							<form action=''>
+								<select name='department'>
+									<option value='computer_science'>Computer Science</option>
+									<option value='chemistry'>Chemistry</option>
+									<option value='biology'>Biology</option>
+									<option value='aero'>Aeronautical Engineering</option>
+								</select>
+							</form>
+						</td>
 					</tr>
+					<button type="button" id="Bdepartment" name="toModule" >Next Section</button>
+				</div>
+				<!-- SECOND -->
+				<h3>Module Information:</h3>
+				<div>
+					<tr>
+						<td><label for='year'>Year Group:</label></td>
+						<td>
+							<form action=''>
+								<select name='year_group'>
+									<option value='a'>A</option>
+									<option value='b'>B</option>
+									<option value='i'>I</option>
+									<option value='c'>C</option>
+									<option value='d'>D</option>
+									<option value='p'>P</option>
+								</select>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td><label for='module'>Module:</label></td>
+						<td>
+							<form action=''>
+								<select name='module'>
+									<option value='module_a'>Module A</option>
+									<option value='module_a'>Module B</option>
+									<option value='module_a'>Module C</option>
+								</select>
+							</form>
+						</td>
+					</tr>
+					<button type="button" id="BmoduleBack" name="toModule" >Back</button>
+					<button type="button" id="Bmodule" name="toModule" >Next Section</button>
+				</div>
+				<!-- THIRD -->
+				<h3>Day and Time Information:</h3>
+				<div>
+					<tr>
+						<td><label for='day'>Day:</label></td>
+						<td>
+							<form action=''>
+								<select name='day'>
+									<option value='mon'>Monday</option>
+									<option value='tues'>Tuesday</option>
+									<option value='wed'>Wednesday</option>
+									<option value='thurs'>Thursday</option>
+									<option value='fri'>Friday</option>
+								</select>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td><label for='start_time'>Start Time:</label>
+							<form action=''>
+								<select name='start_time'>
+									<option value='9'>09:00</option>
+									<option value='10'>10:00</option>
+									<option value='11'>11:00</option>
+									<option value='12'>12:00</option>
+									<option value='13'>13:00</option>
+									<option value='14'>14:00</option>
+									<option value='15'>15:00</option>
+									<option value='16'>16:00</option>
+									<option value='17'>17:00</option>
+								</select>
+							</form>
+						</td>
+						<td><label for='end_time'>End Time:</label>
+							<form action=''>
+								<select name='end_time'>
+									<option value='0950'>09:50</option>
+									<option value='1050'>10:50</option>
+									<option value='1150'>11:50</option>
+									<option value='1250'>12:50</option>
+									<option value='1350'>13:50</option>
+									<option value='1450'>14:50</option>
+									<option value='1550'>15:50</option>
+									<option value='1650'>16:50</option>
+									<option value='1750'>17:50</option>
+								</select>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td><label for='week_start'>Week Start:</label>
+							<form action=''>
+								<select name='week_start'>
+									<option value='1'>1</option>
+									<option value='2'>2</option>
+									<option value='3'>3</option>
+									<option value='4'>4</option>
+									<option value='5'>5</option>
+									<option value='6'>6</option>
+									<option value='7'>7</option>
+									<option value='8'>8</option>
+									<option value='9'>9</option>
+									<option value='10'>10</option>
+									<option value='11'>11</option>
+									<option value='12'>12</option>
+								</select>
+							</form>
+						</td>
+						<td><label for='week_end'>Week End:</label>
+							<form action=''>
+								<select name='week_end'>
+									<option value='1'>1</option>
+									<option value='2'>2</option>
+									<option value='3'>3</option>
+									<option value='4'>4</option>
+									<option value='5'>5</option>
+									<option value='6'>6</option>
+									<option value='7'>7</option>
+									<option value='8'>8</option>
+									<option value='9'>9</option>
+									<option value='10'>10</option>
+									<option value='11'>11</option>
+									<option value='12'>12</option>
+								</select>
+							</form>
+						</td>
+					</tr>
+					<button type="button" id="BdaytimeBack" name="toModule" >Back</button>
+					<button type="button" id="Bdaytime" name="toModule" >Next Section</button>
+				</div>
+				<!-- FOURTH -->
+				<h3>Room Preference Information:</h3>
+				<div>
 					<tr>
 						<td>
-							<input type=radio name=room>CC.0.11 - James France<br>
-							<input type=radio name=room>D.1.02  - James France<br>
-							<input type=radio name=room>BE.0.25 Sir Richard Morris
-						</td>  
+							<label for='no_students'>Number Of Students:</label>
+							<input name='no_students' type='text' id='no_students' value=' ' size='14' />
+						</td>
+						<td>
+							<label for='no_rooms'>Number Of Rooms:</label>
+							<input name='no_rooms' type='text' id='no_rooms' value=' ' size='14' />
+						</td>
 					</tr>
-				</table>
-				<button type="button" id="BprefBack" name="toModule" >Back</button>
-				<button type="button" id="Bpref" name="toModule" >Next Section</button>
-			</div>
-			<h3>Special Requirements:</h3>
-			<div>
-				<table id='Tspeshul' border='1' align='center' bgcolor='#F0F8FF'>
-					<tr><td align='center'>Special Requirements</td></tr>
-					<tr><td><form><input type='checkbox' name='wheelchair' value='wheelchair'>Wheelchair Access</form></td></tr>
-					<tr><td><form><input type='checkbox' name='quality_room' value='quality_room'>Quality Room (Guest Speaker)</form></td></tr>
-					<tr><td><form><input type='checkbox' name='projector' value='projector'>Data Projector</form></td></tr>
-					<tr><td><form><input type='checkbox' name='visualiser' value='visualiser'>Visualiser</form></td></tr>
-					<tr><td><form><input type='checkbox' name='video' value='video'>Video/DVD/BluRay</form></td></tr>
-					<tr><td><form><input type='checkbox' name='computer' value='computer'>Fixed Computer</form></td></tr>
-					<tr><td><form><input type='checkbox' name='white_board' value='white_board'>White Board</form></td></tr>
-					<tr><td><form><input type='checkbox' name='chalk_board' value='chalk_board'>Chalk Board</form></td></tr>
-					<tr><td><form><input type='checkbox' name='previous_room' value='previous_room'>Room Near Previous Room</form></td></tr>
-				</table>
-				<button type="button" id="BspecialBack" name="toModule" >Back</button>
-				<button type="button" id="Bspecial" name="toModule" >Next Section</button>
-			</div>
-			<h3>Priority:</h3>
-			<div>
-				<tr>
-					<td colspan=2 align=center><form><input type='checkbox' name='priority' value='priority'>Priority</form></td>
-				</tr>
-				<button type="button" id="BpriorityBack" name="toModule" >Back</button>
-				<button type="button" id="Bpriority" name="toModule" onclick="window.location.href='rooms.htm'">Submit Entry</button>
+					<table id='input4' border='1' align='center' bgcolor='#F0F8FF'>
+						<tr>
+							<th colspan=2 align='center'> Rooms </th>
+						</tr>
+						<tr>
+							<td>
+								<input type=radio name=room>CC.0.11 - James France<br>
+								<input type=radio name=room>D.1.02  - James France<br>
+								<input type=radio name=room>BE.0.25 Sir Richard Morris
+							</td>  
+						</tr>
+					</table>
+					<button type="button" id="BprefBack" name="toModule" >Back</button>
+					<button type="button" id="Bpref" name="toModule" >Next Section</button>
+				</div>
+				<h3>Special Requirements:</h3>
+				<div>
+					<table id='Tspeshul' border='1' align='center' bgcolor='#F0F8FF'>
+						<tr><td align='center'>Special Requirements</td></tr>
+						<tr><td><form><input type='checkbox' name='wheelchair' value='wheelchair'>Wheelchair Access</form></td></tr>
+						<tr><td><form><input type='checkbox' name='quality_room' value='quality_room'>Quality Room (Guest Speaker)</form></td></tr>
+						<tr><td><form><input type='checkbox' name='projector' value='projector'>Data Projector</form></td></tr>
+						<tr><td><form><input type='checkbox' name='visualiser' value='visualiser'>Visualiser</form></td></tr>
+						<tr><td><form><input type='checkbox' name='video' value='video'>Video/DVD/BluRay</form></td></tr>
+						<tr><td><form><input type='checkbox' name='computer' value='computer'>Fixed Computer</form></td></tr>
+						<tr><td><form><input type='checkbox' name='white_board' value='white_board'>White Board</form></td></tr>
+						<tr><td><form><input type='checkbox' name='chalk_board' value='chalk_board'>Chalk Board</form></td></tr>
+						<tr><td><form><input type='checkbox' name='previous_room' value='previous_room'>Room Near Previous Room</form></td></tr>
+					</table>
+					<button type="button" id="BspecialBack" name="toModule" >Back</button>
+					<button type="button" id="Bspecial" name="toModule" >Next Section</button>
+				</div>
+				<h3>Priority:</h3>
+				<div>
+					<tr>
+						<td colspan=2 align=center><form><input type='checkbox' name='priority' value='priority'>Priority</form></td>
+					</tr>
+					<button type="button" id="BpriorityBack" name="toModule" >Back</button>
+					<button type="button" id="Bpriority" name="toModule" onclick="window.location.href='rooms.htm'">Submit Entry</button>
+				</div>
 			</div>
 		</div>
-	</div>
 	</body>
 	<footer>
     <div id="progressfooter">

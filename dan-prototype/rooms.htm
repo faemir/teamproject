@@ -8,6 +8,20 @@
                 {
                         font-family: 'Open Sans', sans-serif;
                 }
+				#main
+				{
+					margin: 0 auto;
+					width: 900px;
+					background: #F6F6F6;
+					moz-border-radius: 10px;
+					border-radius: 10px;
+					padding:5px;
+				}
+				div#users-contain { width: 350px; margin: 20px 0; }
+				div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+				div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+				fieldset { padding:0; border:0; margin-top:25px; }
+				
                 #view
                 {
                         font-weight:bold;
@@ -54,6 +68,7 @@
                         padding:4px;
                         text-transform:uppercase;
                         color:#7707A8;
+						
                 }
                 a:link,a:visited
                 {
@@ -71,115 +86,143 @@
                 {
                         background-color:#B20BF9;
                 }
+				.datagrid table { border-collapse: collapse; text-align: left; width: 100%; } 
+				.datagrid {font: normal 12px/150% Geneva, Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 4px solid #652299; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; }
+				.datagrid table td, .datagrid table th { padding: 8px 6px; }
+				.datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #652299), color-stop(1, #4D1A75) );background:-moz-linear-gradient( center top, #652299 5%, #4D1A75 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#652299', endColorstr='#4D1A75');background-color:#652299; color:#FFFFFF; font-size: 15px; font-weight: bold; border-left: 1px solid #714399; } 
+				.datagrid table thead th:first-child { border: none; }.datagrid table tbody td { color: #4D1A75; border-left: 2px solid #E7BDFF;font-size: 12px;font-weight: normal; }
+				.datagrid table tbody .alt td { background: #F4E3FF; color: #4D1A75; }
+				.datagrid table tbody td:first-child { border-left: none; }
+				.datagrid table tbody tr:last-child td { border-bottom: none; }
+				.datagrid table tfoot td div { border-top: 1px solid #652299;background: #F4E3FF;} 
+				.datagrid table tfoot td { padding: 0; font-size: 13px } 
+				.datagrid table tfoot td div{ padding: 6px; }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<link rel="stylesheet" href="/resources/demos/style.css" />
     <script>
         $(function(){
-               $("#results").fadeIn();
-        }); 
+			$("#results").fadeIn();
+		   
+			$( "#dialog" ).dialog({
+				autoOpen: false,
+				modal: true,
+				resizeable: false,
+				width: 600,
+                height: 500,
+				buttons: {
+					"Edit Entry": function() {
+						$( this ).dialog( "close" );
+					},
+					"Delete Entry": function() {
+						$( this ).dialog( "close" );
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				show: {
+					effect: "blind",
+					duration: 500
+				},
+				hide: {
+					effect: "blind",
+					duration: 500
+				}
+			});
+ 
+			$( "#details1" ).click(function() {
+				$( "#dialog" ).dialog( "open" );
+			});
+		
+		});
+			
     </script>
   </head>
   <body>
-<div id='titlelogo'>LU Timetables  &nbsp;</div>
-        <div id="navBar" >
-                        <ul>
-                                <li><a href="rooms.htm">View Requests</a></li>
-                                <li><a href="form.htm">Add New Request</a></li>
-                                <li><a href="#Help">Help</a></li>
-                                <li><a href="login.htm">Logout</a></li>
-                        </ul>
-        </div>
-  <div id=results style="display:none;">
-    <table id='results' border='1' align='center' bgcolor='#F0F8FF'>
-        <tr>
-            <td>
-                Department
-            </td>
-            <td>
-                Computer Science
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Year Group
-            </td>
-            <td>
-                A
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Module
-            </td>
-            <td>
-                Module A
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Day
-            </td>
-            <td>
-                Tuesday
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Start Time                
-            </td>
-            <td>
-                10:00
-            </td>
-        </tr>
-        <tr>
-            <td>
-                End time
-            </td>
-            <td>
-                10:50
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Week start
-            </td>
-            <td>
-                1
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Week end
-            </td>
-            <td>
-                12
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Number of students
-            </td>
-            <td>
-                30
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Number of rooms
-            </td>
-            <td>
-                1
-            </td>
-        </tr>
-        <tr>
-            <td>
-                priority
-            </td>
-            <td>
-                yes
-            </td>
-        </tr>
-    </table>
-  </div>
-  </body>
+		<div id='titlelogo'>LU Timetables  &nbsp;</div>
+		<div id="navBar" >
+			<ul>
+				<li><a href="rooms.htm">View Requests</a></li>
+				<li><a href="form.htm">Add New Request</a></li>
+				<li><a href="#Help">Help</a></li>
+				<li><a href="login.htm">Logout</a></li>
+			</ul>
+		</div>
+		<div id="main">
+			<div>
+				<tr>
+					<td>Module Search:<input type="text" name="mod_search" class="text ui-widget-content ui-corner-all"></td>
+				</tr>
+				<tr>
+					<td>Department:<input type="text" name="dept_title_text" value="Computer Science" class="text ui-widget-content ui-corner-all"></td>
+				</tr>
+			</div>
+			<br>
+			<div>
+				<input type="button" Value="Clear Form">
+				<input type="button" Value="Sort">
+				<input type="button" Value="Filter">
+			</div>
+			<br>
+			<!-- http://tablestyler.com/ -->
+			<div class="datagrid">
+				<table>
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Year Group</th>
+							<th>Module Code</th>
+							<th>Module Title</th>
+							<th>Priority</th>
+							<th>Details</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td colspan="7"><div id="no-paging">&nbsp;</div></td>
+						</tr>
+					</tfoot>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>B</td>
+							<td>13COB1234</td>
+							<td>Team Projects</td>
+							<td>YES</td>
+							<td><input type="button" id="details1" Value="Details" style="width:100%"></td>
+						</tr>
+						<tr class="alt">
+							<td>2</td>
+							<td>A</td>
+							<td>13COA1234</td>
+							<td>Programming for WWW</td>
+							<td>YES</td>
+							<td><input type="button" Value="Details" style="width:100%"></td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>C</td>
+							<td>13COC1234</td>
+							<td>Formal Languages</td>
+							<td>NO</td>
+							<td><input type="button" Value="Details" style="width:100%"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="dialog" title="Module 13COB1234">
+			<p>Day: Wednesday</p>
+			<p>Time: 9:00am to 9:50am</p>
+			<p>Weeks: 1 to 12</p>
+			<p>Preferred Room: CC.0.11</p>
+			<p>Number Students: 100</p>
+			<p>Special Requirements: Wheel Chair Access, Data Projector</p>
+			<p>Other Requirements: None</p>
+		</div>
+	</body>
 </html>
