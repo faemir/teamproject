@@ -98,10 +98,47 @@
 				.datagrid table tfoot td div{ padding: 6px; }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<link rel="stylesheet" href="/resources/demos/style.css" />
     <script>
         $(function(){
-               $("#results").fadeIn();
-        }); 
+			$("#results").fadeIn();
+		   
+			$( "#dialog" ).dialog({
+				autoOpen: false,
+				modal: true,
+				resizeable: false,
+				width: 600,
+                height: 500,
+				buttons: {
+					"Edit Entry": function() {
+						$( this ).dialog( "close" );
+					},
+					"Delete Entry": function() {
+						$( this ).dialog( "close" );
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				show: {
+					effect: "blind",
+					duration: 500
+				},
+				hide: {
+					effect: "blind",
+					duration: 500
+				}
+			});
+ 
+			$( "#details1" ).click(function() {
+				$( "#dialog" ).dialog( "open" );
+			});
+		
+		});
+			
     </script>
   </head>
   <body>
@@ -117,14 +154,15 @@
 		<div id="main">
 			<div>
 				<tr>
-					<td>Module Search:<input type="text" name="mod_search"></td>
+					<td>Module Search/Filter:<input type="text" name="mod_search" class="text ui-widget-content ui-corner-all"></td>
 				</tr>
 				<tr>
-					<td>Department:<input type="text" name="dept_title_text" value="Computer Science"></td>
+					<td>Department:<input type="text" name="dept_title_text" value="Computer Science" class="text ui-widget-content ui-corner-all"></td>
 				</tr>
 			</div>
 			<br>
 			<br>
+			<!-- http://tablestyler.com/ -->
 			<div class="datagrid">
 				<table>
 					<thead>
@@ -145,7 +183,7 @@
 							<td>B</td>
 							<td>13COB1234</td>
 							<td>Team Projects</td>
-							<td><input type="button" Value="Click Me" style="width:100%"></td>
+							<td><input type="button" id="details1" Value="Click Me" style="width:100%"></td>
 						</tr>
 						<tr class="alt">
 							<td>A</td>
@@ -162,6 +200,9 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
+		<div id="dialog" title="Module 13COB1234">
+			<p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
 		</div>
 	</body>
 </html>
