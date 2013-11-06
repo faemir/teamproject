@@ -1,20 +1,41 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Add Entry Page</title>
+		<title>Add New Request</title>
 		<style type="text/css">
 		#main
 		{
 			margin: 0 auto;
 			width: 1000px;
 			background: #F6F6F6;
+                        moz-border-radius: 10px;
+                        border-radius: 10px;
+                        padding:5px;
 		}
 		#navBar
 		{
 			margin: 0 auto;
 			width: 1000px;
-			
 		}
+		#navBar li:first-child a
+		{
+                        moz-border-radius-topleft:5px;
+                        border-top-left-radius: 5px;
+                        webkit-border-top-left-radius:5px;
+                        moz-border-radius-bottomleft:5px;
+                        border-bottom-left-radius:5px;
+                        webkit-border-bottom-left-radius:5px;
+		}
+		 #navBar li:last-child a
+                {
+                        moz-border-radius-topright:5px;
+                        border-top-right-radius:5px;
+                        webkit-border-top-right-radius:5px;
+                        border-bottom-right-radius:5px;
+                        moz-border-radius-bottomright:5px;
+                        webkit-border-bottom-right-radius:5px;
+                }
+
 		.progressbar
 		{
 			width: 150px;
@@ -31,7 +52,14 @@
 		{
 			float:left;
 		}
-		
+		#titlelogo
+                {
+                        float:left;
+                        font-weight:bold;
+                        padding:4px;
+                        text-transform:uppercase;
+                        color:#7707A8;
+                }
 		a:link,a:visited
 		{
 			display:block;
@@ -43,6 +71,8 @@
 			padding:4px;
 			text-decoration:none;
 			text-transform:uppercase;
+
+
 		}
 		a:hover,a:active
 		{
@@ -73,12 +103,18 @@
 		</script>
 	</head>
 	<body>
+	<div id="logo">
+                <ul>
+                        
+                </ul>
+	</div>
+	<div id='titlelogo'>LU Timetables  &nbsp;</div>
 	<div id="navBar" >
 			<ul>
 				<li><a href="#View">View Requests</a></li>
 				<li><a href="#Add">Add New Request</a></li>
 				<li><a href="#Help">Help</a></li>
-				<li><a href="#Logout">Logout</a></li>
+				<li><a href="login.htm">Logout</a></li>
 			</ul>
 	</div>
 	<div id="main">
