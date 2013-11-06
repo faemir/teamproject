@@ -68,6 +68,7 @@
                         padding:4px;
                         text-transform:uppercase;
                         color:#7707A8;
+						
                 }
                 a:link,a:visited
                 {
@@ -143,66 +144,85 @@
   </head>
   <body>
 		<div id='titlelogo'>LU Timetables  &nbsp;</div>
-			<div id="navBar" >
-				<ul>
-					<li><a href="rooms.htm">View Requests</a></li>
-					<li><a href="form.htm">Add New Request</a></li>
-					<li><a href="#Help">Help</a></li>
-					<li><a href="login.htm">Logout</a></li>
-				</ul>
-			</div>
+		<div id="navBar" >
+			<ul>
+				<li><a href="rooms.htm">View Requests</a></li>
+				<li><a href="form.htm">Add New Request</a></li>
+				<li><a href="#Help">Help</a></li>
+				<li><a href="login.htm">Logout</a></li>
+			</ul>
+		</div>
 		<div id="main">
 			<div>
 				<tr>
-					<td>Module Search/Filter:<input type="text" name="mod_search" class="text ui-widget-content ui-corner-all"></td>
+					<td>Module Search:<input type="text" name="mod_search" class="text ui-widget-content ui-corner-all"></td>
 				</tr>
 				<tr>
 					<td>Department:<input type="text" name="dept_title_text" value="Computer Science" class="text ui-widget-content ui-corner-all"></td>
 				</tr>
 			</div>
 			<br>
+			<div>
+				<input type="button" Value="Clear Form">
+				<input type="button" Value="Sort">
+				<input type="button" Value="Filter">
+			</div>
 			<br>
 			<!-- http://tablestyler.com/ -->
 			<div class="datagrid">
 				<table>
 					<thead>
 						<tr>
+							<th>No</th>
 							<th>Year Group</th>
 							<th>Module Code</th>
 							<th>Module Title</th>
+							<th>Priority</th>
 							<th>Details</th>
 						</tr>
 					</thead>
 					<tfoot>
 						<tr>
-							<td colspan="4"><div id="no-paging">&nbsp;</div></td>
+							<td colspan="7"><div id="no-paging">&nbsp;</div></td>
 						</tr>
 					</tfoot>
 					<tbody>
 						<tr>
+							<td>1</td>
 							<td>B</td>
 							<td>13COB1234</td>
 							<td>Team Projects</td>
-							<td><input type="button" id="details1" Value="Click Me" style="width:100%"></td>
+							<td>YES</td>
+							<td><input type="button" id="details1" Value="Details" style="width:100%"></td>
 						</tr>
 						<tr class="alt">
+							<td>2</td>
 							<td>A</td>
 							<td>13COA1234</td>
 							<td>Programming for WWW</td>
-							<td><input type="button" Value="Click Me" style="width:100%"></td>
+							<td>YES</td>
+							<td><input type="button" Value="Details" style="width:100%"></td>
 						</tr>
 						<tr>
+							<td>3</td>
 							<td>C</td>
 							<td>13COC1234</td>
 							<td>Formal Languages</td>
-							<td><input type="button" Value="Click Me" style="width:100%"></td>
+							<td>NO</td>
+							<td><input type="button" Value="Details" style="width:100%"></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
 		<div id="dialog" title="Module 13COB1234">
-			<p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+			<p>Day: Wednesday</p>
+			<p>Time: 9:00am to 9:50am</p>
+			<p>Weeks: 1 to 12</p>
+			<p>Preferred Room: CC.0.11</p>
+			<p>Number Students: 100</p>
+			<p>Special Requirements: Wheel Chair Access, Data Projector</p>
+			<p>Other Requirements: None</p>
 		</div>
 	</body>
 </html>
