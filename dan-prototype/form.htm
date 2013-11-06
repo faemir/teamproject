@@ -92,7 +92,36 @@
 					collapsible: true, 
 					active: false
 				});
-				//buttons to change panel
+				$("#Bdepartment").click( function () {
+				$( "#EntryForm" ).accordion( "option", "active", 1 );
+				})
+                                $("#Bmodule").click( function () {
+                                $( "#EntryForm" ).accordion( "option", "active", 2 );
+                                })
+                                $("#Bdaytime").click( function () {
+                                $( "#EntryForm" ).accordion( "option", "active", 3 );
+                                })
+                                $("#Bpref").click( function () {
+                                $( "#EntryForm" ).accordion( "option", "active", 4 );
+                                })
+                                $("#Bspecial").click( function () {
+                                $( "#EntryForm" ).accordion( "option", "active", 5 );
+                                })
+                                $("#BmoduleBack").click( function () {
+                                $( "#EntryForm" ).accordion( "option", "active", 0 );
+                                })
+                                $("#BdaytimeBack").click( function () {
+                                $( "#EntryForm" ).accordion( "option", "active", 1 );
+                                })
+                                $("#BprefBack").click( function () {
+                                $( "#EntryForm" ).accordion( "option", "active", 2 );
+                                })
+                                $("#BspecialBack").click( function () {
+                                $( "#EntryForm" ).accordion( "option", "active", 3 );
+                                })                       
+                                $("#BpriorityBack").click( function () {
+                                $( "#EntryForm" ).accordion( "option", "active", 4 );
+                                })     
 			});
 		</script>
 	</head>
@@ -136,7 +165,7 @@
 						</form>
 					</td>
 				</tr>
-				<button type="button" id="toModule" name="toModule" >Next Section</button>
+				<button type="button" id="Bdepartment" name="toModule" >Next Section</button>
 			</div>
 			<!-- SECOND -->
 			<h3>Module Information:</h3>
@@ -168,8 +197,8 @@
 						</form>
 					</td>
 				</tr>
-				<button type="button" id="toModule" name="toModule" >Back</button>
-				<button type="button" id="toModule" name="toModule" >Next Section</button>
+				<button type="button" id="BmoduleBack" name="toModule" >Back</button>
+				<button type="button" id="Bmodule" name="toModule" >Next Section</button>
 			</div>
 			<!-- THIRD -->
 			<h3>Day and Time Information:</h3>
@@ -258,8 +287,8 @@
 						</form>
 					</td>
 				</tr>
-				<button type="button" id="toModule" name="toModule" >Back</button>
-				<button type="button" id="toModule" name="toModule" >Next Section</button>
+				<button type="button" id="BdaytimeBack" name="toModule" >Back</button>
+				<button type="button" id="Bdaytime" name="toModule" >Next Section</button>
 			</div>
 			<!-- FOURTH -->
 			<h3>Room Preference Information:</h3>
@@ -286,8 +315,8 @@
 						</td>  
 					</tr>
 				</table>
-				<button type="button" id="toModule" name="toModule" >Back</button>
-				<button type="button" id="toModule" name="toModule" >Next Section</button>
+				<button type="button" id="BprefBack" name="toModule" >Back</button>
+				<button type="button" id="Bpref" name="toModule" >Next Section</button>
 			</div>
 			<h3>Special Requirements:</h3>
 			<div>
@@ -303,15 +332,16 @@
 					<tr><td><form><input type='checkbox' name='chalk_board' value='chalk_board'>Chalk Board</form></td></tr>
 					<tr><td><form><input type='checkbox' name='previous_room' value='previous_room'>Room Near Previous Room</form></td></tr>
 				</table>
-				<button type="button" id="toModule" name="toModule" >Back</button>
-				<button type="button" id="toModule" name="toModule" >Next Section</button>
+				<button type="button" id="BspecialBack" name="toModule" >Back</button>
+				<button type="button" id="Bspecial" name="toModule" >Next Section</button>
 			</div>
 			<h3>Priority:</h3>
 			<div>
 				<tr>
 					<td colspan=2 align=center><form><input type='checkbox' name='priority' value='priority'>Priority</form></td>
 				</tr>
-				<button type="button" id="toModule" name="toModule" >Submit Entry</button>
+				<button type="button" id="BpriorityBack" name="toModule" >Back</button>
+				<button type="button" id="Bpriority" name="toModule" onclick="window.location.href='rooms.htm'">Submit Entry</button>
 			</div>
 		</div>
 	</div>
