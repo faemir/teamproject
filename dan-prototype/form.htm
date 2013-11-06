@@ -75,6 +75,10 @@
 		{
 			background-color:#B20BF9;
 		}
+                #progressbar .ui-progressbar-value
+                {
+                        background: #7707A8;
+                }
 		</style>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
@@ -83,9 +87,8 @@
 		<script>
 			$(function() {
 				$( "#progressbar" ).progressbar({
-					value: 37
+					value: 0
 				});
-				
 				// ------------ ACCORDIAN ------------ //
 				$( "#EntryForm" ).accordion({
 					heightStyle: "content",
@@ -94,34 +97,39 @@
 				});
 				$("#Bdepartment").click( function () {
 				$( "#EntryForm" ).accordion( "option", "active", 1 );
-				})
+				$("#progressbar").progressbar( "option", "value", 16.6);
+				});
                                 $("#Bmodule").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 2 );
-                                })
+                                $("#progressbar").progressbar( "option", "value", 33.3);
+                                });
                                 $("#Bdaytime").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 3 );
-                                })
+                                $("#progressbar").progressbar( "option", "value", 50);
+                                });
                                 $("#Bpref").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 4 );
-                                })
+                                $("#progressbar").progressbar( "option", "value", 66.6);
+                                });
                                 $("#Bspecial").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 5 );
-                                })
+                                $("#progressbar").progressbar( "option", "value", 83.3);
+                                });
                                 $("#BmoduleBack").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 0 );
-                                })
+                                });
                                 $("#BdaytimeBack").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 1 );
-                                })
+                                });
                                 $("#BprefBack").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 2 );
-                                })
+                                });
                                 $("#BspecialBack").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 3 );
-                                })                       
+                                });
                                 $("#BpriorityBack").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 4 );
-                                })     
+                                });
 			});
 		</script>
 	</head>
