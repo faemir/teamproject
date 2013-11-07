@@ -4,5 +4,7 @@ teamproject
 ###Current status
 
 * The submission page is almost complete
-* The view requests page needs a makeover
-* The login page needs heavy work
+* fix progress bar
+* The view requests page needs a makeover - change dark grey colour, css dept box
+* Help Page needs doing
+* 
