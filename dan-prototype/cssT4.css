@@ -2,6 +2,11 @@
 			{
 				font-family: 'Open Sans', sans-serif;
 			}
+            #header_bar
+                        {
+                width: 900px;
+                margin: 0 auto;     
+            }
 			#main
 			{
 				margin: 0 auto;
@@ -31,6 +36,23 @@
             #logintd
                         {
                     padding:10px;
+            }
+            #Title_text
+                        {
+                    text-align:center;   
+            }
+            #Dept_table{
+                    
+                    border-radius: 10px;
+                    padding:5px;
+                    border:1px solid #7707A8;
+                    background:#D4D4D4;
+            }
+            #table_func_table{
+                    border-radius: 10px;
+                    padding:5px;
+                    border:1px solid #7707A8;
+                    background:#D4D4D4;
             }
             #progressfooter
 			{
@@ -62,7 +84,7 @@
 			{
 				font-weight: 400;
 				margin: 0 auto;
-				width: 800px;
+				/* width: 800px; */
 			}
 			#navBar li:first-child a
 			{
@@ -99,6 +121,9 @@
 				align: center;
 				bgcolor: #F6F6F6;
 			}
+            #acc_headers{
+                color:#652299;
+            }
 			#results
 			{
 
@@ -148,14 +173,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#652299', end
 			{
 				background: #7707A8;
 			}
-            				.datagrid table { border-collapse: collapse; text-align: left; width: 100%; } 
-				.datagrid {font: normal 12px/150% 'Open Sans'; background: #fff; overflow: hidden; border: 4px solid #652299; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; }
-				.datagrid table td, .datagrid table th { padding: 8px 6px; }
-				.datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #652299), color-stop(1, #4D1A75) );background:-moz-linear-gradient( center top, #652299 5%, #4D1A75 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#652299', endColorstr='#4D1A75');background-color:#652299; color:#FFFFFF; font-size: 15px; font-weight: bold; border-left: 1px solid #714399; } 
-				.datagrid table thead th:first-child { border: none; }.datagrid table tbody td { color: #4D1A75; border-left: 2px solid #E7BDFF;font-size: 12px;font-weight: normal; }
-				.datagrid table tbody .alt td { background: #F4E3FF; color: #4D1A75; }
-				.datagrid table tbody td:first-child { border-left: none; }
-				.datagrid table tbody tr:last-child td { border-bottom: none; }
-				.datagrid table tfoot td div { border-top: 1px solid #652299;background: #F4E3FF;} 
-				.datagrid table tfoot td { padding: 0; font-size: 13px } 
-				.datagrid table tfoot td div{ padding: 6px; }
+           
+            .datagrid table { border-collapse: collapse; text-align: left; width: 100%; } 
+            .datagrid {font: normal 12px/150% 'Open Sans'; background: #fff; overflow: hidden; border: 4px solid #652299; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; }
+            .datagrid table td,.datagrid table th { padding: 8px 6px; }
+            .datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #652299), color-stop(1, #4D1A75) );background:-moz-linear-gradient( center top, #652299 5%, #4D1A75 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#652299', endColorstr='#4D1A75');background-color:#652299; color:#FFFFFF; font-size: 15px; font-weight: bold; border-left: 1px solid #714399; } 
+            .datagrid table thead th:first-child { border: none; }
+            .datagrid table tbody td { color: #4D1A75; border-left: 2px solid #E7BDFF;font-size: 12px;font-weight: normal; }
+            .datagrid table tbody 
+                        .alt td { background: #F4E3FF; color: #4D1A75; }
+            .datagrid table tbody td:first-child { border-left: none; }
+            .datagrid table tbody tr:last-child td { border-bottom: none; }
+            .datagrid table tfoot td div { border-top: 1px solid #652299;background: #F4E3FF;} 
+            .datagrid table tfoot td { padding: 0; font-size: 13px } 
+            .datagrid table tfoot td div{ padding: 6px; }
+           

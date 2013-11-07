@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<title>Add New Request</title>
+		<title>Team 4 - LU Timetable New Requests Page</title>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:700,400' rel='stylesheet' type='text/css'>
 		<link href='cssT4.css' rel='stylesheet' type='text/css'>
 		<! -- JQUERY REFERENCES -->
@@ -83,23 +83,24 @@
 		</script>
 	</head>
 	<body>
-		</div>
-		<div id='titlelogo'>LU Timetables  &nbsp;</div>
-		<div id="navBar" >
-				<ul>
-					<li><a href="rooms.htm">View Requests</a></li>
-					<li><a href="form.htm">Add New Request</a></li>
-					<li><a href="#Help">Help</a></li>
-					<li><a href="login.htm">Logout</a></li>
-				</ul>
-		</div>
+		<div id="header_bar">
+            <div id='titlelogo'>LU Timetables  &nbsp;</div>
+            <div id="navBar" >
+                    <ul>
+                        <li><a href="rooms.htm">View Requests</a></li>
+                        <li><a href="form.htm">Add New Request</a></li>
+                        <li><a href="help.htm">Help</a></li>
+                        <li><a href="login.htm">Logout</a></li>
+                    </ul>
+            </div>
+        </div>
 		<div id="main">
-			<div>
-				<h3>Form</h3>
+			<div id="Title_text">
+				<h3>New Requests Form</h3>
 			</div>
-			<div id="EntryForm" name="EntryForm">
+			<div id="EntryForm" name="EntryForm" >
 				<!-- FIRST -->
-				<h3>Department:</h3>
+				<h3 id="acc_headers">Department:</h3>
 				<div>
 					<tr>
 						<td>
@@ -118,7 +119,7 @@
 					<button type="button" id="Bdepartment" name="toModule" >Next Section</button>
 				</div>
 				<!-- SECOND -->
-				<h3>Module Information:</h3>
+				<h3 id="acc_headers">Module Information:</h3>
 				<div>
 					<tr>
 						<td><label for='year'>Year Group:</label></td>
@@ -152,7 +153,7 @@
 					<button type="button" id="Bmodule" name="toModule" >Next Section</button>
 				</div>
 				<!-- THIRD -->
-				<h3>Day and Time Information:</h3>
+				<h3 id="acc_headers">Day and Time Information:</h3>
 				<div>
 					<tr>
 						<td><label for='day'>Day:</label></td>
@@ -243,24 +244,28 @@
 					<button type="button" id="Bdaytime" name="toModule" >Next Section</button>
 				</div>
 				<!-- FOURTH -->
-				<h3>Room Preference Information:</h3>
+				<h3 id="acc_headers">Room Preference Information:</h3>
 				<div>
-					<tr>
-						<td>
-							<label for='no_students'>Number Of Students:</label>
-							<input name='no_students' type='text' id='no_students' value=' ' size='14' />
-						</td>
-						<td>
-							<label for='no_rooms'>Number Of Rooms:</label>
-							<input name='no_rooms' type='text' id='no_rooms' value=' ' size='14' />
-						</td>
-						<br>
-					</tr>
+                    <table id='Tspeshul' align='center'>
+                        <tr>
+                            <td><label for='no_students'>Number Of Students:</label></td>
+                            <td><input name='no_students' type='text' id='no_students' value=' ' size='14' /></td>
+                        </tr>
+                        <tr>
+                            <td><label for='no_rooms'>Number Of Rooms:</label></td>
+                            <td><input name='no_rooms' type='text' id='no_rooms' value=' ' size='14' /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><button type="button" id="Bpriority" name="toModule" style="width:100%" />View Options</button></td>
+                        </tr>
+                    </table>
 					<br>
 					<button type="button" id="BprefBack" name="toModule" >Back</button>
 					<button type="button" id="Bpref" name="toModule" >Next Section</button>
+            
 				</div>
-				<h3>Special Requirements:</h3>
+                <!-- FIFTH -->
+				<h3 id="acc_headers">Special Requirements:</h3>
 				<div>
 					<table id='Tspeshul' align='center'>
 						<tr><td><form><input type='checkbox' name='wheelchair' value='wheelchair'>Wheelchair Access</form></td></tr>
@@ -277,14 +282,14 @@
 					<button type="button" id="BspecialBack" name="toModule" >Back</button>
 					<button type="button" id="Bspecial" name="toModule" >Next Section</button>
 				</div>
-				<h3>Priority:</h3>
+                <!-- SIXTH -->
+				<h3 id="acc_headers">Priority:</h3>
 				<div>
 					<tr>
 						<td colspan=2 align=center><form><input type='checkbox' name='priority' value='priority'>Priority</form></td>
 					</tr>
 					<br>
 					<button type="button" id="BpriorityBack" name="toModule" >Back</button>
-					<button type="button" id="Bpriority" name="toModule">View Options</button>
 				</div>
 			</div>
 		</div>
@@ -292,11 +297,11 @@
                         <input type=radio name=room>CC.0.11 - James France<br>
                         <input type=radio name=room>D.1.02  - James France<br>
                         <input type=radio name=room>BE.0.25 Sir Richard Morris<br>
-                </div>
+        </div>
 	</body>
 	<footer>
     <div id="progressfooter">
                 <div id="progressbar"><div id="progresstitle">Current Progress</div></div>
-        </div>
+    </div>
 	</footer>
 </html>
