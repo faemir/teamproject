@@ -43,7 +43,30 @@
 			$( "#details1" ).click(function() {
 				$( "#dialog" ).dialog( "open" );
 			});
-		
+            
+            $( "#dialog2" ).dialog({
+				autoOpen: false,
+				modal: true,
+				resizeable: false,
+				width: 600,
+                height: 500,
+				buttons: {
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				show: {
+					effect: "blind",
+					duration: 500
+				},
+				hide: {
+					effect: "blind",
+					duration: 500
+				}
+			});
+            $( "#why_but" ).click(function() {
+				$( "#dialog2" ).dialog( "open" );
+			});
 		});
 			
     </script>
@@ -116,7 +139,7 @@
 							<td>Team Projects</td>
 							<td>YES</td>
 							<td><input type="button" id="details1" Value="Details" style="width:100%"></td>
-                            <td style="color:orange;">PENDING</td>
+                            <td style="color:orange; text-align:center;">PENDING</td>
 						</tr>
 						<tr class="alt">
 							<td>2</td>
@@ -125,7 +148,7 @@
 							<td>Programming for WWW</td>
 							<td>YES</td>
 							<td><input type="button" Value="Details" style="width:100%"></td>
-                            <td style="color:green;">ACCEPTED</td>
+                            <td style="color:green; text-align:center;">ACCEPTED</td>
 						</tr>
 						<tr>
 							<td>3</td>
@@ -134,7 +157,7 @@
 							<td>Formal Languages</td>
 							<td>NO</td>
 							<td><input type="button" Value="Details" style="width:100%"></td>
-                            <td style="color:red;">REJECTED</td>
+                            <td style="color:red; text-align:center;">REJECTED <input type="button" id="why_but" Value="Why?"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -145,10 +168,15 @@
 			<p>Day: Wednesday</p>
 			<p>Time: 9:00am to 9:50am</p>
 			<p>Weeks: 1 to 12</p>
-			<p>Preferred Room: CC.0.11</p>
+			<p>Preferred Room: CC.0.11 (ROOM PRIORITY)</p>
 			<p>Number Students: 100</p>
 			<p>Special Requirements: Wheel Chair Access, Data Projector</p>
 			<p>Other Requirements: None</p>
 		</div>
+        <div id="dialog2" title="Rejection Details">
+            <p> Module 13COC1234 request was rejected for the following reasons:</p>
+            <p>- Time slot of 12:00 to 12:50 Unavailable</p>
+            <p>- Room J001 is Unavailable</p>
+        </div>
 	</body>
 </html>
