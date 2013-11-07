@@ -54,6 +54,31 @@
                                 $("#BpriorityBack").click( function () {
                                 $( "#EntryForm" ).accordion( "option", "active", 4 );
                                 });
+                                $( "#results" ).dialog({
+                                autoOpen: false,
+                                modal: true,
+                                resizeable: false,
+                                width: 600,
+                                height: 500,
+                                buttons: {
+                                        "View Requests": function() {
+                                                $( this ).dialog( "close" );
+                                                document.location.href='rooms.htm';
+                                        }
+                                },
+                                show: {
+                                        effect: "blind",
+                                        duration: 500
+                                },
+                                hide: {
+                                        effect: "blind",
+                                        duration: 500
+                                }
+                                });
+                                $( "#Bpriority" ).click(function() {
+                                        $("#progressbar").progressbar( "option", "value", 100);
+                                        $( "#results" ).dialog( "open" );
+                                });
 			});
 		</script>
 	</head>
@@ -77,8 +102,8 @@
 				<h3>Department:</h3>
 				<div>
 					<tr>
-						<td><label for='dept'>Department Information</label></td>
 						<td>
+							<label for='dept'>Department:</label>
 							<form action=''>
 								<select name='department'>
 									<option value='computer_science'>Computer Science</option>
@@ -89,6 +114,7 @@
 							</form>
 						</td>
 					</tr>
+					<br>
 					<button type="button" id="Bdepartment" name="toModule" >Next Section</button>
 				</div>
 				<!-- SECOND -->
@@ -121,6 +147,7 @@
 							</form>
 						</td>
 					</tr>
+					<br>
 					<button type="button" id="BmoduleBack" name="toModule" >Back</button>
 					<button type="button" id="Bmodule" name="toModule" >Next Section</button>
 				</div>
@@ -211,6 +238,7 @@
 							</form>
 						</td>
 					</tr>
+					<br>
 					<button type="button" id="BdaytimeBack" name="toModule" >Back</button>
 					<button type="button" id="Bdaytime" name="toModule" >Next Section</button>
 				</div>
@@ -226,26 +254,15 @@
 							<label for='no_rooms'>Number Of Rooms:</label>
 							<input name='no_rooms' type='text' id='no_rooms' value=' ' size='14' />
 						</td>
+						<br>
 					</tr>
-					<table id='input4' border='1' align='center' bgcolor='#F0F8FF'>
-						<tr>
-							<th colspan=2 align='center'> Rooms </th>
-						</tr>
-						<tr>
-							<td>
-								<input type=radio name=room>CC.0.11 - James France<br>
-								<input type=radio name=room>D.1.02  - James France<br>
-								<input type=radio name=room>BE.0.25 Sir Richard Morris
-							</td>  
-						</tr>
-					</table>
+					<br>
 					<button type="button" id="BprefBack" name="toModule" >Back</button>
 					<button type="button" id="Bpref" name="toModule" >Next Section</button>
 				</div>
 				<h3>Special Requirements:</h3>
 				<div>
-					<table id='Tspeshul' border='1' align='center' bgcolor='#F0F8FF'>
-						<tr><td align='center'>Special Requirements</td></tr>
+					<table id='Tspeshul' align='center'>
 						<tr><td><form><input type='checkbox' name='wheelchair' value='wheelchair'>Wheelchair Access</form></td></tr>
 						<tr><td><form><input type='checkbox' name='quality_room' value='quality_room'>Quality Room (Guest Speaker)</form></td></tr>
 						<tr><td><form><input type='checkbox' name='projector' value='projector'>Data Projector</form></td></tr>
@@ -256,6 +273,7 @@
 						<tr><td><form><input type='checkbox' name='chalk_board' value='chalk_board'>Chalk Board</form></td></tr>
 						<tr><td><form><input type='checkbox' name='previous_room' value='previous_room'>Room Near Previous Room</form></td></tr>
 					</table>
+					<br>
 					<button type="button" id="BspecialBack" name="toModule" >Back</button>
 					<button type="button" id="Bspecial" name="toModule" >Next Section</button>
 				</div>
@@ -264,11 +282,17 @@
 					<tr>
 						<td colspan=2 align=center><form><input type='checkbox' name='priority' value='priority'>Priority</form></td>
 					</tr>
+					<br>
 					<button type="button" id="BpriorityBack" name="toModule" >Back</button>
-					<button type="button" id="Bpriority" name="toModule" onclick="window.location.href='rooms.htm'">Submit Entry</button>
+					<button type="button" id="Bpriority" name="toModule">View Options</button>
 				</div>
 			</div>
 		</div>
+		<div id="results" title="Room Choices">
+                        <input type=radio name=room>CC.0.11 - James France<br>
+                        <input type=radio name=room>D.1.02  - James France<br>
+                        <input type=radio name=room>BE.0.25 Sir Richard Morris<br>
+                </div>
 	</body>
 	<footer>
     <div id="progressfooter">

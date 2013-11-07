@@ -93,6 +93,23 @@
 			{
 				float:left;
 			}
+			#Tspeshul
+			{
+				border: 1px solid #7707A8;
+				align: center;
+				bgcolor: #F6F6F6;
+			}
+			#results
+			{
+
+			}
+			#resultstable
+			{
+                            border: 1px solid #7707A8;
+                            bgcolor: #F6F6F6;
+                            width:300px;
+                             visibility:hidden;
+			}
 			#titlelogo
 			{
 				float:left;
