@@ -52,13 +52,12 @@
 				width: 600,
                 height: 500,
 				buttons: {
+					"Alternative Request Options": function() {
+                        $( this ).dialog( "close" );
+                    },
 					Cancel: function() {
 						$( this ).dialog( "close" );
-					},
-					"Edit request": function() {
-                                                $( this ).dialog( "close" );
-                                        }
-					
+					}
 				},
 				show: {
 					effect: "blind",
@@ -105,7 +104,8 @@
                         </tr>
                     </table>
                 </div>
-                <div id="table_func_table" >
+            </div>
+            <div id="table_func_table" style="width: 150px;">
                     <table>
                             <th>Department</th>
                         </tr>
@@ -113,8 +113,8 @@
                             <td>Computer Science</td>
                         </tr>
                     </table>
-                </div>
             </div>
+            
             <br>
 			<!-- http://tablestyler.com/ -->
 			<div class="datagrid">
@@ -143,7 +143,7 @@
 							<td>Team Projects</td>
 							<td>YES</td>
 							<td><input type="button" id="details1" Value="Details" style="width:100%"></td>
-                            <td style="color:orange; text-align:center;">PENDING</td>
+                            <td style="color:orange; text-align:center; font-weight:bold;">PENDING</td>
 						</tr>
 						<tr class="alt">
 							<td>2</td>
@@ -152,7 +152,7 @@
 							<td>Programming for WWW</td>
 							<td>YES</td>
 							<td><input type="button" Value="Details" style="width:100%"></td>
-                            <td style="color:green; text-align:center;">ACCEPTED</td>
+                            <td style="color:green; text-align:center; font-weight:bold;">ACCEPTED</td>
 						</tr>
 						<tr>
 							<td>3</td>
@@ -161,7 +161,7 @@
 							<td>Formal Languages</td>
 							<td>NO</td>
 							<td><input type="button" Value="Details" style="width:100%"></td>
-                            <td style="color:red; text-align:center;">REJECTED <input type="button" id="why_but" Value="Why?"></td>
+                            <td style="color:red; text-align:center; font-weight:bold;">REJECTED <input type="button" id="why_but" Value="Why?"></td>
 						</tr>
 					</tbody>
 				</table>

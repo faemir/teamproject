@@ -32,12 +32,13 @@
                     $("#progressbar").progressbar( "option", "value", 50);
                 });
                 $("#Bpref").click( function () {
-                    $( "#EntryForm" ).accordion( "option", "active", 4 );
-                    $("#progressbar").progressbar( "option", "value", 66.6);
-                });
-                $("#Bspecial").click( function () {
                     $( "#EntryForm" ).accordion( "option", "active", 5 );
                     $("#progressbar").progressbar( "option", "value", 83.3);
+                });
+
+                $("#Bspecial").click( function () {
+                    $( "#EntryForm" ).accordion( "option", "active", 4 );
+                    $("#progressbar").progressbar( "option", "value", 66.6);
                 });
                 $("#Bpriority").click( function () {
                     $( "#EntryForm" ).accordion( "option", "active", 6 );
@@ -49,10 +50,10 @@
                 $("#BdaytimeBack").click( function () {
                     $( "#EntryForm" ).accordion( "option", "active", 1 );
                 });
-                $("#BprefBack").click( function () {
+                $("#BspecialBack").click( function () {
                     $( "#EntryForm" ).accordion( "option", "active", 2 );
                 });
-                $("#BspecialBack").click( function () {
+                $("#BprefBack").click( function () {
                     $( "#EntryForm" ).accordion( "option", "active", 3 );
                 });
                 $("#BpriorityBack").click( function () {
@@ -269,7 +270,26 @@
 					<button type="button" id="Bdaytime" name="toModule" >Next Section</button>
 				</div>
 				<!-- FOURTH -->
-				<h3 id="acc_headers">Room Preference Information:</h3>
+                <h3 id="acc_headers">Special Requirements:</h3>
+				<div>
+					<table id='Tspeshul' align='center'>
+						<tr><td><form><input type='checkbox' name='wheelchair' value='wheelchair'>Wheelchair Access</form></td></tr>
+						<tr><td><form><input type='checkbox' name='quality_room' value='quality_room'>Quality Room (Guest Speaker)</form></td></tr>
+						<tr><td><form><input type='checkbox' name='projector' value='projector'>Data Projector</form></td></tr>
+						<tr><td><form><input type='checkbox' name='visualiser' value='visualiser'>Visualiser</form></td></tr>
+						<tr><td><form><input type='checkbox' name='video' value='video'>Video/DVD/BluRay</form></td></tr>
+						<tr><td><form><input type='checkbox' name='computer' value='computer'>Fixed Computer</form></td></tr>
+						<tr><td><form><input type='checkbox' name='white_board' value='white_board'>White Board</form></td></tr>
+						<tr><td><form><input type='checkbox' name='chalk_board' value='chalk_board'>Chalk Board</form></td></tr>
+						<tr><td><form><input type='checkbox' name='previous_room' value='previous_room'>Room Near Previous Room</form></td></tr>
+					</table>
+					<br>
+					<button type="button" id="BspecialBack" name="toModule" >Back</button>
+					<button type="button" id="Bspecial" name="toModule" >Next Section</button>
+				</div>
+				
+                <!-- FIFTH -->
+                <h3 id="acc_headers">Room Preference Information:</h3>
 				<div>
                     <table id='Tspeshul' align='center'>
                         <tr>
@@ -287,25 +307,6 @@
 					<br>
 					<button type="button" id="BprefBack" name="toModule" >Back</button>
 					<button type="button" id="Bpref" name="toModule" >Next Section</button>
-            
-				</div>
-                <!-- FIFTH -->
-				<h3 id="acc_headers">Special Requirements:</h3>
-				<div>
-					<table id='Tspeshul' align='center'>
-						<tr><td><form><input type='checkbox' name='wheelchair' value='wheelchair'>Wheelchair Access</form></td></tr>
-						<tr><td><form><input type='checkbox' name='quality_room' value='quality_room'>Quality Room (Guest Speaker)</form></td></tr>
-						<tr><td><form><input type='checkbox' name='projector' value='projector'>Data Projector</form></td></tr>
-						<tr><td><form><input type='checkbox' name='visualiser' value='visualiser'>Visualiser</form></td></tr>
-						<tr><td><form><input type='checkbox' name='video' value='video'>Video/DVD/BluRay</form></td></tr>
-						<tr><td><form><input type='checkbox' name='computer' value='computer'>Fixed Computer</form></td></tr>
-						<tr><td><form><input type='checkbox' name='white_board' value='white_board'>White Board</form></td></tr>
-						<tr><td><form><input type='checkbox' name='chalk_board' value='chalk_board'>Chalk Board</form></td></tr>
-						<tr><td><form><input type='checkbox' name='previous_room' value='previous_room'>Room Near Previous Room</form></td></tr>
-					</table>
-					<br>
-					<button type="button" id="BspecialBack" name="toModule" >Back</button>
-					<button type="button" id="Bspecial" name="toModule" >Next Section</button>
 				</div>
                 <!-- SIXTH -->
 				<h3 id="acc_headers">Priority:</h3>
