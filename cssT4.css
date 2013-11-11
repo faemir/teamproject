@@ -1,0 +1,209 @@
+			html *
+			{
+				font-family: 'Open Sans', sans-serif;
+			}
+            #header_bar
+                        {
+                width: 900px;
+                margin: 0 auto;     
+            }
+            body
+                        {
+                 background-image:url('white_carbonfiber.png') 
+            }
+			#main
+			{
+				margin: 0 auto;
+				width: 900px;
+				background: #F6F6F6;
+				moz-border-radius: 10px;
+				border-radius: 10px;
+				padding:5px;
+                border:1px solid #7707A8;   
+			}
+            #loginmain
+			{
+                    width:300px;
+                    height:200px;
+                    position:absolute;
+                    left:50%;
+                    top:50%;
+                    margin:-100px 0 0 -150px;
+                    background:#FAFAFA;
+                    border-radius:10px;
+                    border:1px solid #7707A8;
+			}
+            #login
+			{
+                    text-align:center;
+			}
+            #logintd
+                        {
+                    padding:10px;
+            }
+            #Title_text
+                        {
+                    text-align:center;   
+            }
+            #Dept_table{
+                    
+                    border-radius: 10px;
+                    padding:5px;
+                    border:1px solid #7707A8;
+                    background:#D4D4D4;
+            }
+            #table_func_table{
+                    border-radius: 10px;
+                    padding:5px;
+                    border:1px solid #7707A8;
+                    background:#D4D4D4;
+                    width: 300px;
+                   
+                    
+            }
+            
+            /*------- PROGRESS BAR ----------*/
+            
+            #progressfooter
+			{
+                position:absolute;
+				bottom:0;
+				margin: 0 auto;
+				width: 99%;
+				height:60px;    /*Height of the footer */
+                
+			}
+			#progressbar
+			{
+                margin: 0 auto;
+				width: 90%;
+				text-align: center;
+				overflow: hidden;
+				position: relative;
+				vertical-align: middle;
+				line-height: 35px;
+			}
+			#progresstitle
+			{
+				float: left;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				color:#FFF;
+				vertical-align: middle;
+			}
+            #progressbar .ui-progressbar-value
+			{
+				background:#652299;
+			}
+            
+            /*------- NAVIGATION BAR ----------*/
+            
+			#navBar
+			{
+				font-weight: 400;
+				margin: 0 auto;
+				/* width: 800px; */
+			}
+			#navBar li:first-child a
+			{
+				moz-border-radius-topleft:5px;
+				border-top-left-radius: 5px;
+				webkit-border-top-left-radius:5px;
+				moz-border-radius-bottomleft:5px;
+				border-bottom-left-radius:5px;
+				webkit-border-bottom-left-radius:5px;
+			}
+			 #navBar li:last-child a
+			{
+				moz-border-radius-topright:5px;
+				border-top-right-radius:5px;
+				webkit-border-top-right-radius:5px;
+				border-bottom-right-radius:5px;
+				moz-border-radius-bottomright:5px;
+				webkit-border-bottom-right-radius:5px;
+			}
+			ul
+			{
+				list-style-type:none;
+				margin:10px;
+				padding:0;
+				overflow:hidden;
+			}
+			li
+			{
+				float:left;
+			}
+            
+            /*------- ----------- ----------*/
+            
+			#Tspeshul
+			{
+				border: 1px solid #7707A8;
+				align: center;
+				bgcolor: #F6F6F6;
+			}
+            #acc_headers{
+                color:#652299;
+            }
+			#results
+			{
+
+			}
+			#resultstable
+			{
+                            border: 1px solid #7707A8;
+                            bgcolor: #F6F6F6;
+                            width:300px;
+                             visibility:hidden;
+			}
+			#titlelogo
+			{
+				float:left;
+				font-weight:bold;
+				padding:4px;
+				text-transform:uppercase;
+				color:#7707A8;
+			}
+			a:link,a:visited
+			{
+				display:block;
+				width:170px;
+				font-weight:bold;
+				color:#FFFFFF;
+background: #652299; /* Old browsers */
+background: -moz-linear-gradient(top,  #652299 0%, #4d1a75 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#652299), color-stop(100%,#4d1a75)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #652299 0%,#4d1a75 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #652299 0%,#4d1a75 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #652299 0%,#4d1a75 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #652299 0%,#4d1a75 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#652299', endColorstr='#4d1a75',GradientType=0 ); /* IE6-9 */
+
+				text-align:center;
+				padding:4px;
+				text-decoration:none;
+				text-transform:uppercase;
+			}
+			a:hover,a:active
+			{
+				background:#8F3593;
+                color:#fff;
+                
+			}
+
+           
+            .datagrid table { border-collapse: collapse; text-align: left; width: 100%; } 
+            .datagrid {font: normal 12px/150% 'Open Sans'; background: #fff; overflow: hidden; border: 4px solid #652299; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; }
+            .datagrid table td,.datagrid table th { padding: 8px 6px; }
+            .datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #652299), color-stop(1, #4D1A75) );background:-moz-linear-gradient( center top, #652299 5%, #4D1A75 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#652299', endColorstr='#4D1A75');background-color:#652299; color:#FFFFFF; font-size: 15px; font-weight: bold; border-left: 1px solid #714399; } 
+            .datagrid table thead th:first-child { border: none; }
+            .datagrid table tbody td { color: #4D1A75; border-left: 2px solid #E7BDFF;font-size: 12px;font-weight: normal; }
+            .datagrid table tbody 
+                        .alt td { background: #F4E3FF; color: #4D1A75; }
+            .datagrid table tbody td:first-child { border-left: none; }
+            .datagrid table tbody tr:last-child td { border-bottom: none; }
+            .datagrid table tfoot td div { border-top: 1px solid #652299;background: #F4E3FF;} 
+            .datagrid table tfoot td { padding: 0; font-size: 13px } 
+            .datagrid table tfoot td div{ padding: 6px; }
+           

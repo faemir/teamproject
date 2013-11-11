@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <!-- http://stackoverflow.com/questions/13741871/how-to-get-a-scrollbar-in-a-div-with-fixed-header-and-footer -->
+    <head>
+            <title>Team 4 - LU Timetable Room Requests Page </title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,400' rel='stylesheet' type='text/css'>
+    <link href='cssT4.css' rel='stylesheet' type='text/css'>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script>
+        $(function(){
+			$("#results").fadeIn();
+		   
+			$( "#dialog" ).dialog({
+				autoOpen: false,
+				modal: true,
+				resizeable: false,
+				width: 600,
+                                height: 500,
+				buttons: {
+					"Edit Entry": function() {
+						$( this ).dialog( "close" );
+					},
+					"Delete Entry": function() {
+						$( this ).dialog( "close" );
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				show: {
+					effect: "blind",
+					duration: 500
+				},
+				hide: {
+					effect: "blind",
+					duration: 500
+				}
+			});
+ 
+			$( "#details1" ).click(function() {
+				$( "#dialog" ).dialog( "open" );
+			});
+            
+            $( "#dialog2" ).dialog({
+				autoOpen: false,
+				modal: true,
+				resizeable: false,
+				width: 600,
+                height: 500,
+				buttons: {
+					"Alternative Request Options": function() {
+                        $( this ).dialog( "close" );
+                    },
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				show: {
+					effect: "blind",
+					duration: 500
+				},
+				hide: {
+					effect: "blind",
+					duration: 500
+				}
+			});
+            $( "#why_but" ).click(function() {
+				$( "#dialog2" ).dialog( "open" );
+			});
+		});
+			
+    </script>
+  </head>
+  <body>
+		<div id="header_bar">
+            <div id='titlelogo'>LU Timetables  &nbsp;</div>
+            <div id="navBar" >
+                    <ul>
+                        <li><a href="rooms.htm">View Requests</a></li>
+                        <li><a href="form.htm">Add New Request</a></li>
+                        <li><a href="help.htm">Help</a></li>
+                        <li><a href="login.htm">Logout</a></li>
+                    </ul>
+            </div>
+        </div>
+		<div id="main">
+            <div id="Title_text">
+				<h3>Current Requests Table</h3>
+			</div>
+            <div style="width:100%; height:90px;">
+                <div id="table_func_table" style=" float:left;">
+                    <table>
+                        <tr>
+                            <td colspan="3">Module Search: <input type="text" name="mod_search" class="text ui-widget-content ui-corner-all"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" Value="Clear Form" style="width:100%;"></td>
+                            <td><input type="button" Value="Sort" style="width:100%;"></td>
+                            <td><input type="button" Value="Filter" style="width:100%;"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="table_func_table" style="width: 150px;">
+                    <table>
+                            <th>Department</th>
+                        </tr>
+                        <tr>
+                            <td>Computer Science</td>
+                        </tr>
+                    </table>
+            </div>
+            
+            <br>
+			<!-- http://tablestyler.com/ -->
+			<div class="datagrid">
+				<table>
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>Year Group</th>
+							<th>Module Code</th>
+							<th>Module Title</th>
+							<th>Priority</th>
+							<th>Details</th>
+                            <th>Status</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td colspan="8"><div id="no-paging">&nbsp;</div></td>
+						</tr>
+					</tfoot>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>B</td>
+							<td>13COB1234</td>
+							<td>Team Projects</td>
+							<td>YES</td>
+							<td><input type="button" id="details1" Value="Details" style="width:100%"></td>
+                            <td style="color:orange; text-align:center; font-weight:bold;">PENDING</td>
+						</tr>
+						<tr class="alt">
+							<td>2</td>
+							<td>A</td>
+							<td>13COA1234</td>
+							<td>Programming for WWW</td>
+							<td>YES</td>
+							<td><input type="button" Value="Details" style="width:100%"></td>
+                            <td style="color:green; text-align:center; font-weight:bold;">ACCEPTED</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>C</td>
+							<td>13COC1234</td>
+							<td>Formal Languages</td>
+							<td>NO</td>
+							<td><input type="button" Value="Details" style="width:100%"></td>
+                            <td style="color:red; text-align:center; font-weight:bold;">REJECTED <input type="button" id="why_but" Value="Why?"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- HIDDEN -->
+        <div id="dialog" title="Module 13COB1234">
+			<p>Day: Wednesday</p>
+			<p>Time: 9:00am to 9:50am</p>
+			<p>Weeks: 1 to 12</p>
+			<p>Preferred Room(s): CC.0.11 (ROOM PRIORITY)</p>
+			<p>Number Students: 100</p>
+			<p>Special Requirements: Wheel Chair Access, Data Projector</p>
+			<p>Other Requirements: None</p>
+		</div>
+        <div id="dialog2" title="Rejection Details">
+            <p> Module 13COC1234 request was rejected for the following reasons:</p>
+            <p>- Time slot of 12:00 to 12:50 Unavailable</p>
+            <p>- Room J001 is Unavailable</p>
+        </div>
+	</body>
+</html>
