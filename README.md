@@ -1,7 +1,7 @@
 Team projects - Team Four
 ==============
 
-[Forum address](team.faemir.co.uk)
+[Link to our discussion forum](team.faemir.co.uk)
 
 ####Team Members:
 
