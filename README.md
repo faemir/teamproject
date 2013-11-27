@@ -3,6 +3,11 @@ Team projects - Team Four
 
 [Link to our discussion forum](http://team.faemir.co.uk)
 
+####Current status
+
+* Project Management software has been chosen
+* Currently organising it (git + forum)
+
 ####Team Members:
 
 * Callum Lawrie
@@ -11,9 +16,11 @@ Team projects - Team Four
 * Matt Cole
 * Nikk Williams
 
-####Current status
+####Member Profiles:
 
-* Project Management software has been chosen
-* Currently organising it (git + forum)
+* Josh Hughes
 
+	[picture](/profile_pics/JH_profile.jpg)
+	Age: 20
+	Role: 
 
