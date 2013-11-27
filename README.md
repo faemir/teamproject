@@ -18,7 +18,7 @@ Team projects - Team Four
 
 ####Member Profiles:
 
-[Josh Hughes](/profile_pics/JH_profile.jpg)
-* Age: 20
-* Role:  
+> [Josh Hughes](/profile_pics/JH_profile.jpg) <br>
+> Age: 20 <br>
+> Roles: Client side developer, Project Organiser
 
