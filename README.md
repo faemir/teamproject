@@ -18,9 +18,7 @@ Team projects - Team Four
 
 ####Member Profiles:
 
-* Josh Hughes
-
-	[picture](/profile_pics/JH_profile.jpg)
-	Age: 20
-	Role: 
+#[Josh Hughes](/profile_pics/JH_profile.jpg)
+*Age: 20
+*Role:  
 
