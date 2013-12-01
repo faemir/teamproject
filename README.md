@@ -18,7 +18,14 @@ Team projects - Team Four
 
 ####Member Profiles:
 
+> Callum Lawrie
+
+> Dan Cohen
+
 > [Josh Hughes](/profile_pics/JH_profile.jpg) <br>
 > Age: 20 <br>
 > Roles: Client side developer, Project Organiser & co UI designer
 
+> Matt Cole
+
+> Nikk Williams
