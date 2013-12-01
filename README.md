@@ -34,9 +34,9 @@ Team projects - Team Four
 > Roles: Project Organiser, Client side developer & co UI designer
 
 > Matt Cole <br>
-> StudentID: <br>
-> Age: <br>
-> Roles: <br>
+> StudentID: B216495<br>
+> Age: 23<br>
+> Roles: Database Designer, Server Side developer<br>
 
 > [Nikk Williams](/profile_pics/NW_profile.jpg) <br>
 > Student ID: B222954 <br>
