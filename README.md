@@ -7,6 +7,9 @@ Team projects - Team Four
 
 * Project Management software has been chosen
 * Currently organising it (git + forum)
+* Database design and implementation underway/nearing completion
+* general database query (php) scripts being written
+* UI general template being discussed and designed
 
 ####Team Members:
 
@@ -19,8 +22,14 @@ Team projects - Team Four
 ####Member Profiles:
 
 > Callum Lawrie
+> StudentID: <br>
+> Age: <br>
+> Roles: <br>
 
 > Dan Cohen
+> StudentID: <br>
+> Age: <br>
+> Roles: <br>
 
 > [Josh Hughes](/profile_pics/JH_profile.jpg) <br>
 > Student ID: B215598 <br>
@@ -28,6 +37,9 @@ Team projects - Team Four
 > Roles: Client side developer, Project Organiser & co UI designer
 
 > Matt Cole
+> StudentID: <br>
+> Age: <br>
+> Roles: <br>
 
 > [Nikk Williams](/profile_pics/NW_profile.jpg) <br>
 > Student ID: B222954 <br>
