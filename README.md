@@ -1,8 +1,6 @@
 Team projects - Team Four
 ==============
 
-[Link to our discussion forum](http://team.faemir.co.uk)
-
 ####Current status
 
 * Project Management software has been chosen
