@@ -21,12 +21,12 @@ Team projects - Team Four
 
 ####Member Profiles:
 
-> Callum Lawrie
+> Callum Lawrie <br>
 > StudentID: <br>
 > Age: <br>
 > Roles: <br>
 
-> Dan Cohen
+> Dan Cohen <br>
 > StudentID: <br>
 > Age: <br>
 > Roles: <br>
@@ -36,7 +36,7 @@ Team projects - Team Four
 > Age: 20 <br>
 > Roles: Client side developer, Project Organiser & co UI designer
 
-> Matt Cole
+> Matt Cole <br>
 > StudentID: <br>
 > Age: <br>
 > Roles: <br>
