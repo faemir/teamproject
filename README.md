@@ -23,7 +23,7 @@ Discussions and deadlines (milestones) can be found on the [Issues page](https:/
 > [Callum Lawrie](/profile_pics/CL_profile.jpg) <br>
 > StudentID: B219555 <br>
 > Age: 19 <br>
-> Roles: Client side and Server Side developer, programming monkey & co UI designer <br>
+> Roles: Client side and Server Side developer, co UI designer <br>
 
 > [Dan Cohen](/profile_pics/DC_profile.jpg) <br>
 > StudentID: B217314<br>
