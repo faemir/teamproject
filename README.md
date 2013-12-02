@@ -5,7 +5,7 @@ Discussions and deadlines (milestones) can be found on the [Issues page](https:/
 
 ####Current status
 
-* Using git for project management
+* Using github for project management (discussion, bug-tracking, deadlines, documentation)
 * Database design and implementation underway/nearing completion
 * general database query (php) scripts being written
 * UI general template being discussed and designed
