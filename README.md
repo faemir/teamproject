@@ -1,6 +1,8 @@
 Team projects - Team Four
 ==============
 
+Discussions and deadlines (milestones) can be found on the [Issues page](https://github.com/faemir/teamproject/issues?state=open), while minutes of meetings can be found on the [wiki](https://github.com/faemir/teamproject/wiki).
+
 ####Current status
 
 * Using git for project management
