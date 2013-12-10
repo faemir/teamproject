@@ -1,0 +1,213 @@
+    /********** GENERAL HTML, BODY & MAIN DIVS ************/
+            
+    html *
+    {
+        font-family: 'Open Sans', sans-serif;
+    }
+    
+    body
+         {
+        background:#FFF;
+    }
+
+    /******************* NAV BAR **********************/
+       
+    #topnav{
+        list-style:none;
+        width:720px;
+        margin:0 auto;
+        padding:0;
+        background: #f0f0f0;
+        border:1px solid #ddd;
+        display: table;
+    }
+
+    #topnav li
+        {
+        border-right:1px solid #ddd;
+        margin:0;
+        padding:0; 
+        display: table-cell;
+        text-align:center;
+        
+    }
+
+    #topnav li a 
+        { 
+        display:block;
+        padding:10px;
+        color:#333;
+        text-decoration:none;
+        height:100%;
+    }
+
+    #topnav li a:hover {
+        background: #fff;
+    }
+    
+    #topnav li a img{
+        height:27px;
+        width:auto;
+    }
+
+    /****************** LAYOUT STRUCTURE *********************/
+
+    .contentBox
+        {
+        min-height:300px;
+        border: solid 1px #ccc;
+        margin-bottom: 5px;
+    }
+    
+    #navwrap
+        {
+        position:fixed;  
+        height:60px;
+        width: 100%;
+        top:0;
+    }
+    #pagewrap {
+        padding: 5px;
+        width: 960px;
+        margin: 20px auto;
+        padding-top: 50px;
+        
+    }
+    
+    
+    /*** view requests page ***/
+
+    #actionsBox {
+        width: 290px;
+        float: left;
+        padding: 5px 15px;
+        background: #f8f8f8;
+    }
+
+    #searchBox {
+        width: 294px; /* Account for margins + border values */
+        float: left;
+        padding: 5px 15px;
+        margin: 0px 5px 5px 5px;
+    }
+
+    #roundsBox {
+        width: 270px;
+        padding: 5px 15px;
+        float: left;
+        background: #f0efef;
+    }
+    #tableBox {
+        clear: both;
+        padding: 0 15px;
+        margin-bottom: 0px;
+    }
+
+    /*** add requests page ***/
+    
+    #basicBox {
+        width: 404px;
+        float: left;
+        padding: 5px 15px;
+        background: #f8f8f8;
+    }
+    
+    #roomActionsBox {
+        width: 180px; /* Account for margins + border values */
+        float: left;
+        padding: 5px 15px;
+        margin: 0px 5px 5px 5px;
+    }
+
+    #roomSelectorBox {
+        width: 270px;
+        padding: 5px 15px;
+        float: left;
+        background: #f0efef;
+    }
+    
+    #inputWeeksBox {
+        clear:both;
+        padding: 0 15px;
+        min-height: 50px;
+        background: #f8f8f8;
+        
+    }
+    #inputTableBox {
+        clear:both;
+        padding: 0 15px;
+        margin-bottom: 0px;
+    }
+
+    
+    /************************************************************************************
+    MEDIA QUERIES
+    *************************************************************************************/
+    /* for 980px or less */
+    @media screen and (max-width: 980px) {
+        
+        #pagewrap {
+            width: 94%;
+        }
+        #actionsBox {
+            width: 41%;
+            padding: 1% 4%;
+        }
+        #searchBox {
+            width: 41%;
+            padding: 1% 4%;
+            margin: 0px 0px 5px 5px;
+            float: right;
+        }
+        
+        #roundsBox {
+            clear: both;
+            padding: 1% 4%;
+            width: auto;
+            float: none;
+        }
+
+        #tableBox {
+            padding: 1% 4%;
+        }
+    }
+
+    /* for 700px or less */
+    @media screen and (max-width: 600px) {
+
+        #actionsBox {
+            width: auto;
+            float: none;
+        }
+        
+        #searchBox {
+            width: auto;
+            float: none;
+            margin-left: 0px;
+        }
+        
+        #roundsBox {
+            width: auto;
+            float: none;
+        }
+
+    }
+
+    /* for 480px or less */
+    @media screen and (max-width: 480px) {
+
+        #roundsBox {
+            display: none;
+        }
+
+    }
+
+
+
+
+
+            
+            
+            
+
+        
