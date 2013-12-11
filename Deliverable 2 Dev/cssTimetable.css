@@ -1,4 +1,6 @@
-    /********** GENERAL HTML, BODY & MAIN DIVS ************/
+    /******************************************************** 
+    GENERAL HTML, BODY 
+    ********************************************************/
             
     html *
     {
@@ -10,7 +12,9 @@
         background:#FFF;
     }
 
-    /******************* NAV BAR **********************/
+    /****************************************************** 
+    NAV BAR
+    *******************************************************/
        
     #topnav{
         list-style:none;
@@ -50,7 +54,9 @@
         width:auto;
     }
 
-    /****************** LAYOUT STRUCTURE *********************/
+    /******************************************************************* 
+    LAYOUT STRUCTURE 
+    *******************************************************************/
 
     .contentBox
         {
@@ -151,9 +157,52 @@
         margin-bottom: 0px;
     }
 
+    /*** account/prefrences pages ***/
+    
+    #userPrefBox {
+        width: 441px;
+        float: left;
+        padding: 5px 15px;
+        background: #f8f8f8;
+        margin: 0px 5px 5px 0px;
+    }
+    
+    #prefDemoBox {
+        width: 450px;
+        padding: 5px 15px;
+        float: left;
+        background: #f0efef;
+    }
+    
+    /*** Timetable viewer page ***/
+    
+    #roomSelectorBox2 {
+        width: 234px;
+        float: left;
+        padding: 5px 15px;
+        background: #f8f8f8;
+        height:700px;
+    }
+    
+    #timetableActionsBox {
+        width: 657px; /* Account for margins + border values */
+        float: left;
+        padding: 5px 15px;
+        margin: 0px 0px 5px 5px;
+        min-height:150px;
+    }
+
+    #timetableViewerBox {
+        width: 657px;
+        padding: 5px 15px;
+        float: left;
+        background: #f0efef;
+        margin-left: 5px;
+        height:533px;
+    }
     
     /************************************************************************************
-    MEDIA QUERIES
+    MEDIA QUERIES - currently incomplete
     *************************************************************************************/
     /* for 980px or less */
     @media screen and (max-width: 980px) {
