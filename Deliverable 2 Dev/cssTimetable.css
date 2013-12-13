@@ -262,10 +262,25 @@
         }
 
     }
+    
+    /*********************************************************************************/
+    /* PAGE CONTENT
+    /*********************************************************************************/
 
-
-
-
+    #RequestsTable
+        {
+        width:100%;
+        border: 1px solid black;
+        text-align:center;
+    }
+    
+    #RequestsTable th, #RequestsTable td
+        {
+        border: 1px solid black;
+        
+    }
+    
+    
 
             
             

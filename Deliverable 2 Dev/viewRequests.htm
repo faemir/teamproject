@@ -4,6 +4,52 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel='stylesheet' type='text/css' href='cssTimetable.css'>
         <title>View Current Requests</title>
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript">
+        //onload 
+        $(document).ready(function(){testwr();});
+        
+        function testwr(){
+        }
+        
+        
+        function wrRequestsTable(){
+            //writes and populates Requests table. needs preferences input
+            $.get("GETallRequests.php", function(JSON){
+            
+                alert("hell: " + JSON[0].computer.value);
+                var codeStr = "";
+                codeStr += '<table id="RequestsTable">';
+                codeStr += '<tr>';
+                codeStr += '    <th>Module Code</th>';
+                codeStr += '    <th>Priority</th>';
+                codeStr += '    <th>Day</th>';
+                codeStr += '    <th>Period</th>';
+                codeStr += '    <th>Details</th>';
+                codeStr += '    <th>Status</th>';
+                codeStr += '</tr>';
+                
+                for(var i=0;i<JSON.length;i++){
+                    codeStr += '<tr>';
+                    codeStr += '    <td>' + JSON[i].moduleid + '</td>';
+                    codeStr += '    <td>' + JSON[i].priority + '</td>';
+                    codeStr += '    <td>' + JSON[i].day + '</td>';
+                    codeStr += '    <td>' + JSON[i].period + '</td>';
+                    codeStr += '    <td>BUTTON</td>';
+                    codeStr += '    <td>' + JSON[i].requeststatus + '</td>';
+                    codeStr += '</tr>';
+                }
+                codeStr += "</table">
+                
+                //clears and writes table into container
+                $("#tableBox").empty();
+                $("#tableBox").append(codeStr);
+               
+               
+            }, 'json');
+        }
+        </script>
     </head>
      
     <body>
