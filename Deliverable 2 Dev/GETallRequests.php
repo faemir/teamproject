@@ -1,6 +1,6 @@
 <?php
     
-    $sql="SELECT * FROM EntryRequestTable";
+    $sql="SELECT RequestId, ModuleId, Priority, Semester, Day, Period, RequestStatus FROM EntryRequestTable";
     
     include "DBquery.php";
     
