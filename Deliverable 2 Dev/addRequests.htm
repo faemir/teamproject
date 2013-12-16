@@ -4,6 +4,28 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel='stylesheet' type='text/css' href='cssTimetable.css'>
         <title>Add New Requests</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript">
+        
+        $(document).ready(wrInputTable());
+        
+        function wrInputTable(){
+        
+            var codeStr = "";
+            //pOrT stands for 'Period or Time' - to reflect user preferences
+            var pOrTHeader = "Period";
+            var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
+            var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+            
+            codeStr += "<table id='inputTable'>";
+            
+ 
+            
+            codeStr += "</table>";
+            
+            $("#inputTableBox").append(codeStr);
+        }
+        </script>
     </head>
     
     <body> 
