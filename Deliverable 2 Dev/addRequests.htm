@@ -7,7 +7,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
         
-        $(document).ready(wrInputTable());
+        $(document).ready(function(){wrInputTable()});
         
         function wrInputTable(){
         
@@ -19,12 +19,43 @@
             
             codeStr += "<table id='inputTable'>";
             
- 
+            //headers
+            codeStr += "<tr>";
+            codeStr += "<th class ='daysHeader' rowspan='2'>Days</th>";
+            codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader + "</th>";
+            codeStr += "</tr>";
+            
+            //pOrT children
+            codeStr += "<tr>";
+            for(var i = 0;i<pOrTChildren.length;i++){
+                codeStr += "<th class ='pOrTChildren'>" + pOrTChildren[i] + "</th>"; 
+            }
+             codeStr += "</tr>";
+            
+            //days and grid
+            for(var j = 1;j<=days.length;j++){
+                codeStr += "<tr>";
+                codeStr += "<th class ='daysChildren'>" + days[j-1] + "</th>";
+                for(var k = 1;k<=pOrTChildren.length;k++){
+                    codeStr += "<td class='grid' onclick='tableSelect(this.id)' id='" + j + k + "'></td>";
+                }
+                codeStr += "<tr>";
+            }
             
             codeStr += "</table>";
-            
+            //insert into inputTableBox
             $("#inputTableBox").append(codeStr);
+            
         }
+        
+        function tableSelect(gridRef){
+            
+            alert(gridRef);
+            $("#" + gridRef).toggleClass("gridClicked");
+
+        }
+        
+        
         </script>
     </head>
     
@@ -48,8 +79,7 @@
             
             <div class="contentBox" id="inputWeeksBox"></div>
             
-            <div class="contentBox" id="inputTableBox"></div>
-            
+            <div class="contentBox" id="inputTableBox"></div>   
         </div>
     </body>
 </html>

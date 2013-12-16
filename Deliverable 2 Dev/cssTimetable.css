@@ -281,6 +281,27 @@
         
     }
 
+    #daysHeader, #daysChildren
+        {
+        
+    }
+    
+    
+    .grid:hover
+        {
+        background-color:#f8f8f8 !important;
+    }
+    
+    .gridClicked
+        {
+        background-color:#9B30FF !important;
+        border: 2px solid black !important;
+    }
+    
+    .gridClicked:hover
+        {
+        background-color:#BF3EFF !important;
+    }
     
             
             
