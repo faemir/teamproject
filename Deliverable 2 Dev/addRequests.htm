@@ -8,6 +8,7 @@
         <script type="text/javascript">
         
         $(document).ready(function(){wrInputTable()});
+        $(document).ready(function(){loadDefaultWeeks()});
         
         function wrInputTable(){
         
@@ -55,6 +56,43 @@
 
         }
         
+        function loadDefaultWeeks(){
+            $("#wk1").prop('checked',true);
+            $("#wk2").prop('checked',true);
+            $("#wk3").prop('checked',true);
+            $("#wk4").prop('checked',true);
+            $("#wk5").prop('checked',true);
+            $("#wk6").prop('checked',true);
+            $("#wk7").prop('checked',true);
+            $("#wk8").prop('checked',true);
+            $("#wk9").prop('checked',true);
+            $("#wk10").prop('checked',true);
+            $("#wk11").prop('checked',true);
+            $("#wk12").prop('checked',true);
+            $("#wk13").prop('checked',false);
+            $("#wk14").prop('checked',false);
+            $("#wk15").prop('checked',false);
+        }
+        
+        function getWeeksSelectionArray(){
+            var wksArray = [];
+            if($("#wk1").is(':checked')){wksArray.push(1);}
+            if($("#wk2").is(':checked')){wksArray.push(2);}
+            if($("#wk3").is(':checked')){wksArray.push(3);}
+            if($("#wk4").is(':checked')){wksArray.push(4);}
+            if($("#wk5").is(':checked')){wksArray.push(5);}
+            if($("#wk6").is(':checked')){wksArray.push(6);}
+            if($("#wk7").is(':checked')){wksArray.push(7);}
+            if($("#wk8").is(':checked')){wksArray.push(8);}
+            if($("#wk9").is(':checked')){wksArray.push(9);}
+            if($("#wk10").is(':checked')){wksArray.push(10);}
+            if($("#wk11").is(':checked')){wksArray.push(11);}
+            if($("#wk12").is(':checked')){wksArray.push(12);}
+            if($("#wk13").is(':checked')){wksArray.push(13);}
+            if($("#wk14").is(':checked')){wksArray.push(14);}
+            if($("#wk15").is(':checked')){wksArray.push(15);}
+            return wksArray;    
+        }
         
         </script>
     </head>
@@ -77,9 +115,35 @@
             
             <div class="contentBox" id="roomSelectorBox"></div>
             
-            <div class="contentBox" id="inputWeeksBox"></div>
+            <div class="contentBox" id="inputWeeksBox">
+                <!-- unsure if css is css3  -->
+                <label id="wkLabel">Weeks</label></td>
+                <input type="checkbox" class="wkInput" id="wk1"><label for="wk1">1</label>
+                <input type="checkbox" class="wkInput" id="wk2"><label for="wk2">2</label>
+                <input type="checkbox" class="wkInput" id="wk3"><label for="wk3">3</label>
+                <input type="checkbox" class="wkInput" id="wk4"><label for="wk4">4</label>
+                <input type="checkbox" class="wkInput" id="wk5"><label for="wk5">5</label>
+                <input type="checkbox" class="wkInput" id="wk6"><label for="wk6">6</label>
+                <input type="checkbox" class="wkInput" id="wk7"><label for="wk7">7</label>
+                <input type="checkbox" class="wkInput" id="wk8"><label for="wk8">8</label>
+                <input type="checkbox" class="wkInput" id="wk9"><label for="wk9">9</label>
+                <input type="checkbox" class="wkInput" id="wk10"><label for="wk10">10</label>
+                <input type="checkbox" class="wkInput" id="wk11"><label for="wk11">11</label>
+                <input type="checkbox" class="wkInput" id="wk12"><label for="wk12">12</label>
+                <input type="checkbox" class="wkInput" id="wk13"><label for="wk13">13</label>
+                <input type="checkbox" class="wkInput" id="wk14"><label for="wk14">14</label>
+                <input type="checkbox" class="wkInput" id="wk15"><label for="wk15">15</label>
+            </div>
             
-            <div class="contentBox" id="inputTableBox"></div>   
+            <div class="contentBox" id="inputTableBox"></div>
+
+            <div class="contentBox" id="formControlsBox">
+                <form>
+                    <input type="submit" value="Submit">
+                    <input type="button" value="Submit & Add Another">
+                    <input type="button" value="Clear Form">
+                </form>
+            </div>
         </div>
     </body>
 </html>
