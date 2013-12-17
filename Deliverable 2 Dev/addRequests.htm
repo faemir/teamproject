@@ -9,15 +9,14 @@
         
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
-        
+		//pOrT stands for 'Period or Time' - to reflect user preferences
+        var pOrTHeader = "Period";
+        var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
+        var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         function wrInputTable(){
         
-            var codeStr = "";
-            //pOrT stands for 'Period or Time' - to reflect user preferences
-            var pOrTHeader = "Period";
-            var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
-            var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-            
+			var codeStr = "";
+           
             codeStr += "<table id='inputTable'>";
             
             //headers
@@ -50,7 +49,7 @@
         
         function tableSelect(gridRef){
             
-            alert(gridRef);
+            //alert(gridRef);
             $("#" + gridRef).toggleClass("gridClicked");
 
         }
@@ -93,6 +92,20 @@
             return wksArray;    
         }
         
+		function selectedPeriods(){
+			//using:$( "#mydiv" ).hasClass( "foo" )
+			
+			for(var l=1;l<=days.length;l++){
+				for(var m =1;m<=pOrTChildren.length;m++){
+					alert("$(#"+l+m+").hasClass(gridClicked)");
+					alert(l + "" +m);
+					if ($("#"+l+m).hasClass("gridClicked"))
+					{
+						alert(l+""+m);
+					}
+				}
+			}
+		}
         </script>
     </head>
     
@@ -138,9 +151,8 @@
 
 			</div>
             <div class="contentBox" id="formControlsBox">
-				
-                <form>
-                    <input type="submit" value="Submit">
+				<form>
+                    <input type="button" value="Submit" onclick="selectedPeriods()">  <!--changed to button from submit  for testing purposes-->
                     <input type="button" value="Submit & Add Another">
                     <input type="button" value="Clear Form">
                 </form>
