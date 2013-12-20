@@ -91,17 +91,26 @@
             if($("#wk15").is(':checked')){wksArray.push(15);}
             return wksArray;    
         }
-        
+        var lineArray = ["","","","","",""]; // six as we want to start from pos 1, instead of 0
 		function selectedPeriods(){
-			//using:$( "#mydiv" ).hasClass( "foo" )
-			
-			for(var l=1;l<=days.length;l++){
-				for(var m =1;m<=pOrTChildren.length;m++){
-					alert("$(#"+l+m+").hasClass(gridClicked)");
-					alert(l + "" +m);
-					if ($("#"+l+m).hasClass("gridClicked"))
+			for(var line=1;line<=days.length;line++){
+				for(var cPeriod =1;cPeriod<=pOrTChildren.length;cPeriod++){
+					if ($("#"+line+cPeriod).hasClass("gridClicked"))
 					{
-						alert(l+""+m);
+						lineArray[line]=lineArray[line]+""+cPeriod;
+					}
+			}
+			//returns selected periods
+			alert(lineArray[1]+ " " +lineArray[2]+ " " + lineArray[3]+ " " + lineArray[4]+ " " + lineArray[5]+ " " );
+			Consecutive();
+		}
+		
+		function Consecutive(){
+			for(var i = 0; i <=lineArray.length;i++){
+				for(var j = 0;j < lineArray[i].length-1;j++){
+					if((parseInt(lineArray[i].charAt(j))==(parseInt(lineArray[i].charAt(j+1))-1)){
+							//error line below...
+						alert(lineArray[i].charAt(j) + " " + lineArray[i].charAt(j+1));
 					}
 				}
 			}
