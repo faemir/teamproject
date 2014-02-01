@@ -164,6 +164,18 @@
         background: #f8f8f8;
   
     }
+    
+    #roomsList{
+        height:260px;
+        width:220px;
+        border:1px solid #fff;
+        overflow-y:auto;
+    }
+    
+    #roomsList li{
+        display:block;
+        border:1px solid #ddd;
+    }
 
     /*** account/prefrences pages ***/
     

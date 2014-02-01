@@ -6,13 +6,25 @@
         <title>Add New Requests</title>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
+
+		//GLOBALS -------------------------------------------------//
         
-        $(document).ready(function(){wrInputTable()});
-        $(document).ready(function(){loadDefaultWeeks()});
+        //needs preferences here!!!!
+        var userDepartmentID = "CO";
+        
 		//pOrT stands for 'Period or Time' - to reflect user preferences
         var pOrTHeader = "Period";
         var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
         var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+        
+        //ONLOAD FUNCTIONS -----------------------------------------//
+        
+        $(document).ready(function(){wrInputTable()});
+        $(document).ready(function(){loadDefaultWeeks()});
+        $(document).ready(function(){wrRoomsList()});
+        $(document).ready(function(){popModulesList(userDepartmentID)});
+        
+        //FUNCTIONS --------------------------------------------------//
         function wrInputTable(){
         
 			var codeStr = "";
@@ -99,6 +111,7 @@
 					{
 						lineArray[line]=lineArray[line]+""+cPeriod;
 					}
+                }
 			}
 			//returns selected periods
 			alert(lineArray[1]+ " " +lineArray[2]+ " " + lineArray[3]+ " " + lineArray[4]+ " " + lineArray[5]+ " " );
@@ -108,13 +121,52 @@
 		function Consecutive(){
 			for(var i = 0; i <=lineArray.length;i++){
 				for(var j = 0;j < lineArray[i].length-1;j++){
-					if((parseInt(lineArray[i].charAt(j))==(parseInt(lineArray[i].charAt(j+1))-1)){
+					if((parseInt(lineArray[i].charAt(j))==(parseInt(lineArray[i].charAt(j+1))-1))){
 							//error line below...
 						alert(lineArray[i].charAt(j) + " " + lineArray[i].charAt(j+1));
 					}
 				}
 			}
 		}
+        
+        function wrRoomsList(){
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "GETroomsList.php",
+                success: function(JSON){
+                    
+                    var codeStr = "";
+                    codeStr +="<ul id='roomsList'>";
+                    for(var i =0;i<JSON.length;i++){
+                        codeStr += "<li>" + JSON[i].roomid + " | " + JSON[i].building + "</li>";
+                    }
+                    codeStr +="</ul>";
+                
+                    $("#roomSelectorBox").append(codeStr);
+                }  
+            });
+        }
+        
+        function popModulesList(userDepartmentID){
+            $.get("GETmodulesList.php", {id: userDepartmentID}, function(JSON){
+                codeStr = "";
+                codeStr += "<select>";
+                for(var i=0;i<JSON.length;i++){
+                    codeStr += "<option value='" + JSON[i].modulecode + "'>" + JSON[i].modulecode + "</option>"
+                }
+                codeStr += "</select>";
+                
+                codeStr += "<select>";
+                for(var i=0;i<JSON.length;i++){
+                    codeStr += "<option value='" + JSON[i].moduletitle + "'>" + JSON[i].moduletitle + "</option>"
+                }
+                codeStr += "</select>";
+                
+                $("#basicBox").append(codeStr);
+            }, 'json');
+
+        }
         </script>
     </head>
     
