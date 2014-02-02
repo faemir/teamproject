@@ -61,11 +61,18 @@
         
         function tableSelect(gridRef){
             
-            //alert(gridRef);
+            //2-D array to hold boolean value for any field currently pressed.
+            
+            //checker searches 2-d array to see if a previous gridref has been clicked.
+            
+            //if new grid ref is to right of previous, allow connection of two (i.e. 2hr slot) - (2 true values in array)
+            //Else erase previous grid ref boolean and write new gridref boolean (so only one true value in array
+            
+            
             $("#" + gridRef).toggleClass("gridClicked");
 
         }
-        
+        //-------------------------------------//
         function loadDefaultWeeks(){
             $("#wk1").prop('checked',true);
             $("#wk2").prop('checked',true);
@@ -103,6 +110,8 @@
             if($("#wk15").is(':checked')){wksArray.push(15);}
             return wksArray;    
         }
+        
+        //------------------------------------------//
         var lineArray = ["","","","","",""]; // six as we want to start from pos 1, instead of 0
 		function selectedPeriods(){
 			for(var line=1;line<=days.length;line++){
@@ -128,6 +137,7 @@
 				}
 			}
 		}
+        //---------------------------------------------------//
         
         function wrRoomsList(){
             $.ajax({
@@ -139,7 +149,7 @@
                     var codeStr = "";
                     codeStr +="<ul id='roomsList'>";
                     for(var i =0;i<JSON.length;i++){
-                        codeStr += "<li>" + JSON[i].roomid + " | " + JSON[i].building + "</li>";
+                        codeStr += "<li class='' onclick=''>" + JSON[i].roomid + " | " + JSON[i].building + "</li>";
                     }
                     codeStr +="</ul>";
                 
