@@ -22,7 +22,8 @@
 		var wednesdaySele = [false,false,false,false,false,false,false,false,false];
 		var thursdaySele = [false,false,false,false,false,false,false,false,false];
 		var fridaySele = [false,false,false,false,false,false,false,false,false];
-		//var duration = [][];
+		var durCount = 0;
+		var submitReqArray = [[],[]];
 		
 
 		
@@ -32,6 +33,7 @@
         $(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrRoomsList()});
         $(document).ready(function(){popModulesList(userDepartmentID)});
+		
         
         //FUNCTIONS --------------------------------------------------//
         function wrInputTable(){
@@ -88,6 +90,7 @@
 					if (mondaySele[periodSele]==true)
 						{mondaySele[periodSele]=false;}
 					else{mondaySele[periodSele]=true;}
+					consecPeriods(mondaySele);
 				}
 				break;
 				case 2:
@@ -95,6 +98,7 @@
 					if (tuesdaySele[periodSele]==true)
 						{tuesdaySele[periodSele]=false;}
 					else{tuesdaySele[periodSele]=true;}
+					consecPeriods(tuesdaySele);
 				}
 				break;
 				case 3:
@@ -102,6 +106,7 @@
 					if (wednesdaySele[periodSele]==true)
 						{wednesdaySele[periodSele]=false;}
 					else{wednesdaySele[periodSele]=true;}
+					consecPeriods(wednesdaySele);
 				}
 				break;
 				case 4:
@@ -109,36 +114,45 @@
 					if (thursdaySele[periodSele]==true)
 						{thursdaySele[periodSele]=false;}
 					else{thursdaySele[periodSele]=true;}
+					consecPeriods(thursdaySele);
 				}
 				break;
 				case 5:
 				{
-					if (frindaySele[periodSele]==true)
+					if (fridaySele[periodSele]==true)
 						{fridaySele[periodSele]=false;}
 					else{fridaySele[periodSele]=true;}
+					consecPeriods(fridaySele);
 				}
 				break;
 			}
-			consecPeriods(mondaySele);
-			alert (durCount);
+			alert(durCount);
+			
 			alert(mondaySele.join(".") + "\n" + tuesdaySele.join(".") + "\n" + wednesdaySele.join(".") + "\n" + thursdaySele.join(".") + "\n" + fridaySele.join("."));
         }
 		function consecPeriods(array)
 		{
-			var durCount = 1;
-			
+			durCount = 1
 			for(var i = 0;i<9;i++)
-			{.
-				if (i<9){
-					if(array[i]==true && array[i+1]==true){
-						durCount = durCount+1;
-					}
-					else if(array[i]==true && array[i+1]==false){
-						
-					}
+			{
+				if(array[i]==true && array[i+1]==true){
+					durCount = durCount+1
+					
 				}
 			}
 		}
+		
+		/*function test() //Delete this
+		{
+			var array = [];
+			var subarray = ["Monday",2,3];
+			var subarray2 = ["Tuesday",5,6];
+			array[array.length]=(subarray);
+			array[array.length]=(subarray2);
+			alert(array);
+			alert(array[0][2] + array[0][1])
+		
+		}*/
 		
         //-------------------------------------//
         function loadDefaultWeeks(){
