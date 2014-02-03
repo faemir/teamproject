@@ -17,18 +17,34 @@
         var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
         var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 		//Selected periods from table - false = not selected.
+		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
 		var tuesdaySele = [false,false,false,false,false,false,false,false,false];
 		var wednesdaySele = [false,false,false,false,false,false,false,false,false];
 		var thursdaySele = [false,false,false,false,false,false,false,false,false];
 		var fridaySele = [false,false,false,false,false,false,false,false,false];
-		var durCount = 0;
-		var submitReqArray = [[],[]];
-		
-
+		var DPTArray = [];	//storing day, period, duration
+			
+		//............................countdown timer
+		var round = new Date();
+		round = new Date();
+		round.setMonth(4);
+		round.setDate(10);
 		
         //ONLOAD FUNCTIONS -----------------------------------------//
-        
+			/////////// shitty countdoen timer
+				var count=30;
+				var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
+				function timer()
+				{
+				  count=count-1;
+				  if (count <= 0)
+				  {
+					 clearInterval(counter);
+					 return;
+				  }
+				  document.getElementById("timer").innerHTML=count + " secs";
+				}
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrRoomsList()});
@@ -71,8 +87,7 @@
         }
         
         function tableSelect(gridRef){
-            var daySele = 0; 
-			var periodSele =0;
+            
             //2-D array to hold boolean value for any field currently pressed.
             
             //checker searches 2-d array to see if a previous gridref has been clicked.
@@ -81,16 +96,17 @@
             //Else erase previous grid ref boolean and write new gridref boolean (so only one true value in array
 
             $("#" + gridRef).toggleClass("gridClicked");
-			daySele = parseInt(gridRef.substring(0,1));
-			periodSele = parseInt(gridRef.substring(1,gridRef.length)) -1;
-			switch (daySele)
-			{
+			TFTable(gridRef)
+        }	
+		function TFTable(gridRef){
+			var daySele = parseInt(gridRef.substring(0,1));
+			var periodSele = parseInt(gridRef.substring(1,gridRef.length)) -1;
+			switch (daySele){
 				case 1:
 				{
 					if (mondaySele[periodSele]==true)
 						{mondaySele[periodSele]=false;}
 					else{mondaySele[periodSele]=true;}
-					consecPeriods(mondaySele);
 				}
 				break;
 				case 2:
@@ -98,7 +114,6 @@
 					if (tuesdaySele[periodSele]==true)
 						{tuesdaySele[periodSele]=false;}
 					else{tuesdaySele[periodSele]=true;}
-					consecPeriods(tuesdaySele);
 				}
 				break;
 				case 3:
@@ -106,7 +121,6 @@
 					if (wednesdaySele[periodSele]==true)
 						{wednesdaySele[periodSele]=false;}
 					else{wednesdaySele[periodSele]=true;}
-					consecPeriods(wednesdaySele);
 				}
 				break;
 				case 4:
@@ -114,7 +128,6 @@
 					if (thursdaySele[periodSele]==true)
 						{thursdaySele[periodSele]=false;}
 					else{thursdaySele[periodSele]=true;}
-					consecPeriods(thursdaySele);
 				}
 				break;
 				case 5:
@@ -122,24 +135,36 @@
 					if (fridaySele[periodSele]==true)
 						{fridaySele[periodSele]=false;}
 					else{fridaySele[periodSele]=true;}
-					consecPeriods(fridaySele);
 				}
 				break;
 			}
-			alert(durCount);
+		}
+		function timetableGetter(){
+			timetableCollector(mondaySele,"Monday");
+			timetableCollector(tuesdaySele,"Tuesday");
+			timetableCollector(wednesdaySele,"Wednesday");
+			timetableCollector(thursdaySele,"Thursday");
+			timetableCollector(fridaySele,"Friday");
+		}
+		function timetableCollector(dayArray,day){
+		
+			for(i=0;i<dayArray.length;i++){
 			
-			alert(mondaySele.join(".") + "\n" + tuesdaySele.join(".") + "\n" + wednesdaySele.join(".") + "\n" + thursdaySele.join(".") + "\n" + fridaySele.join("."));
-        }
-		function consecPeriods(array)
-		{
-			durCount = 1
-			for(var i = 0;i<9;i++)
-			{
-				if(array[i]==true && array[i+1]==true){
-					durCount = durCount+1
-					
+				if(i==0){
+					if(dayArray[0]==true){
+						var subArray = [day,i+1,1];
+						DPTArray[DPTArray.length] = subArray;	
+					}
+				}
+				else if((dayArray[i-1]==false) && (dayArray[i]==true)){
+					var subArray = [day,i+1,1];
+					DPTArray[DPTArray.length] = subArray;
+				}
+				else if((dayArray[i-1]==true)&&(dayArray[i]==true)){
+					DPTArray[DPTArray.length-1][2]++; 
 				}
 			}
+			alert(DPTArray.join("//"));
 		}
 		
 		/*function test() //Delete this
@@ -255,12 +280,25 @@
                 for(var i=0;i<JSON.length;i++){
                     codeStr += "<option value='" + JSON[i].moduletitle + "'>" + JSON[i].moduletitle + "</option>"
                 }
-                codeStr += "</select>";
-                
+                codeStr += "</select><br>";
+                codeStr += "<input type='checkbox' id='QR'>Quality Room<br>";
+                codeStr += "<input type='checkbox' id='WC'>Wheelchair<br>";
+                codeStr += "<input type='checkbox' id='DP'>Data Projector<br>";
+                codeStr += "<input type='checkbox' id='DP2'>Data Projector * 2<br>";
+                codeStr += "<input type='checkbox' id='Vi'>Visualiser<br>";
+                codeStr += "<input type='checkbox' id='VDB'>Video/DVD/BluRay<br>";
+                codeStr += "<input type='checkbox' id='CP'>Computer<br>";
+                codeStr += "<input type='checkbox' id='WB'>Whiteboard<br>";
+                codeStr += "<input type='checkbox' id='CB'>Chalkboard<br>";
                 $("#basicBox").append(codeStr);
+				
+				
+				//spec req
+				
             }, 'json');
 
         }
+
         </script>
     </head>
     
@@ -273,6 +311,7 @@
                 <li><a href="helpPage.htm">Help</a></li>
                 <li><a href="accountPage.htm">Username(pref)</a></li>
                 <li><a href="login.htm">Logout</a></li>
+				<li><span id="timer"></span></li>
             </ul>
         </div>
         <div id="pagewrap">
@@ -308,7 +347,7 @@
             <div class="contentBox" id="formControlsBox">
 				<form>
                     <input type="button" value="Submit" onclick="selectedPeriods()">  <!--changed to button from submit  for testing purposes-->
-                    <input type="button" value="Submit & Add Another">
+                    <input type="button" value="Submit & Add Another" onclick="timetableGetter()">
                     <input type="button" value="Clear Form">
                 </form>
             </div>
