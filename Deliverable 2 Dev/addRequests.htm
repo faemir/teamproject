@@ -76,7 +76,7 @@
 		//---------------------------------------------------------------------------------------------//
         //onclick for table buttons
         function tableSelect(gridRef){
-            
+            alert("$(# "+ gridRef+").toggleClass('gridClicked')");
             //2-D array to hold boolean value for any field currently pressed.         
             //checker searches 2-d array to see if a previous gridref has been clicked.
             //if new grid ref is to right of previous, allow connection of two (i.e. 2hr slot) - (2 true values in array)
@@ -252,6 +252,18 @@
 			//cals crazy shit
 			//repopulate room list
 		}
+		//-------validation
+		function CapacityChange(){
+			var capStr = document.getElementById("CAP").value;
+			var capTemp = "";
+			for(var i = 0; i < capStr.length; i++){
+				if (capStr.charCodeAt(i) >= 48 && capStr.charCodeAt(i) <= 57){
+					capTemp = capTemp + capStr.charAt(i);
+				}
+			}
+			document.getElementById("CAP").value = parseInt(capTemp);
+			GetRoom();
+		}
         //------------------------------------------------------------------------------------------------//
         function popModulesList(userDepartmentID){
             //check if lists already loaded
@@ -286,7 +298,7 @@
                     codeStr += "<input type='checkbox' id='CMP' onchange='GetRoom()'>Computer<br>";
                     codeStr += "<input type='checkbox' id='WHB' onchange='GetRoom()'>Whiteboard<br>";
                     codeStr += "<input type='checkbox' id='CHB' onchange='GetRoom()'>Chalkboard<br>";
-					codeStr +="<input type='textbox' id='CAP' placeholder='Capacity' onchange='GetRoom()'><br>";
+					codeStr +="Capacity:<input type='textbox' id='CAP' value='50' onchange='CapacityChange()'><br>";
                     $("#basicBox").append(codeStr);
 
                 }, 'json');
