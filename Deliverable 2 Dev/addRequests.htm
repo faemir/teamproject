@@ -17,6 +17,7 @@
         var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
         var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         var alreadyLoaded = false;
+		var roomsQueue = [];
 		//Selected periods from table - false = not selected.
 		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
@@ -32,7 +33,7 @@
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrRoomsList()});
-     //$(document).ready(function(){popModulesList(userDepartmentID)});
+		//$(document).ready(function(){popModulesList(userDepartmentID)});
 		
         
         //FUNCTIONS --------------------------------------------------//
@@ -70,6 +71,9 @@
             $("#inputTableBox").append(codeStr);
         }
         
+		
+		
+		//---------------------------------------------------------------------------------------------//
         //onclick for table buttons
         function tableSelect(gridRef){
             
@@ -195,7 +199,7 @@
             if($("#wk15").is(':checked')){wksArray.push(15);}
             return wksArray;    
         }
-        		
+        //----------------------------------------------------------------------------------------------//		
 		//gets and populates rooms list
         function wrRoomsList(){
             $.ajax({
@@ -205,18 +209,50 @@
                 success: function(JSON){
                     
                     var codeStr = "";
-                    codeStr +="<ul id='roomsList'>";
+                    codeStr +="<div id='roomsList'>";
                     for(var i =0;i<JSON.length;i++){
-                        codeStr += "<li class='' onclick=''>" + JSON[i].roomid + " | " + JSON[i].building + "</li>";
+                        codeStr += "<input type='checkbox' id='"+i+"' class='' onclick='roomClick(this.id)'>" + JSON[i].roomid + "</input></br>";
                     }
-                    codeStr +="</ul>";
+                    codeStr +="</div>";
                 
                     $("#roomSelectorBox").append(codeStr);
                 }  
             });
         }
-        
-        
+		function roomClick(currentBox){
+		
+			if (roomsQueue.length <= 4){
+				roomsQueue[roomsQueue.length] = currentBox;
+			}else{
+				document.getElementById(roomsQueue[0]).checked = false;
+				roomsQueue[0]=roomsQueue[1];
+				roomsQueue[1]=roomsQueue[2];
+				roomsQueue[2]=roomsQueue[3];
+				roomsQueue[3]=roomsQueue[4];
+				roomsQueue[4] = currentBox;
+			}
+		}
+		//-------------Change Room list accordingly
+		
+		function GetRoom(){
+			var specBoolArray = [0,0,0,0,0,0,0,0,0,0];
+			if (document.getElementById("QUR").checked == true){specBoolArray[0] = 1;}
+			if (document.getElementById("WHC").checked == true){specBoolArray[1] = 1;}
+			if (document.getElementById("DP1").checked == true){specBoolArray[2] = 1;}
+			if (document.getElementById("DP2").checked == true){specBoolArray[3] = 1;}
+			if (document.getElementById("VIS").checked == true){specBoolArray[4] = 1;}
+			if (document.getElementById("VDB").checked == true){specBoolArray[5] = 1;}
+			if (document.getElementById("CMP").checked == true){specBoolArray[6] = 1;}
+			if (document.getElementById("WHB").checked == true){specBoolArray[7] = 1;}
+			if (document.getElementById("CHB").checked == true){specBoolArray[8] = 1;}
+			specBoolArray[9]=document.getElementById("CAP").value;
+			alert(specBoolArray);
+			roomsQueue = [];
+			$("roomsList").empty();// empties current rooms list
+			//cals crazy shit
+			//repopulate room list
+		}
+        //------------------------------------------------------------------------------------------------//
         function popModulesList(userDepartmentID){
             //check if lists already loaded
             if(alreadyLoaded == false){
@@ -241,27 +277,30 @@
                     $("#modCodeSelect").append(codeOpt);
                     
                     //spec requirements populator
-                    codeStr += "<input type='checkbox' id='QR'>Quality Room<br>";
-                    codeStr += "<input type='checkbox' id='WC'>Wheelchair<br>";
-                    codeStr += "<input type='checkbox' id='DP'>Data Projector<br>";
-                    codeStr += "<input type='checkbox' id='DP2'>Data Projector * 2<br>";
-                    codeStr += "<input type='checkbox' id='Vi'>Visualiser<br>";
-                    codeStr += "<input type='checkbox' id='VDB'>Video/DVD/BluRay<br>";
-                    codeStr += "<input type='checkbox' id='CP'>Computer<br>";
-                    codeStr += "<input type='checkbox' id='WB'>Whiteboard<br>";
-                    codeStr += "<input type='checkbox' id='CB'>Chalkboard<br>";
+                    codeStr += "<input type='checkbox' id='QUR' onchange='GetRoom()'>Quality Room<br>";
+                    codeStr += "<input type='checkbox' id='WHC' onchange='GetRoom()'>Wheelchair<br>";
+                    codeStr += "<input type='checkbox' id='DP1' onchange='GetRoom()'>Data Projector<br>";
+                    codeStr += "<input type='checkbox' id='DP2' onchange='GetRoom()'>Data Projector * 2<br>";
+                    codeStr += "<input type='checkbox' id='VIS' onchange='GetRoom()'>Visualiser<br>";
+                    codeStr += "<input type='checkbox' id='VDB' onchange='GetRoom()'>Video/DVD/BluRay<br>";
+                    codeStr += "<input type='checkbox' id='CMP' onchange='GetRoom()'>Computer<br>";
+                    codeStr += "<input type='checkbox' id='WHB' onchange='GetRoom()'>Whiteboard<br>";
+                    codeStr += "<input type='checkbox' id='CHB' onchange='GetRoom()'>Chalkboard<br>";
+					codeStr +="<input type='textbox' id='CAP' placeholder='Capacity' onchange='GetRoom()'><br>";
                     $("#basicBox").append(codeStr);
 
                 }, 'json');
                 alreadyLoaded = true;
             }
         }
+		
+		//-------------makes the mod code = mod title
 		function ModuleSelector(modList){
 			var modIndex = modList.selectedIndex;
 			document.getElementById("modTitleSelect").selectedIndex=modIndex;
 			document.getElementById("modCodeSelect").selectedIndex=modIndex;
 		}
-
+		//-------------
         </script>
     </head>
     
