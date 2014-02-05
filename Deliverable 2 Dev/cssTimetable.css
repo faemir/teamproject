@@ -286,7 +286,7 @@
 
     /*** Input Table ***/
     
-    #inputTable
+     #inputTable
         {
         border: 1px solid black;
         width: 100%;
@@ -300,11 +300,11 @@
         border: 1px solid black;
         
     }
-
-    #daysHeader, #daysChildren
+ 
+/*     #daysHeader, #daysChildren
         {
         
-    }
+    } */
     
     .grid
         {
@@ -312,18 +312,18 @@
     }
     .grid:hover
         {
-        background-color:#f8f8f8 !important;
+        background-color:#f8f8f8;
     }
     
     .gridClicked
         {
-        background-color:#9B30FF !important;
-        border: 2px solid black !important;
+        background-color:#9B30FF;
+        border: 2px solid black;
     }
     
     .gridClicked:hover
         {
-        background-color:#BF3EFF !important;
+        background-color:#BF3EFF;
     }
     
             
@@ -336,8 +336,8 @@
     .wkInput + label, #wkLabel    
         {
         display:inline-block;
-        min-height:30px;
-        min-width:20px;
+        min-height:25px;
+        min-width:8px;
 		padding: 0px 15px;
         padding-top:5px;
 		margin: 0;
@@ -379,5 +379,8 @@
 		box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
 		background-color:#e0e0e0;
     }
-
-        
+	#SemWekTab td
+	{
+		padding: 0px 5px;
+	}
+  

@@ -68,9 +68,28 @@
             
             codeStr += "</table>";
             //insert into inputTableBox
+			codeStr += "<input type='button' value='Clear Timetable' onclick='ClrTab()'>"
             $("#inputTableBox").append(codeStr);
         }
-        
+        function ClrTab(){
+			for(var k = 1;k<=pOrTChildren.length;k++){
+				if (mondaySele[k-1]==true)
+					{$("#t1"+ k).toggleClass("gridClicked");}
+				if (tuesdaySele[k-1]==true)
+					{$("#t2"+ k).toggleClass("gridClicked");}
+				if (wednesdaySele[k-1]==true)
+					{$("#t3"+ k).toggleClass("gridClicked");}
+				if (thursdaySele[k-1]==true)
+					{$("#t4"+ k).toggleClass("gridClicked");}
+				if (fridaySele[k-1]==true)
+					{$("#t5"+ k).toggleClass("gridClicked");}
+			}
+			mondaySele = [false,false,false,false,false,false,false,false,false];
+			tuesdaySele = [false,false,false,false,false,false,false,false,false];
+			wednesdaySele = [false,false,false,false,false,false,false,false,false];
+			thursdaySele = [false,false,false,false,false,false,false,false,false];
+			fridaySele = [false,false,false,false,false,false,false,false,false];
+		}
 		
 		
 		//---------------------------------------------------------------------------------------------//
@@ -162,7 +181,7 @@
 		}
 		
 
-        function loadDefaultWeeks(){
+        function loadDefaultWeeks(){//will change...
             $("#wk1").prop('checked',true);
             $("#wk2").prop('checked',true);
             $("#wk3").prop('checked',true);
@@ -213,10 +232,10 @@
                     var codeStr = "";
                     codeStr +="<div id='roomsList'>";
                     for(var i =0;i<JSON.length;i++){
-                        codeStr += "<input type='checkbox' id='r"+i+"' class='roomInput' onclick='roomClick(this.id)'><label for='r"+i+"'>" + JSON[i].roomid + "</label></br>";
+                        codeStr += "<input type='checkbox' id='r"+i+"' class=' ' onclick='roomClick(this.id)'><label for='r"+i+"'>" + JSON[i].roomid + "</label></br>";
                     }
                     codeStr +="</div>";
-                
+					codeStr +="<input type='button' value='Clear' onclick='ClrRoom()'>"; //clearRooms
                     $("#roomSelectorBox").append(codeStr);
                 }  
             });
@@ -234,6 +253,12 @@
 				roomsQueue[4] = currentBox;
 			}
 		}
+		function ClrRoom(){
+			for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
+					document.getElementById("r"+roomsQueue[j]).checked = false;
+			}
+			roomsQueue = [];
+		}
 		//-------------Change Room list accordingly
 		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";// declares SQL for room
 		function GetRoom(){
@@ -249,12 +274,7 @@
 			if (document.getElementById("CHB").checked == true){specBoolArray[8] = 1;}
 			specBoolArray[9]=document.getElementById("CAP").value;
 			specBoolArray[10]=document.getElementById("PRK").value;
-			
-			//cals crazy shit
-			for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
-				document.getElementById("r"+roomsQueue[j]).checked = false;
-			}
-			roomsQueue = [];
+			ClrRoom();
 			$("roomsList").empty();// empties current rooms list
 			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails WHERE ";
 			//SQLRoom += "(qualityroom = " + specBoolArray[0] + ") AND "; 
@@ -268,14 +288,7 @@
 			if(specBoolArray[8]==1){SQLRoom += "(chalkboard = " + specBoolArray[8]+ ") AND "; }
 			SQLRoom += "(capacity >= " + specBoolArray[9] + ")";
 			if (specBoolArray[10] != "ANY"){ SQLRoom += " AND (location = '" + specBoolArray[10] + "')";}
-			
-			alert(SQLRoom);
-			//repopulate room list
-			
-			wrRoomsList();
-			
-			
-			
+			wrRoomsList();	
 		}
 		//-------validation
 		function CapacityChange(){
@@ -323,8 +336,13 @@
                     codeStr += "<input type='checkbox' id='CMP' onchange='GetRoom()'>Computer<br>";
                     codeStr += "<input type='checkbox' id='WHB' onchange='GetRoom()'>Whiteboard<br>";
                     codeStr += "<input type='checkbox' id='CHB' onchange='GetRoom()'>Chalkboard<br>";
+					codeStr += "<input type='checkbox' id='NER' onchange='GetRoom()'>Near Previous Room<br>";
 					codeStr +="Capacity:<input type='textbox' id='CAP' value='50' onchange='CapacityChange()'><br>";
-					codeStr +="Park:<select id='PRK' onchange='GetRoom()'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select>";
+					codeStr +="Park:<select id='PRK' onchange='GetRoom()'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select><br>";
+					codeStr +="Other Requirements:<input type='textbox' id='ORE' placeholder='Type here...'><br>";
+					codeStr +="Priority: ";
+					codeStr +="<input type='radio' class='' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
+					codeStr +="<input type='radio' class='' id='PRN' name='Priority' ><label for='PRN'>No</label>";
                     $("#basicBox").append(codeStr);
 
                 }, 'json');
@@ -365,22 +383,35 @@
             
             <div class="contentBox" id="inputWeeksBox">
                 <!-- unsure if css is css3  -->
-                <label id="wkLabel">Weeks</label></td>
-                <input type="checkbox" class="wkInput" id="wk1" ><label for="wk1">1</label>
-                <input type="checkbox" class="wkInput" id="wk2" ><label for="wk2">2</label>
-                <input type="checkbox" class="wkInput" id="wk3" ><label for="wk3">3</label>
-                <input type="checkbox" class="wkInput" id="wk4" ><label for="wk4">4</label>
-                <input type="checkbox" class="wkInput" id="wk5" ><label for="wk5">5</label>
-                <input type="checkbox" class="wkInput" id="wk6" ><label for="wk6">6</label>
-                <input type="checkbox" class="wkInput" id="wk7" ><label for="wk7">7</label>
-                <input type="checkbox" class="wkInput" id="wk8" ><label for="wk8">8</label>
-                <input type="checkbox" class="wkInput" id="wk9" ><label for="wk9">9</label>
-                <input type="checkbox" class="wkInput" id="wk10" ><label for="wk10">10</label>
-                <input type="checkbox" class="wkInput" id="wk11" ><label for="wk11">11</label>
-                <input type="checkbox" class="wkInput" id="wk12" ><label for="wk12">12</label>
-                <input type="checkbox" class="wkInput" id="wk13"><label for="wk13">13</label>
-                <input type="checkbox" class="wkInput" id="wk14"><label for="wk14">14</label>
-                <input type="checkbox" class="wkInput" id="wk15"><label for="wk15">15</label>
+				<center>
+					<table id="SemWekTab">
+						<tr>
+							<td>
+								<label id="wkLabel">Semester</label>
+								<input type="radio" class="wkInput" id="sem1" name="semester" ><label for="sem1">1</label>
+								<input type="radio" class="wkInput" id="sem2" name="semester" ><label for="sem2">2</label>
+							</td>
+							<td>
+								<label id="wkLabel">Weeks</label>
+								<input type="checkbox" class="wkInput" id="wk1" ><label for="wk1">1</label>
+								<input type="checkbox" class="wkInput" id="wk2" ><label for="wk2">2</label>
+								<input type="checkbox" class="wkInput" id="wk3" ><label for="wk3">3</label>
+								<input type="checkbox" class="wkInput" id="wk4" ><label for="wk4">4</label>
+								<input type="checkbox" class="wkInput" id="wk5" ><label for="wk5">5</label>
+								<input type="checkbox" class="wkInput" id="wk6" ><label for="wk6">6</label>
+								<input type="checkbox" class="wkInput" id="wk7" ><label for="wk7">7</label>
+								<input type="checkbox" class="wkInput" id="wk8" ><label for="wk8">8</label>
+								<input type="checkbox" class="wkInput" id="wk9" ><label for="wk9">9</label>
+								<input type="checkbox" class="wkInput" id="wk10" ><label for="wk10">10</label>
+								<input type="checkbox" class="wkInput" id="wk11" ><label for="wk11">11</label>
+								<input type="checkbox" class="wkInput" id="wk12" ><label for="wk12">12</label>
+								<input type="checkbox" class="wkInput" id="wk13"><label for="wk13">13</label>
+								<input type="checkbox" class="wkInput" id="wk14"><label for="wk14">14</label>
+								<input type="checkbox" class="wkInput" id="wk15"><label for="wk15">15</label>
+							</td>
+						</tr>
+					</table>
+				</center>
             </div>
             
             <div class="contentBox" id="inputTableBox">
