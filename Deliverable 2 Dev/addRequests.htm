@@ -213,7 +213,7 @@
                     var codeStr = "";
                     codeStr +="<div id='roomsList'>";
                     for(var i =0;i<JSON.length;i++){
-                        codeStr += "<input type='checkbox' id='r"+i+"' class='' onclick='roomClick(this.id)'>" + JSON[i].roomid + "</input></br>";
+                        codeStr += "<input type='checkbox' id='r"+i+"' class='roomInput' onclick='roomClick(this.id)'><label for='r"+i+"'>" + JSON[i].roomid + "</label></br>";
                     }
                     codeStr +="</div>";
                 
