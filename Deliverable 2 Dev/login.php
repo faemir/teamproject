@@ -14,7 +14,7 @@ session_start();
             <p>Welcome to LU Timetabling System</p>
             <img alt="Home" src="LU-mark-rgb.png">
 
-            <form method="POST">
+            <form action="viewRequests.htm" method="POST">
                 <table align="center">
                     <tr>
                         <td><input type="text" placeholder="username" name="user_input"></td>
@@ -23,14 +23,7 @@ session_start();
                         <td><input type="password" placeholder="password" name="pass_input"></td>
                     </tr>
                     <tr>
-                        <td id="submit"><input type="submit" name="submit" value="Submit"></td>
-
-                        <script type="text/javascript">
-                            document.getElementById("submit").onclick = function () {
-                                location.href = "viewRequests.htm";
-                            };
-                        </script>
-
+                        <td><input type="submit" name="submit" value="Submit"></td>
                     </tr>
                     <tr>
                         <td><a href="#">Forgot Password?</a></td>
