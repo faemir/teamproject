@@ -1,5 +1,8 @@
 <?php
-session_start();
+    ini_set("session.use_cookies",0);
+    ini_set("session.use_only_cookies",0);
+    ini_set("session.use_trans_sid",1);
+    session_start();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -14,7 +17,7 @@ session_start();
             <p>Welcome to LU Timetabling System</p>
             <img alt="Home" src="LU-mark-rgb.png">
 
-            <form action="viewRequests.htm" method="POST">
+            <form action="viewRequests.htm?<?php echo htmlspecialchars(SID); ?>" method="POST">
                 <table align="center">
                     <tr>
                         <td><input type="text" placeholder="username" name="user_input"></td>
@@ -32,13 +35,15 @@ session_start();
             </form>
         </div>
         <?php
+
             if (isset($_POST['submit'])){
                 $_SESSION['username']=$_POST['user_input'];
                 $_SESSION['password']=$_POST['pass_input'];
             }
             echo "debug: ";
             echo "username=". $_SESSION['username']. " ";
-            echo "password=". $_SESSION['password'];
+            echo "password=". $_SESSION['password']. " ";
+            echo "SID= ". session_id();
         ?>
     </body>
 </html>
