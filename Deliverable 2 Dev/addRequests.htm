@@ -263,7 +263,7 @@
 				}
 				roomsQueue.length = roomsQueue.length-1;
 			}
-			alert(roomsQueue);
+			//alert(roomsQueue);
 		}
 		function ClrRoom(){
 			for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
@@ -277,7 +277,14 @@
 			var specBoolArray = [0,0,0,0,0,0,0,0,0,0,0];
 			if (document.getElementById("QUR").checked == true){specBoolArray[0] = 1;}
 			if (document.getElementById("WHC").checked == true){specBoolArray[1] = 1;}
-			if (document.getElementById("DP1").checked == true){specBoolArray[2] = 1;}
+			if (document.getElementById("DP1").checked == true){
+				specBoolArray[2] = 1;
+				document.getElementById("DP2").disabled = false;
+			}else{
+				document.getElementById("DP2").disabled = true;
+				document.getElementById("DP2").checked = false;
+				specBoolArray[3] = 0;
+			}
 			if (document.getElementById("DP2").checked == true){specBoolArray[3] = 1;}
 			if (document.getElementById("VIS").checked == true){specBoolArray[4] = 1;}
 			if (document.getElementById("VDB").checked == true){specBoolArray[5] = 1;}
@@ -342,7 +349,7 @@
                     codeStr += "<input type='checkbox' id='QUR' onchange='GetRoom()'>Quality Room<br>";
                     codeStr += "<input type='checkbox' id='WHC' onchange='GetRoom()'>Wheelchair<br>";
                     codeStr += "<input type='checkbox' id='DP1' onchange='GetRoom()'>Data Projector<br>";
-                    codeStr += "<input type='checkbox' id='DP2' onchange='GetRoom()'>Data Projector * 2<br>";
+                    codeStr += "<input type='checkbox' id='DP2' disabled='true' onchange='GetRoom()'>Data Projector * 2<br>";
                     codeStr += "<input type='checkbox' id='VIS' onchange='GetRoom()'>Visualiser<br>";
                     codeStr += "<input type='checkbox' id='VDB' onchange='GetRoom()'>Video/DVD/BluRay<br>";
                     codeStr += "<input type='checkbox' id='CMP' onchange='GetRoom()'>Computer<br>";
