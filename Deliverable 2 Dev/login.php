@@ -29,12 +29,8 @@
                         if (isset($_POST['submit'])){
                             $_SESSION['username']=$_POST['user_input'];
                             $_SESSION['password']=$_POST['pass_input'];
-                            header("Location: viewRequests.htm?<?php echo htmlspecialchars(SID); ?>'");
+                            header("Location: viewRequests.php?". SID);
                         }
-                        echo "debug: ";
-                        echo "username=". $_SESSION['username'];
-                        echo " password=". $_SESSION['password'];
-                        echo " ID= ". session_id();
                     ?>
                     <tr>
                         <td><input type="submit" name="submit" value="Submit"></td>
