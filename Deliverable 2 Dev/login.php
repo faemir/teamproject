@@ -17,7 +17,7 @@
             <p>Welcome to LU Timetabling System</p>
             <img alt="Home" src="LU-mark-rgb.png">
 
-            <form action="viewRequests.htm?<?php echo htmlspecialchars(SID); ?>" method="POST">
+            <form action="" method="POST">
                 <table align="center">
                     <tr>
                         <td><input type="text" placeholder="username" name="user_input"></td>
@@ -25,6 +25,17 @@
                     <tr>
                         <td><input type="password" placeholder="password" name="pass_input"></td>
                     </tr>
+                    <?php
+                        if (isset($_POST['submit'])){
+                            $_SESSION['username']=$_POST['user_input'];
+                            $_SESSION['password']=$_POST['pass_input'];
+                            header("Location: viewRequests.htm?<?php echo htmlspecialchars(SID); ?>'");
+                        }
+                        echo "debug: ";
+                        echo "username=". $_SESSION['username'];
+                        echo " password=". $_SESSION['password'];
+                        echo " ID= ". session_id();
+                    ?>
                     <tr>
                         <td><input type="submit" name="submit" value="Submit"></td>
                     </tr>
@@ -34,16 +45,6 @@
                 </table>
             </form>
         </div>
-        <?php
 
-            if (isset($_POST['submit'])){
-                $_SESSION['username']=$_POST['user_input'];
-                $_SESSION['password']=$_POST['pass_input'];
-            }
-            echo "debug: ";
-            echo "username=". $_SESSION['username']. " ";
-            echo "password=". $_SESSION['password']. " ";
-            echo "SID= ". session_id();
-        ?>
     </body>
 </html>
