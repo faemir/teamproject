@@ -1,15 +1,21 @@
+<?php
+    ini_set("session.use_cookies",0);
+    ini_set("session.use_only_cookies",0);
+    ini_set("session.use_trans_sid",1);
+    session_start();
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel='stylesheet' type='text/css' href='cssTimetable.css'>
         <title>View Current Requests</title>
-        
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
-        //onload 
+        //onload
         $(document).ready(function(){wrRequestsTable();});
-        
+
         function wrRequestsTable(){
             //writes and populates Requests table. needs preferences input
             $.ajax({
@@ -17,7 +23,7 @@
                 dataType: "json",
                 url: "GETallRequests.php",
                 success: function(JSON){
-                    
+
                     var codeStr = "";
                     codeStr += '<table id="RequestsTable">';
                     codeStr += '<tr>';
@@ -29,7 +35,7 @@
                     codeStr += '    <thonclick="sortTable(4)">Details</th>';
                     codeStr += '    <thonclick="sortTable(5)">Status</th>';
                     codeStr += '</tr>';
-                    
+
                     for(var i=0;i<JSON.length;i++){
                         codeStr += '<tr>';
                         codeStr += '    	<td>' + JSON[i].modulecode + '</td>';
@@ -41,7 +47,7 @@
                         codeStr += '	</tr>';
                     }
                     codeStr += "</table">
-                    
+
                     //clears and writes table into container
                     // UPDATE: empty function produced 'false' onscreen when already empty
                     //$("#tableBox").empty();
@@ -49,16 +55,16 @@
                 }
             });
         }
-        
+
         function showDetails(requestID){
-            
+
             $.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
                 alert("test!!\n requestsID: " + JSON[0].requestid + "\n" + "Duration: " + JSON[0].duration + "\n" + "NO. Students: " + JSON[0].noofstudents + "\n etc....");
             }, 'json');
-				
-        
+
+
         }
-		
+
 		//Sort functions. Asc, Desc alternating. Bubble sort.
 		var way = "1";
 		function sortTable(colnumber){
@@ -133,10 +139,10 @@
 			document.getElementById("tableBox").innerHTML = "";
 			document.getElementById("tableBox").innerHTML = codeStr;
 		}
-		
+
         </script>
     </head>
-     
+
     <body>
         <div id="navwrap">
              <ul id="topnav">
@@ -149,14 +155,14 @@
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="actionsBox"></div>
-            
+
             <div class="contentBox" id="searchBox"></div>
 
             <div class="contentBox" id="roundsBox"></div>
 
-            
+
             <div class="contentBox" id="tableBox"></div>
-            
+
         </div>
     </body>
 </html>
