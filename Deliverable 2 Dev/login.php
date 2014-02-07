@@ -10,6 +10,36 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link href='cssTimetable.css' rel='stylesheet' type='text/css'>
         <title>Team 4 - LU Timetable Login</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            console.log("jsworks");
+            function checkusername(){
+                var auth=false;
+                console.log("clicked");
+
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: "GETauth.php",
+                    success: function(JSON){
+                        console.log("jsonran");
+                        var users = "";
+                        var passes = "";
+                        var userUser = "<?php echo $_SESSION['username']; ?>";
+                        var userPass = "<?php echo $_SESSION['password']; ?>";
+                        for(var i=0;i<JSON.length;i++){
+                            console.log("in the loop");
+                            users = JSON[i].username;
+                            passes = JSON[i].passes;
+                            if (users == userUser && passes == userPass)
+                                auth=true;
+                        }
+                        if (auth == true)
+                            console.log("authyay");
+                    }
+                });
+            }
+        </script>
     </head>
 
     <body>
@@ -29,11 +59,10 @@
                         if (isset($_POST['submit'])){
                             $_SESSION['username']=$_POST['user_input'];
                             $_SESSION['password']=$_POST['pass_input'];
-                            header("Location: viewRequests.php?". SID);
                         }
                     ?>
                     <tr>
-                        <td><input type="submit" name="submit" value="Submit"></td>
+                        <td><input type="submit" id="submit" name="submit" value="Submit" onclick="checkusername();"></td>
                     </tr>
                     <tr>
                         <td><a href="#">Forgot Password?</a></td>
