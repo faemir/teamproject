@@ -8,10 +8,10 @@
         <script type="text/javascript">
 
 		//GLOBALS -------------------------------------------------//
-        
+
         //needs preferences here!!!!
         var userDepartmentID = "CO";
-        
+
 		//pOrT stands for 'Period or Time' - to reflect user preferences
         var pOrTHeader = "Period";
         var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
@@ -25,36 +25,36 @@
 		var thursdaySele = [false,false,false,false,false,false,false,false,false];
 		var fridaySele = [false,false,false,false,false,false,false,false,false];
 		var DPTArray = [];	//storing day, period, duration
-			
-		
+
+
         //ONLOAD FUNCTIONS -----------------------------------------//
-      
+
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrRoomsList()});
      //$(document).ready(function(){popModulesList(userDepartmentID)});
-		
-        
+
+
         //FUNCTIONS --------------------------------------------------//
         function wrInputTable(){
-        
+
 			var codeStr = "";
-			
+
             codeStr += "<table id='inputTable'>";
-            
+
             //headers
             codeStr += "<tr>";
             codeStr += "<th class ='daysHeader' rowspan='2'>Days</th>";
             codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader + "</th>";
             codeStr += "</tr>";
-            
+
             //pOrT children
             codeStr += "<tr>";
             for(var i = 0;i<pOrTChildren.length;i++){
-                codeStr += "<th class ='pOrTChildren'>" + pOrTChildren[i] + "</th>"; 
+                codeStr += "<th class ='pOrTChildren'>" + pOrTChildren[i] + "</th>";
             }
              codeStr += "</tr>";
-            
+
             //days and grid
             for(var j = 1;j<=days.length;j++){
                 codeStr += "<tr>";
@@ -64,24 +64,24 @@
                 }
                 codeStr += "</tr>";
             }
-            
+
             codeStr += "</table>";
             //insert into inputTableBox
             $("#inputTableBox").append(codeStr);
         }
-        
+
         //onclick for table buttons
         function tableSelect(gridRef){
-            
-            //2-D array to hold boolean value for any field currently pressed.         
+
+            //2-D array to hold boolean value for any field currently pressed.
             //checker searches 2-d array to see if a previous gridref has been clicked.
             //if new grid ref is to right of previous, allow connection of two (i.e. 2hr slot) - (2 true values in array)
             //Else erase previous grid ref boolean and write new gridref boolean (so only one true value in array
 
             $("#" + gridRef).toggleClass("gridClicked");
 			TFTable(gridRef)
-        }	
-        
+        }
+
         //toggles boolean value of each square in input table for other functions to use
 		function TFTable(gridRef){
 			var daySele = parseInt(gridRef.substring(0,1));
@@ -124,7 +124,7 @@
 				break;
 			}
 		}
-        
+
         //collect day time and period information for all days
 		function timetableGetter(){
 			timetableCollector(mondaySele,"Monday");
@@ -134,16 +134,16 @@
 			timetableCollector(fridaySele,"Friday");
 			alert(DPTArray.join("//"));
 		}
-        
+
         //collects all day time and period information from input table by day
 		function timetableCollector(dayArray,day){
-		
+
 			for(i=0;i<dayArray.length;i++){
-			
+
 				if(i==0){
 					if(dayArray[0]==true){
 						var subArray = [day,i+1,1];
-						DPTArray[DPTArray.length] = subArray;	
+						DPTArray[DPTArray.length] = subArray;
 					}
 				}
 				else if((dayArray[i-1]==false) && (dayArray[i]==true)){
@@ -151,12 +151,12 @@
 					DPTArray[DPTArray.length] = subArray;
 				}
 				else if((dayArray[i-1]==true)&&(dayArray[i]==true)){
-					DPTArray[DPTArray.length-1][2]++; 
+					DPTArray[DPTArray.length-1][2]++;
 				}
 			}
-			
+
 		}
-		
+
 
         function loadDefaultWeeks(){
             $("#wk1").prop('checked',true);
@@ -175,7 +175,7 @@
             $("#wk14").prop('checked',false);
             $("#wk15").prop('checked',false);
         }
-        
+
         function getWeeksSelectionArray(){
             var wksArray = [];
             if($("#wk1").is(':checked')){wksArray.push(1);}
@@ -193,9 +193,9 @@
             if($("#wk13").is(':checked')){wksArray.push(13);}
             if($("#wk14").is(':checked')){wksArray.push(14);}
             if($("#wk15").is(':checked')){wksArray.push(15);}
-            return wksArray;    
+            return wksArray;
         }
-        		
+
 		//gets and populates rooms list
         function wrRoomsList(){
             $.ajax({
@@ -203,20 +203,20 @@
                 dataType: "json",
                 url: "GETroomsList.php",
                 success: function(JSON){
-                    
+
                     var codeStr = "";
                     codeStr +="<ul id='roomsList'>";
                     for(var i =0;i<JSON.length;i++){
                         codeStr += "<li class='' onclick=''>" + JSON[i].roomid + " | " + JSON[i].building + "</li>";
                     }
                     codeStr +="</ul>";
-                
+
                     $("#roomSelectorBox").append(codeStr);
-                }  
+                }
             });
         }
-        
-        
+
+
         function popModulesList(userDepartmentID){
             //check if lists already loaded
             if(alreadyLoaded == false){
@@ -225,21 +225,21 @@
                     titleOpt = "";
                     codeOpt = "";
                     codeStr ="";
-                    
+
                     //mod title populator
                     for(var i=0;i<JSON.length;i++){
                         titleOpt += "<option value='" + JSON[i].moduletitle + "'>" + JSON[i].moduletitle + "</option>"
                     }
                     $("#modTitleSelect").empty();
                     $("#modTitleSelect").append(titleOpt);
-                    
+
                     //mod code populator
                     for(var i=0;i<JSON.length;i++){
                         codeOpt += "<option value='" + JSON[i].modulecode + "'>" + JSON[i].modulecode + "</option>"
                     }
                     $("#modCodeSelect").empty();
                     $("#modCodeSelect").append(codeOpt);
-                    
+
                     //spec requirements populator
                     codeStr += "<input type='checkbox' id='QR'>Quality Room<br>";
                     codeStr += "<input type='checkbox' id='WC'>Wheelchair<br>";
@@ -264,16 +264,16 @@
 
         </script>
     </head>
-    
-    <body> 
+
+    <body>
         <div id="navwrap">
             <ul id="topnav">
-                <li><a href="viewRequests.htm"><img src="LU-mark-rgb.png" alt="Home"></a></li>
-                <li><a href="addRequests.htm">Add New Requests</a></li>
-                <li><a href="viewTimetable.htm">View Timetable</a></li>
-                <li><a href="helpPage.htm">Help</a></li>
-                <li><a href="accountPage.htm">Username(pref)</a></li>
-                <li><a href="login.htm">Logout</a></li>
+                <li><a href="viewRequests.php"><img src="LU-mark-rgb.png" alt="Home"></a></li>
+                <li><a href="addRequests.php">Add New Requests</a></li>
+                <li><a href="viewTimetable.php">View Timetable</a></li>
+                <li><a href="helpPage.php">Help</a></li>
+                <li><a href="accountPage.php">Username(pref)</a></li>
+                <li><a href="login.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">
@@ -281,11 +281,11 @@
                 <select id="modTitleSelect" name="modTitleSelect" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected>Please Choose Module Title</option></select></br>
                 <select id="modCodeSelect" name="modCodeSelect" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected>Please Choose Module Code</option></select></br>
             </div>
-            
+
             <div class="contentBox" id="roomActionsBox"></div>
-            
+
             <div class="contentBox" id="roomSelectorBox"></div>
-            
+
             <div class="contentBox" id="inputWeeksBox">
                 <!-- unsure if css is css3  -->
                 <label id="wkLabel">Weeks</label></td>
@@ -305,7 +305,7 @@
                 <input type="checkbox" class="wkInput" id="wk14"><label for="wk14">14</label>
                 <input type="checkbox" class="wkInput" id="wk15"><label for="wk15">15</label>
             </div>
-            
+
             <div class="contentBox" id="inputTableBox">
 
 			</div>
