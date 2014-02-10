@@ -33,7 +33,7 @@
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrRoomsList()});
-		//$(document).ready(function(){popModulesList(userDepartmentID)});
+		$(document).ready(function(){popModulesList(userDepartmentID)});
 		
         
         //FUNCTIONS --------------------------------------------------//
@@ -346,22 +346,28 @@
                     $("#modCodeSelect").append(codeOpt);
                     
                     //spec requirements populator
-                    codeStr += "<input type='checkbox' id='QUR' onchange='GetRoom()'>Quality Room<br>";
-                    codeStr += "<input type='checkbox' id='WHC' onchange='GetRoom()'>Wheelchair<br>";
-                    codeStr += "<input type='checkbox' id='DP1' onchange='GetRoom()'>Data Projector<br>";
-                    codeStr += "<input type='checkbox' id='DP2' disabled='true' onchange='GetRoom()'>Data Projector * 2<br>";
-                    codeStr += "<input type='checkbox' id='VIS' onchange='GetRoom()'>Visualiser<br>";
-                    codeStr += "<input type='checkbox' id='VDB' onchange='GetRoom()'>Video/DVD/BluRay<br>";
-                    codeStr += "<input type='checkbox' id='CMP' onchange='GetRoom()'>Computer<br>";
-                    codeStr += "<input type='checkbox' id='WHB' onchange='GetRoom()'>Whiteboard<br>";
-                    codeStr += "<input type='checkbox' id='CHB' onchange='GetRoom()'>Chalkboard<br>";
-					codeStr += "<input type='checkbox' id='NER' onchange='GetRoom()'>Near Previous Room<br>";
-					codeStr +="Capacity:<input type='textbox' id='CAP' value='50' onchange='CapacityChange()'><br>";
-					codeStr +="Park:<select id='PRK' onchange='GetRoom()'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select><br>";
-					codeStr +="Other Requirements:<input type='textbox' id='ORE' placeholder='Type here...'><br>";
-					codeStr +="Priority: ";
-					codeStr +="<input type='radio' class='' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
-					codeStr +="<input type='radio' class='' id='PRN' name='Priority' ><label for='PRN'>No</label>";
+					codeStr += "<table class='modTable'><tr>"
+                    codeStr += "<td><input type='checkbox' class='specReq' id='QUR' onchange='GetRoom()'><label for='QUR'>Quality Room</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='WHC' onchange='GetRoom()'><label for='WHC'>Wheelchair</label></td>";
+                    codeStr += "</tr><tr>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='DP1' onchange='GetRoom()'><label for='DP1'>Data Projector</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='DP2' disabled='true' onchange='GetRoom()'><label for='DP2'>Data Projector * 2</label></td>";
+					codeStr += "</tr><tr>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='VIS' onchange='GetRoom()'><label for='VIS'>Visualiser</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='VDB' onchange='GetRoom()'><label for='VDB'>Video/DVD/BluRay</label></td>";
+					codeStr += "</tr><tr>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='CMP' onchange='GetRoom()'><label for='CMP'>Computer</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='WHB' onchange='GetRoom()'><label for='WHB'>Whiteboard</label></td>";
+					codeStr += "</tr><tr>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='CHB' onchange='GetRoom()'><label for='CHB'>Chalkboard</label></td>";
+					codeStr += "<td><input type='checkbox' class='specReq' id='NER' onchange='GetRoom()'><label for='NER'>Near Previous Room</label></td>";
+					codeStr += "</tr>";
+					codeStr +="<tr><td>Capacity:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onchange='CapacityChange()'></td></tr>";
+					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom()' class='modChooser'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select></td></tr>";
+					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' id='ORE' placeholder='Type here...'></td></tr>";
+					codeStr +="<tr><td>Priority:</td><td>";
+					codeStr +="<input type='radio' class='specReqP' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
+					codeStr +="<input type='radio' class='specReqP' id='PRN' name='Priority' ><label for='PRN'>No</label></td></tr></table>";
                     $("#basicBox").append(codeStr);
 
                 }, 'json');
@@ -392,8 +398,8 @@
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="basicBox">
-                <select id="modTitleSelect" name="modTitleSelect" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected>Please Choose Module Title</option></select></br>
-                <select id="modCodeSelect" name="modCodeSelect" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected>Please Choose Module Code</option></select></br>
+                <select id="modTitleSelect" name="modTitleSelect" class="modChooser" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected></option></select></br>
+                <select id="modCodeSelect" name="modCodeSelect" class="modChooser" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected></option></select></br>
             </div>
             
             <div class="contentBox" id="roomActionsBox"></div>
@@ -406,12 +412,12 @@
 					<table id="SemWekTab">
 						<tr>
 							<td>
-								<label id="wkLabel">Semester</label>
+								<label class="wkInput" id="wkLabel">Semester</label>
 								<input type="radio" class="wkInput" id="sem1" name="semester" ><label for="sem1">1</label>
 								<input type="radio" class="wkInput" id="sem2" name="semester" ><label for="sem2">2</label>
 							</td>
 							<td>
-								<label id="wkLabel">Weeks</label>
+								<label class="wkInput" id="wkLabel">Weeks</label>
 								<input type="checkbox" class="wkInput" id="wk1" ><label for="wk1">1</label>
 								<input type="checkbox" class="wkInput" id="wk2" ><label for="wk2">2</label>
 								<input type="checkbox" class="wkInput" id="wk3" ><label for="wk3">3</label>
