@@ -26,7 +26,7 @@
 		var thursdaySele = [false,false,false,false,false,false,false,false,false];
 		var fridaySele = [false,false,false,false,false,false,false,false,false];
 		var DPTArray = [];	//storing day, period, duration
-			
+		//var 
 		
         //ONLOAD FUNCTIONS -----------------------------------------//
       
@@ -232,7 +232,7 @@
                     var codeStr = "";
                     codeStr +="<div id='roomsList'>";
                     for(var i =0;i<JSON.length;i++){
-                        codeStr += "<input type='checkbox' id='r"+i+"' class=' ' onclick='roomClick(this)'><label for='r"+i+"'>" + JSON[i].roomid + "</label></br>";
+                        codeStr += "<span title= Building: " + JSON[i].building+ "><input type='checkbox' id='r"+i+"' class='roomSele' onclick='roomClick(this)'><label for='r"+i+"'>" + JSON[i].roomid +" : "+ JSON[i].capacity+  "</label></span></br>";
                     }
                     codeStr +="</div>";
 					codeStr +="<input type='button' value='Clear' onclick='ClrRoom()'>"; //clearRooms

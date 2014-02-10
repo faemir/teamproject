@@ -166,8 +166,8 @@
     }
     
     #roomsList{
-        height:260px;
-        width:220px;
+        height:300px;
+        width:100%;
         border:1px solid #fff;
         overflow-y:auto;
     }
@@ -370,7 +370,7 @@
         cursor: pointer;
     }
     
-    .wkInput:checked + label, .specReq:checked + label  ,.specReqP:checked + label
+    .wkInput:checked + label, .specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label
         {
         background-image: none;
 		outline: 0;
@@ -394,11 +394,11 @@
 	}
   /** specReq input **/
 
-    .specReq, .specReqP
+    .specReq, .specReqP, .roomSele
         {
          display:none;
     }
-    .specReq + label ,.specReqP + label
+    .specReq + label ,.specReqP + label,.roomSele + label
         {
         padding-top:5px;
         display:inline-block;
@@ -426,7 +426,12 @@
 		border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
 		border-bottom-color: #b3b3b3;
 	}
-    .specReqP + label
+	.roomSele +label
+	{
+		 min-width:100%;
+	}
+	
+	.specReqP + label
 	{
         min-width:95px;
 	}
