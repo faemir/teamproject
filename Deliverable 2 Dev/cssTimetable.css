@@ -125,7 +125,8 @@
     
     #basicBox ,#roomSelectorBox 
 	{
-        width: 46.6%;
+        min-width: 46.6%;
+		
         float: left;
         padding: 5px 15px;
         background: #f8f8f8;
@@ -339,7 +340,7 @@
         {
         display:inline-block;
         min-height:25px;
-        min-width:196px;
+        min-width:100%;
 		padding-top:5px;
 		font-size: 16px;
 		color: #333;
@@ -419,7 +420,7 @@
 	
 	.specReqP + label
 	{
-        min-width:95px;
+        min-width:110px;
 	}
 	.specReq + label
         {
@@ -434,5 +435,5 @@
 	}
 	.specReqText
 	{
-		min-width:190px;
+		min-width:98%;
 	}
