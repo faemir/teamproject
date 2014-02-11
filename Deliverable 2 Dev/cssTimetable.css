@@ -123,14 +123,11 @@
 
     /*** add requests page ***/
     
-    #basicBox ,#roomSelectorBox 
-	{
-        min-width: 46.6%;
-		
+    #basicBox {
+        width: 404px;
         float: left;
         padding: 5px 15px;
         background: #f8f8f8;
-		min-height:340px;
     }
     
     #roomActionsBox {
@@ -140,12 +137,12 @@
         margin: 0px 5px 5px 5px;
     }
 
-    /* #roomSelectorBox {
+    #roomSelectorBox {
         width: 270px;
         padding: 5px 15px;
         float: left;
         background: #f0efef;
-    } */
+    }
     
     #inputWeeksBox {
         clear:both;
@@ -286,7 +283,7 @@
 
     }
 
-	/***********************************************************************************************************/
+
     /*** Input Table ***/
     
      #inputTable
@@ -340,7 +337,7 @@
         {
         display:inline-block;
         min-height:25px;
-        min-width:100%;
+        min-width:196px;
 		padding-top:5px;
 		font-size: 16px;
 		color: #333;
@@ -415,12 +412,12 @@
     
 	.roomSele +label
 	{
-		 min-width:99%;
+		 min-width:100%;
 	}
 	
 	.specReqP + label
 	{
-        min-width:110px;
+        min-width:95px;
 	}
 	.specReq + label
         {
@@ -435,5 +432,5 @@
 	}
 	.specReqText
 	{
-		min-width:98%;
+		min-width:190px;
 	}
