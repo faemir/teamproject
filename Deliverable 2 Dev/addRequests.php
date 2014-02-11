@@ -413,6 +413,70 @@
 			document.getElementById("modCodeSelect").selectedIndex=modIndex;
 		}
 		//-------------
+		function Submit(){
+			
+			//change all data to variables of correct type.
+			var yearID = 13;
+			var moduleCode= ;
+			if(...) {
+				var priority=;}
+			else{
+				var priority=..
+			}
+			if(...) {
+				var sem = ...}
+			else{
+				var sem = ...}
+			for loop? weeks array?
+			var noOfStudents = ;
+			var noOfRooms = ;
+			var preferedRoom =;
+			if(){
+				var Qroom = ;
+			}else{
+				var Qroom =;}
+			if(){
+				var Wchair = ;
+			}else{
+				var Wchair =;}
+			if(){
+				var Dprojector = ;
+			}else{
+				var Dprojector =;}
+			if(){
+				var DDprojector = ;
+			}else{
+				var DDprojector =;}
+			if(){
+				var Vis = ;
+			}else{
+				var Vis =;}
+			if(){
+				var Vid = ;
+			}else{
+				var Vid =;}
+			if(){
+				var Comp = ;
+			}else{
+				var Comp =;}
+			if(){
+				var Wboard = ;
+			}else{
+				var Wboard =;}
+			if(){
+				var Cboard = ;
+			}else{
+				var Cboard =;}
+			// loop for DPT array
+			for(var i=0;i<DPTarray.length;i++){
+				
+				$.ajax({
+					type: "POST",
+					url: "POSTnewRequest.php",
+					data: {year: , modulecode: , priority: , semester: , day: DPTarray[i][0], period: DPTarray[i][1], duration: DPTarray[i][2], weeksarray: , noofstudents: , noofrooms: , preferredroom: , qualityroom: , wheelchair: , dataprojector: , doubleprojector: , visualiser: , videodvdbluray: , computer: , whiteboard: , chalkboard: , roomsarray: }
+				});
+			}
+		}
         </script>
     </head>
     
@@ -475,7 +539,7 @@
 			</div>
             <div class="contentBox" id="formControlsBox">
 				<form>
-                    <input type="button" value="Submit" onclick="selectedPeriods()">  <!--changed to button from submit  for testing purposes-->
+                    <input type="button" value="Submit" onclick="Submit()">  <!--changed to button from submit  for testing purposes-->
                     <input type="button" value="Submit & Add Another" onclick="timetableGetter()"> <!-- changed to test aswell -->
                     <input type="button" value="Clear Form">
                 </form>
