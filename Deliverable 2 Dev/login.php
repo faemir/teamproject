@@ -41,7 +41,6 @@
                         }
                         if (auth == true){
                             console.log("authorised");
-                            <?php header("Location: viewRequests.php?". SID); ?>
                         }
 
                     }
