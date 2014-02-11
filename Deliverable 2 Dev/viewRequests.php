@@ -144,7 +144,7 @@
                         codeStr += '	</tr>';
                     }
                     codeStr += "</table>";
-					alert(codeStr);
+					
 
                     //clears and writes table into container
                     // UPDATE: empty function produced 'false' onscreen when already empty
@@ -155,12 +155,26 @@
         }
 
         function showDetails(requestID){
-
-            $.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
-                alert("test!!\n requestsID: " + JSON[0].requestid + "\n" + "Duration: " + JSON[0].duration + "\n" + "NO. Students: " + JSON[0].noofstudents + "\n etc....");
+			
+			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
+				
+				$("#detailsBox").empty();
+				
+				var codeStl = "<div>";
+				
+				codeStl += "<td>" + "Request ID: " + JSON[0].requestid + "</br></td>";
+				codeStl += "<td>" + "Duration: " + JSON[0].duration + "</br></td>";
+				codeStl += "<td>" + "No. Students: " + JSON[0].noofstudents + "</br></td>";
+				codeStl += "<td>" + "No. Rooms: " + JSON[0].noofrooms + "</br></td>";
+				codeStl += "<td>" + "Year: " + JSON[0].year + "</br></td>";
+				codeStl += "<td>" + "Quality Room: " + JSON[0].qualityroom + "</br></td>";
+				codeStl += "</div>";
+				
+				$("#detailsBox").append(codeStl);
+				
+				
             }, 'json');
-
-
+			
         }
 
 		//Sort functions. Asc, Desc alternating. Bubble sort.
@@ -220,12 +234,7 @@
 				codeStr += '	<th onclick="sortTable(' + countersort + ')">' + headersArray[viewHeaders[z]] + '</th>';
 				countersort += 1;
 			}
-			// codeStr += '    <th onclick="sortTable(0)">Module Code</th>';
-			// codeStr += '    <th onclick="sortTable(1)">Priority</th>';
-			// codeStr += '    <th onclick="sortTable(2)">Day</th>';
-			// codeStr += '    <th onclick="sortTable(3)">Period</th>';
-			// codeStr += '    <th onclick="sortTable(4)">blahh</th>';
-			// codeStr += '    <th onclick="sortTable(4)">blahh2</th>';
+			
 
 			codeStr += '    <th onclick="sortTable(6)">Details</th>';
 			codeStr += '    <th onclick="sortTable(7)">Status</th>';
@@ -247,6 +256,7 @@
 			document.getElementById("tableBox").innerHTML = "";
 			document.getElementById("tableBox").innerHTML = codeStr;
 		}
+		
         </script>
     </head>
 
@@ -261,10 +271,11 @@
             </ul>
         </div>
         <div id="pagewrap">
-            <div class="contentBox" id="searchBox"></div>
-
-            <div class="contentBox" id="filterBox"></div>
-
+            <div class="contentBox" id="searchBox">
+			</div>
+            <div class="contentBox" id="detailsBox">
+			
+			</div>
             <div class="contentBox" id="roundsBox"></div>
 
 
