@@ -20,6 +20,7 @@
 		var roomsQueue = [];
 		var roomsNamesQueue = [];
 		var roomsNames = [];
+		var sort = false; // for sorting my capacity
 		//Selected periods from table - false = not selected.
 		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
@@ -239,10 +240,23 @@
                     }
                     codeStr +="</div>";
 					codeStr +="<input type='button' value='Clear' onclick='ClrRoom()'>"; //clearRooms
-                    $("#roomSelectorBox").append(codeStr);
+                    if (sort==false){
+						codeStr +="<input type='button' value='Sort By Capacity' onclick='SortCap()'>"; //clearRooms
+						
+					}else{
+						codeStr +="<input type='button' value='Sort By Building ID' onclick='SortCap()'>"; //clearRooms
+					}
+					$("#roomSelectorBox").append(codeStr);
                 }  
             });
         }
+		function SortCap(){
+			if (sort==false){
+				sort=true;}
+			else{
+				sort=false;}
+			GetRoom();
+		}
 		function roomClick(currentBox){
 			roomsNameQueue = [];
 			var counter = 0
@@ -316,6 +330,7 @@
 			if(specBoolArray[8]==1){SQLRoom += "(chalkboard = " + specBoolArray[8]+ ") AND "; }
 			SQLRoom += "(capacity >= " + specBoolArray[9] + ")";
 			if (specBoolArray[10] != "ANY"){ SQLRoom += " AND (location = '" + specBoolArray[10] + "')";}
+			if (sort==true){SQLRoom +=" ORDER BY capacity"}
 			wrRoomsList();	
 		}
 		//-------validation
@@ -418,7 +433,7 @@
                 <select id="modCodeSelect" name="modCodeSelect" class="modChooser" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected></option></select></br>
             </div>
             
-            <div class="contentBox" id="roomActionsBox"></div>
+            <!--<div class="contentBox" id="roomActionsBox"></div>-->
             
             <div class="contentBox" id="roomSelectorBox"></div>
             
