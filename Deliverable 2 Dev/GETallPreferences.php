@@ -1,4 +1,5 @@
 <?php
+	//$username = $_session['username'];
 	$username = "admin";
     $sql="SELECT * FROM Preferences WHERE username='$username'";
     include "DBquery.php";
