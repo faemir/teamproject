@@ -121,12 +121,11 @@
         margin-bottom: 0px;
     }
 
-    /*** add requests page ***/
+    /*********** add requests page ***********/
     
-    #basicBox ,#roomSelectorBox 
+    #basicBox, #roomSelectorBox 
 	{
-        min-width: 46.6%;
-		
+        min-width: 445px;
         float: left;
         padding: 5px 15px;
         background: #f8f8f8;
@@ -140,12 +139,10 @@
         margin: 0px 5px 5px 5px;
     }
 
-    /* #roomSelectorBox {
-        width: 270px;
-        padding: 5px 15px;
-        float: left;
-        background: #f0efef;
-    } */
+    #roomSelectorBox {
+		margin: 0px 0px 0px 6px;
+		background: #f0efef;
+    } 
     
     #inputWeeksBox {
         clear:both;
@@ -167,7 +164,7 @@
         background: #f8f8f8;
   
     }
-    
+    /*** *********DIVIDER **************** ***/
     #roomsList{
         height:300px;
         width:100%;
@@ -254,6 +251,40 @@
         #tableBox {
             padding: 1% 4%;
         }
+		
+		/** add requests page **/
+		
+		#basicBox
+		{
+			min-width: 96.3%;
+			
+		}
+		
+		#roomActionsBox {
+
+		}
+
+		#roomSelectorBox {
+			min-width: 96.3%;
+			margin: 0px 0px 5px 0px;
+		} 
+		
+		#inputWeeksBox {
+
+	  
+		}
+		#inputTableBox {
+
+		}
+		
+		#formControlsBox {
+
+	  
+		}
+			
+			
+			
+		
     }
 
     /* for 700px or less */

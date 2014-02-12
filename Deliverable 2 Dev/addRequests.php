@@ -322,7 +322,9 @@
 			specBoolArray[11]=document.getElementById("PRK").value;
 			ClrRoom();
 			$("roomsList").empty();// empties current rooms list
-			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails WHERE ";
+			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";
+			if (specBoolArray[0]==0 && specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 &&specBoolArray[11]=="ANY"){
+			}else{SQLRoom  +=" WHERE ";}
 			//SQLRoom += "(qualityroom = " + specBoolArray[0] + ") AND "; 
 			if(specBoolArray[1]==1){SQLRoom  += "(wheelchair = " + specBoolArray[1] + ") AND "; }
 			if(specBoolArray[2]==1){SQLRoom += "(dataprojector = " + specBoolArray[2] + ") AND "; }
@@ -331,10 +333,11 @@
 			if(specBoolArray[5]==1){SQLRoom += "(videodvdbluray = " + specBoolArray[5] + ") AND "; }
 			if(specBoolArray[6]==1){SQLRoom += "(computer = " + specBoolArray[6] + ") AND "; }
 			if(specBoolArray[7]==1){SQLRoom += "(whiteboard = " + specBoolArray[7] + ") AND "; }
-			if(specBoolArray[8]==1){SQLRoom += "(chalkboard = " + specBoolArray[8]+ ") AND "; }
-			SQLRoom += "(capacity >= " + specBoolArray[10] + ")";
+			if(specBoolArray[8]==1){SQLRoom += "(chalkboard = " + specBoolArray[8]+ ")"; }
+			//SQLRoom += "(capacity >= " + specBoolArray[10] + ")";
 			if (specBoolArray[11] != "ANY"){ SQLRoom += " AND (location = '" + specBoolArray[11] + "')";}
-			//if (sort==true){SQLRoom +=" ORDER BY capacity"}
+			if (sort==true){SQLRoom +=" ORDER BY capacity"}
+			//alert(SQLRoom);
 			wrRoomsList();	
 		}
 		//-------validation
