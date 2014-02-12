@@ -1,6 +1,6 @@
 <?php
 
-    $sql=$_GET["sqlrooms"];
+    $sql="SELECT Username, Password FROM UserTable";
     include "DBquery.php";
     $JSON = json_encode($res->fetchAll());
     echo $JSON;

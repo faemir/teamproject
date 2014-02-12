@@ -28,6 +28,7 @@
                     success: function(JSON){
                         console.log("jsonran");
 						alert("fucking team projects");
+                        var sessid = <?php echo SID ?>;
                         var users = "";
                         var passes = "";
                         var userUser = "<?php echo $_SESSION['username']; ?>";
@@ -41,6 +42,7 @@
                         }
                         if (auth == true){
                             console.log("authorised");
+                            window.location.replace("viewRequests.php?" + sessid);
                         }
 
                     }

@@ -17,6 +17,7 @@
         var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
         var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         var alreadyLoaded = false;
+		var roomsQueue = [];
 		//Selected periods from table - false = not selected.
 		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
@@ -32,7 +33,7 @@
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrRoomsList()});
-     //$(document).ready(function(){popModulesList(userDepartmentID)});
+		//$(document).ready(function(){popModulesList(userDepartmentID)});
 		
         
         //FUNCTIONS --------------------------------------------------//
@@ -60,7 +61,7 @@
                 codeStr += "<tr>";
                 codeStr += "<th class ='daysChildren'>" + days[j-1] + "</th>";
                 for(var k = 1;k<=pOrTChildren.length;k++){
-                    codeStr += "<td class='grid' onclick='tableSelect(this.id)' id='" + j + k + "'></td>";
+                    codeStr += "<td class='grid' onclick='tableSelect(this.id)' id='t" + j + k + "'></td>";
                 }
                 codeStr += "</tr>";
             }
@@ -70,18 +71,21 @@
             $("#inputTableBox").append(codeStr);
         }
         
+		
+		
+		//---------------------------------------------------------------------------------------------//
         //onclick for table buttons
         function tableSelect(gridRef){
-            
             //2-D array to hold boolean value for any field currently pressed.         
             //checker searches 2-d array to see if a previous gridref has been clicked.
             //if new grid ref is to right of previous, allow connection of two (i.e. 2hr slot) - (2 true values in array)
             //Else erase previous grid ref boolean and write new gridref boolean (so only one true value in array
 
-            $("#" + gridRef).toggleClass("gridClicked");
-			TFTable(gridRef)
+            $("#"+ gridRef).toggleClass("gridClicked");
+			TFTable(gridRef.substring(1,gridRef.length));
         }	
         
+		
         //toggles boolean value of each square in input table for other functions to use
 		function TFTable(gridRef){
 			var daySele = parseInt(gridRef.substring(0,1));
@@ -195,28 +199,97 @@
             if($("#wk15").is(':checked')){wksArray.push(15);}
             return wksArray;    
         }
-        		
+        //----------------------------------------------------------------------------------------------//		
 		//gets and populates rooms list
         function wrRoomsList(){
+			document.getElementById("roomSelectorBox").innerHTML = "";
             $.ajax({
                 type: "GET",
                 dataType: "json",
                 url: "GETroomsList.php",
+				data: {'sqlrooms': SQLRoom},
                 success: function(JSON){
                     
                     var codeStr = "";
-                    codeStr +="<ul id='roomsList'>";
+                    codeStr +="<div id='roomsList'>";
                     for(var i =0;i<JSON.length;i++){
-                        codeStr += "<li class='' onclick=''>" + JSON[i].roomid + " | " + JSON[i].building + "</li>";
+                        codeStr += "<input type='checkbox' id='r"+i+"' class='' onclick='roomClick(this.id)'>" + JSON[i].roomid + "</input></br>";
                     }
-                    codeStr +="</ul>";
+                    codeStr +="</div>";
                 
                     $("#roomSelectorBox").append(codeStr);
                 }  
             });
         }
-        
-        
+		function roomClick(currentBox){
+			currentBox = currentBox.substring(1,currentBox.length);
+			if (roomsQueue.length <= 4){
+				roomsQueue[roomsQueue.length] = currentBox;
+			}else{
+				document.getElementById("r"+roomsQueue[0]).checked = false;
+				roomsQueue[0]=roomsQueue[1];
+				roomsQueue[1]=roomsQueue[2];
+				roomsQueue[2]=roomsQueue[3];
+				roomsQueue[3]=roomsQueue[4];
+				roomsQueue[4] = currentBox;
+			}
+		}
+		//-------------Change Room list accordingly
+		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";// declares SQL for room
+		function GetRoom(){
+			var specBoolArray = [0,0,0,0,0,0,0,0,0,0,0];
+			if (document.getElementById("QUR").checked == true){specBoolArray[0] = 1;}
+			if (document.getElementById("WHC").checked == true){specBoolArray[1] = 1;}
+			if (document.getElementById("DP1").checked == true){specBoolArray[2] = 1;}
+			if (document.getElementById("DP2").checked == true){specBoolArray[3] = 1;}
+			if (document.getElementById("VIS").checked == true){specBoolArray[4] = 1;}
+			if (document.getElementById("VDB").checked == true){specBoolArray[5] = 1;}
+			if (document.getElementById("CMP").checked == true){specBoolArray[6] = 1;}
+			if (document.getElementById("WHB").checked == true){specBoolArray[7] = 1;}
+			if (document.getElementById("CHB").checked == true){specBoolArray[8] = 1;}
+			specBoolArray[9]=document.getElementById("CAP").value;
+			specBoolArray[10]=document.getElementById("PRK").value;
+			
+			//cals crazy shit
+			for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
+				document.getElementById("r"+roomsQueue[j]).checked = false;
+			}
+			roomsQueue = [];
+			$("roomsList").empty();// empties current rooms list
+			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails WHERE ";
+			//SQLRoom += "(qualityroom = " + specBoolArray[0] + ") AND "; 
+			if(specBoolArray[1]==1){SQLRoom  += "(wheelchair = " + specBoolArray[1] + ") AND "; }
+			if(specBoolArray[2]==1){SQLRoom += "(dataprojector = " + specBoolArray[2] + ") AND "; }
+			if(specBoolArray[3]==1){SQLRoom += "(doubleprojector = " + specBoolArray[3] + ") AND "; }
+			if(specBoolArray[4]==1){SQLRoom += "(visualiser = " + specBoolArray[4] + ") AND "; }
+			if(specBoolArray[5]==1){SQLRoom += "(videodvdbluray = " + specBoolArray[5] + ") AND "; }
+			if(specBoolArray[6]==1){SQLRoom += "(computer = " + specBoolArray[6] + ") AND "; }
+			if(specBoolArray[7]==1){SQLRoom += "(whiteboard = " + specBoolArray[7] + ") AND "; }
+			if(specBoolArray[8]==1){SQLRoom += "(chalkboard = " + specBoolArray[8]+ ") AND "; }
+			SQLRoom += "(capacity >= " + specBoolArray[9] + ")";
+			if (specBoolArray[10] != "ANY"){ SQLRoom += " AND (location = '" + specBoolArray[10] + "')";}
+			
+			alert(SQLRoom);
+			//repopulate room list
+			
+			wrRoomsList();
+			
+			
+			
+		}
+		//-------validation
+		function CapacityChange(){
+			var capStr = document.getElementById("CAP").value;
+			var capTemp = "";
+			for(var i = 0; i < capStr.length; i++){
+				if (capStr.charCodeAt(i) >= 48 && capStr.charCodeAt(i) <= 57){
+					capTemp = capTemp + capStr.charAt(i);
+				}
+			}
+			document.getElementById("CAP").value = parseInt(capTemp);
+			GetRoom();
+		}
+        //------------------------------------------------------------------------------------------------//
         function popModulesList(userDepartmentID){
             //check if lists already loaded
             if(alreadyLoaded == false){
@@ -241,27 +314,31 @@
                     $("#modCodeSelect").append(codeOpt);
                     
                     //spec requirements populator
-                    codeStr += "<input type='checkbox' id='QR'>Quality Room<br>";
-                    codeStr += "<input type='checkbox' id='WC'>Wheelchair<br>";
-                    codeStr += "<input type='checkbox' id='DP'>Data Projector<br>";
-                    codeStr += "<input type='checkbox' id='DP2'>Data Projector * 2<br>";
-                    codeStr += "<input type='checkbox' id='Vi'>Visualiser<br>";
-                    codeStr += "<input type='checkbox' id='VDB'>Video/DVD/BluRay<br>";
-                    codeStr += "<input type='checkbox' id='CP'>Computer<br>";
-                    codeStr += "<input type='checkbox' id='WB'>Whiteboard<br>";
-                    codeStr += "<input type='checkbox' id='CB'>Chalkboard<br>";
+                    codeStr += "<input type='checkbox' id='QUR' onchange='GetRoom()'>Quality Room<br>";
+                    codeStr += "<input type='checkbox' id='WHC' onchange='GetRoom()'>Wheelchair<br>";
+                    codeStr += "<input type='checkbox' id='DP1' onchange='GetRoom()'>Data Projector<br>";
+                    codeStr += "<input type='checkbox' id='DP2' onchange='GetRoom()'>Data Projector * 2<br>";
+                    codeStr += "<input type='checkbox' id='VIS' onchange='GetRoom()'>Visualiser<br>";
+                    codeStr += "<input type='checkbox' id='VDB' onchange='GetRoom()'>Video/DVD/BluRay<br>";
+                    codeStr += "<input type='checkbox' id='CMP' onchange='GetRoom()'>Computer<br>";
+                    codeStr += "<input type='checkbox' id='WHB' onchange='GetRoom()'>Whiteboard<br>";
+                    codeStr += "<input type='checkbox' id='CHB' onchange='GetRoom()'>Chalkboard<br>";
+					codeStr +="Capacity:<input type='textbox' id='CAP' value='50' onchange='CapacityChange()'><br>";
+					codeStr +="Park:<select id='PRK' onchange='GetRoom()'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select>";
                     $("#basicBox").append(codeStr);
 
                 }, 'json');
                 alreadyLoaded = true;
             }
         }
+		
+		//-------------makes the mod code = mod title
 		function ModuleSelector(modList){
 			var modIndex = modList.selectedIndex;
 			document.getElementById("modTitleSelect").selectedIndex=modIndex;
 			document.getElementById("modCodeSelect").selectedIndex=modIndex;
 		}
-
+		//-------------
         </script>
     </head>
     
