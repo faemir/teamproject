@@ -11,11 +11,17 @@
         
         //needs preferences here!!!!
         var userDepartmentID = "CO";
-        
+        var hr24format = 0;
+		var periodTime = 1;
 		
 		//pOrT stands for 'Period or Time' - to reflect user preferences
-        var pOrTHeader = "Period";
+        var pOrTHeader1 = "Period";
+		var pOrTHeader2 = "Times"
         var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
+		var pOrTChildren2 = ["9-9:50","10-10:50","11-11:50","12-12:50"];
+		var pOrTChildren3 = ["13-13:50","14-14:50","15-15:50","16-16:50","17-17:50"];
+		var pOrTChildren4 = ["1-1:50","2-2:50","3-3:50","4-4:50","5-5:50"];
+		
         var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         var alreadyLoaded = false;
 		var roomsQueue = [];
@@ -52,20 +58,40 @@
             //headers
             codeStr += "<tr>";
             codeStr += "<th class ='daysHeader' rowspan='2'>Days</th>";
-            codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader + "</th>";
+			if(periodTime == 1){
+				codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader1 + "</th>";
+			}
+			else{
+				codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader2 + "</th>";
+			}
             codeStr += "</tr>";
             
             //pOrT children
             codeStr += "<tr>";
-            for(var i = 0;i<pOrTChildren.length;i++){
-                codeStr += "<th class ='pOrTChildren'>" + pOrTChildren[i] + "</th>"; 
-            }
+			if(periodTime == 1){
+				for(var i = 0;i<pOrTChildren.length;i++){
+					codeStr += "<th class ='pOrTChildren'>" + pOrTChildren[i] + "</th>"; 
+				}
+			}
+			else if(hr24format == 1){
+				var array = pOrTChildren2.concat(pOrTChildren3);
+				for(var i = 0;i<array.length;i++){
+					codeStr += "<th class ='pOrTChildren'>" + array[i] + "</th>"; 
+				}	
+			}
+			else{
+				var array2 = pOrTChildren2.concat(pOrTChildren4);
+				for(var i = 0;i<array2.length;i++){
+					codeStr += "<th class ='pOrTChildren'>" + array2[i] + "</th>"; 
+				}
+			}
+			
              codeStr += "</tr>";
             
             //days and grid
             for(var j = 1;j<=days.length;j++){
                 codeStr += "<tr>";
-                codeStr += "<th class ='#B32561'>" + days[j-1] + "</th>";
+                codeStr += "<th class ='daysChildren'>" + days[j-1] + "</th>";
                 for(var k = 1;k<=pOrTChildren.length;k++){
                     codeStr += "<td class='grid' onclick='tableSelect(this.id)' id='t" + j + k + "'></td>";
                 }
@@ -537,6 +563,14 @@
 							data: {'requestid':lReq, 'room':roomsNamesQueue[j], 'modulecode':(document.getElementById("modCodeSelect").value)}
 						});
 					}
+				}
+				else{
+					$.ajax({
+						type: "GET",
+						url: "POSTroomBooking.php",
+						async: false,
+						data: {'requestid':lReq, 'room':NULL, 'modulecode':(document.getElementById("modCodeSelect").value)}
+					});
 				}
 				
 			}

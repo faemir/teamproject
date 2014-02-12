@@ -343,14 +343,19 @@
 	.daysHeader, .daysChildren
         {
 		width:100px;
+		background-color: #f0efef;
 	} 
+	.pOrTHeader, .pOrTChildren
+	{
+		background-color: #f0efef;
+	}
     .grid
         {
         cursor: pointer;
     }
     .grid:hover
         {
-        background-color:#f8f8f8;
+        background-color:#f0efef;
     }
     
     .gridClicked
