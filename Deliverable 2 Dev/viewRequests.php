@@ -76,8 +76,9 @@
 						countersort += 1;
 					}
                     codeStr += '    <th onclick="sortTable(6)">Details</th>';
-                    codeStr += '    <th onclick="sortTable(7)">Add Similar</th>';
-                    codeStr += '    <th onclick="sortTable(8)">Status</th>';
+                    codeStr += '    <th onclick="sortTable(7)">Edit Request</th>';
+                    codeStr += '    <th onclick="sortTable(8)">Add Similar Request</th>';
+                    codeStr += '    <th onclick="sortTable(9)">Status</th>';
                     codeStr += '</tr>';
 
                     for(var i=0;i<JSON.length;i++){
@@ -258,8 +259,9 @@
 			
 
 			codeStr += '    <th onclick="sortTable(6)">Details</th>';
-			codeStr += '    <th onclick="sortTable(7)">Add Similar</th>';
-			codeStr += '    <th onclick="sortTable(8)">Status</th>';
+            codeStr += '    <th onclick="sortTable(7)">Edit Request</th>';
+			codeStr += '    <th onclick="sortTable(8)">Add Similar Request</th>';
+			codeStr += '    <th onclick="sortTable(9)">Status</th>';
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
 				codeStr += '	<tr>';
