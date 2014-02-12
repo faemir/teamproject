@@ -30,9 +30,9 @@
 		var thursdaySele = [false,false,false,false,false,false,false,false,false];
 		var fridaySele = [false,false,false,false,false,false,false,false,false];
 		var DPTArray = [];	//storing day, period, duration
-		var specBoolArray =[];
+		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 		
-		
+		var redirectBool = false;
 
         //ONLOAD FUNCTIONS -----------------------------------------//
       
@@ -334,7 +334,7 @@
 			if(specBoolArray[8]==1){SQLRoom += "(chalkboard = " + specBoolArray[8]+ ") AND "; }
 			SQLRoom += "(capacity >= " + specBoolArray[10] + ")";
 			if (specBoolArray[11] != "ANY"){ SQLRoom += " AND (location = '" + specBoolArray[11] + "')";}
-			if (sort==true){SQLRoom +=" ORDER BY capacity"}
+			//if (sort==true){SQLRoom +=" ORDER BY capacity"}
 			wrRoomsList();	
 		}
 		//-------validation
@@ -352,7 +352,6 @@
 		
 		
 		function getBookedRooms(selectedRooms){
-			alert(selectedRooms);
 			$.get("GETbookedRooms.php",{roomsarray: selectedRooms},function(JSON){});
 		}
 		
@@ -416,20 +415,11 @@
 			document.getElementById("modTitleSelect").selectedIndex=modIndex;
 			document.getElementById("modCodeSelect").selectedIndex=modIndex;
 		}
-		//-------------
-		// function weekChecker(JSON){
-			// if(JSON.length == 1){
-				// weekID = JSON[0].weekid;
-				// weekBool = false;
-			// }
-			// alert(weekBool);
-			// alert(weekID);
-		// }
+
 		
-		function Submit(){
+		function Submit(redirectBool){
 		
 			timetableGetter();
-			alert(DPTArray.join("//"));
 			var weekArr = [];
 			//change all data to variables of correct type.
 			var yearID = 13;
@@ -446,8 +436,8 @@
 				else{weekArr[i] = 0;}
 			}
 			if (roomsQueue.length ==0){
-				var preferedRoom = 0;}
-			else{var preferedRoom = 1;}
+				var preferredRoom = 0;}
+			else{var preferredRoom = 1;}
 			var weekID = 0;
 			var weekBool = true;
 			$.ajax({
@@ -480,37 +470,50 @@
 					}
 				});
 			}		
-			// for(var i=0;i<DPTArray.length;i++){
-				// //post new request
-				// $.ajax({
-					// type: "GET",
-					// url: "POSTnewRequest.php",
-					// async: false,
-					// data: {year:yearID, modulecode:(document.getElementById("modCodeSelect").value), priority:pri, semester:sem, day:DPTArray[i][0], period:DPTArray[i][1], duration:DPTArray[i][2], weeksid:weekID , noofstudents:specBoolArray[10], noofrooms:roomsQueue.length , preferredroom:preferedRoom , qualityroom:specBoolArray[0], wheelchair:specBoolArray[1] , dataprojector:specBoolArray[2] , doubleprojector: specBoolArray[3], visualiser:specBoolArray[4] , videodvdbluray:specBoolArray[5], computer:specBoolArray[6] , whiteboard:specBoolArray[7], chalkboard:specBoolArray[8] , nearestroom:specBoolArray[9]}
-				// });
-				// //get latest request id
-				// var lReq = 0;
-				// $.ajax({
-					// type: "GET",
-					// url: "GETlatestRequestID.php",
-					// dataType: "json",
-					// async: false,
-					// success: function(JSON){
-						// lReq = JSON[0].requestid
-					// }
-				// });
-				// if (preferedRoom ==1){
-					// for(var j =0; j < roomsNamesQueue.length;j++){
-						// $.ajax({
-							// type: "GET",
-							// url: "POSTroomBooking.php",
-							// async: false,
-							// data: {requestid:lReq,room:roomsNamesQueue[j],modulecode:(document.getElementById("modCodeSelect").value)}
-						// });
-					// }
-				// }
-			// }
 
+			var i = 0;
+			do{
+				//post new request
+				$.ajax({
+					type: "GET",
+					url: "POSTnewRequest.php",
+					async: false,
+					data: {'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':roomsQueue.length , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value)},
+				});
+				i++;
+				// //get latest request id
+				var lReq = 0;
+				$.ajax({
+					type: "GET",
+					url: "GETlatestRequestID.php",
+					dataType: "json",
+					async: false,
+					success: function(JSON){
+						lReq = JSON[0].requestid;
+					}
+				});
+
+				if (preferredRoom ==1){
+					for(var j =0; j < roomsNamesQueue.length;j++){
+						$.ajax({
+							type: "GET",
+							url: "POSTroomBooking.php",
+							async: false,
+							data: {'requestid':lReq, 'room':roomsNamesQueue[j], 'modulecode':(document.getElementById("modCodeSelect").value)}
+						});
+					}
+				}
+			}
+			while(i<DPTArray.length);
+			
+			if(redirectBool){
+				alert("bye bye");
+				window.location.replace("viewRequests.php");
+			}
+			else{
+				alert("same");
+				window.location.replace("addRequests.php");
+			}
 		}
 		
         </script>
@@ -575,8 +578,8 @@
 			</div>
             <div class="contentBox" id="formControlsBox">
 				<form>
-                    <input type="button" value="Submit" onclick="Submit()">  <!--changed to button from submit  for testing purposes-->
-                    <input type="button" value="Submit & Add Another" onclick="timetableGetter()"> <!-- changed to test aswell -->
+                    <input type="button" value="Submit" onclick="Submit(true)">  <!--changed to button from submit  for testing purposes-->
+                    <input type="button" value="Submit & Add Another" onclick="Submit(false)"> <!-- changed to test aswell -->
                     <input type="button" value="Clear Form">
                 </form>
             </div>

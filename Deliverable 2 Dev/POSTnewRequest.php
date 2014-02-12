@@ -5,6 +5,7 @@
     $priority = $_GET["priority"];
     $semester = $_GET["semester"];
     $day = $_GET["day"];
+	$period = $_GET["period"];
     $duration = $_GET["duration"];
     
     $weekid = $_GET["weekid"];
@@ -15,7 +16,7 @@
     
     $requeststatus = "pending";
     
-    $qualityroom = $_GET["qualityroom"];
+    $qualityroom =  $_GET["qualityroom"];
     $wheelchair = $_GET["wheelchair"];
     $dataprojector = $_GET["dataprojector"];
     $doubleprojector = $_GET["doubleprojector"];
@@ -25,16 +26,16 @@
     $whiteboard = $_GET["whiteboard"];
     $chalkboard = $_GET["chalkboard"];
 	$nearestroom = $_GET["nearestroom"];
-	$other = "";
+	$other = $_GET["other"];
 
     $sql = "INSERT INTO EntryRequestTable(Year,ModuleCode,Priority,Semester,Day,Period,Duration,";
-    $sql .= "WeekID,NoOfStudents,PreferredRooms,RequestStatus,QualityRoom,WheelchairAccess,DataProjector,";
-    $sql .= "DoubleProjector,Visualiser,VideoDVDBluray,Computer,WhiteBoard,ChalkBoard) VALUES ";
+    $sql .= "WeekID,NoOfStudents,NoOfRooms,PreferredRooms,RequestStatus,QualityRoom,WheelchairAccess,DataProjector,";
+    $sql .= "DoubleProjector,Visualiser,VideoDVDBluray,Computer,WhiteBoard,ChalkBoard,NearestRoom,Other) VALUES ";
     $sql .= "($year,'$modulecode',$priority,$semester,'$day',$period,$duration,$weekid,$noofstudents,$noofrooms,";
-    $sql .= "$preferredrooms,'$requeststatus',$qualityroom,$wheelchair,$dataprojector,$visualiser,$videodvdbluray,";
-    $sql .= "$computer,$whiteboard,$chalkboard);";
+    $sql .= "$preferredroom,'$requeststatus',$qualityroom,$wheelchair,$dataprojector,$doubleprojector,$visualiser,$videodvdbluray,";
+    $sql .= "$computer,$whiteboard,$chalkboard,$nearestroom,'$other');";
 
-	//include "DBquery.php";
-	echo $sql;
+	include "DBquery.php";
+	//echo $sql;
 
 ?>
