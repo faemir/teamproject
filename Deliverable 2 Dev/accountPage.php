@@ -100,7 +100,7 @@
 					}
 				});
 			}
-			//Ensures user can only have a maximum of 10 columns on the view requests page.
+			//Ensures user can only have a maximum of 8 columns on the view requests page. (RequestDetails and RequestStatus always there)
 			var roomsQueue = [0,2,4,5,7,8];
 			function clicked(currentBox){
 				var counter = 0;
@@ -141,7 +141,7 @@
 					//POST values in prefBox to Preferences table
 					$.ajax({
 						type: "GET", 
-						url: "POSTcolumnPrefs",
+						url: "POSTcolumnPrefs.php",
 						data: {'h1': h1, 'h2': h2, 'h3': h3, 'h4': h4, 'h5': h5, 'h5': h6}
 					});
 					
@@ -158,7 +158,7 @@
 				//POST values in prefBox to Preferences table
 				$.ajax({
 					type: "GET", 
-					url: "POSTviewingPrefs",
+					url: "POSTviewingPrefs.php",
 					data: {'per': periodValue, 'hour': timeValue, 'start': weeksValue, 'end': weekeValue, 'location': parkValue}
 				});
 				alert("Preferences have been saved. \n Feel free to continue.");
