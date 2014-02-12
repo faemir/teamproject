@@ -12,44 +12,31 @@
         <title>Team 4 - LU Timetable Login</title>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
-            console.log("jsworks");
 
             function checkusername(){
                 var auth=false;
-                console.log("clicked");
-
-				$.get("GETroomsList.php",function(){
-
-					console.log("wat");
-					$.ajax({
-                    type: "GET",
-                    dataType: "json",
-                    url: "GETauth.php",
-                    success: function(JSON){
-                        console.log("jsonran");
-						alert("fucking team projects");
-                        var sessid = <?php echo SID ?>;
-                        var users = "";
-                        var passes = "";
-                        var userUser = "<?php echo $_SESSION['username']; ?>";
-                        var userPass = "<?php echo $_SESSION['password']; ?>";
-                        for(var i=0;i<JSON.length;i++){
-                            console.log("in the loop");
-                            users = JSON[i].username;
-                            passes = JSON[i].passes;
-                            if (users == userUser && passes == userPass)
-                                auth=true;
+				$.get("GETauth.php",function(JSON){
+                    var sessid = "<?php echo SID ?>";
+                    var users = "";
+                    var passes = "";
+                    var userUser = "<?php echo $_SESSION['username']; ?>";
+                    var userPass = "<?php echo $_SESSION['password']; ?>";
+                    for(var i=0;i<JSON.length;i++){
+                        console.log("in the loop");
+                        users = JSON[i].username;
+                        passes = JSON[i].passes;
+                        console.log(userUser);
+                        console.log(userPass);
+                        console.log(users);
+                        console.log(passes);
+                        if (users == userUser && passes == userPass)
+                            auth=true;
                         }
                         if (auth == true){
                             console.log("authorised");
                             window.location.replace("viewRequests.php?" + sessid);
                         }
-
-                    }
-                });
-
-				},'json');
-				console.log("fatima should be fired");
+				},'JSON');
             }
         </script>
     </head>
