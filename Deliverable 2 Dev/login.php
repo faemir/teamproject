@@ -13,6 +13,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
 
+
             function checkusername(){
                 var auth=false;
 				$.get("GETauth.php",function(JSON){
@@ -37,6 +38,7 @@
                             window.location.replace("viewRequests.php?" + sessid);
                         }
 				},'JSON');
+
             }
         </script>
     </head>

@@ -1,4 +1,5 @@
 <?php
+
     //all variables -----------------------------------------//
     // strings need to be passed as string with ' '.
     
@@ -30,6 +31,7 @@
     $roomsarray= $_GET["roomsarray"];
     
     //parts of DBQuery.php to set up connection---------------//
+
     require_once 'MDB2.php';
 	include "LTF.php"; //to provide $username,$password
 	
@@ -43,6 +45,7 @@
 	}
 
     $db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+
     //--------------------------------------------------------//
     
     //entry request table entry
@@ -67,4 +70,5 @@
 	 }
 
   
+
 ?>

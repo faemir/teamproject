@@ -1,14 +1,18 @@
 <?php
 
+
 	$year = $_GET["year"]; 
+
     $modulecode = $_GET["modulecode"]; 
     $priority = $_GET["priority"];
     $semester = $_GET["semester"];
     $day = $_GET["day"];
+
 	$period = $_GET["period"];
     $duration = $_GET["duration"];
     
     $weekid = $_GET["weekid"];
+
     
     $noofstudents = $_GET["noofstudents"];
     $noofrooms = $_GET["noofrooms"];
@@ -17,6 +21,7 @@
     $requeststatus = "pending";
     
     $qualityroom =  $_GET["qualityroom"];
+
     $wheelchair = $_GET["wheelchair"];
     $dataprojector = $_GET["dataprojector"];
     $doubleprojector = $_GET["doubleprojector"];
@@ -37,5 +42,6 @@
 
 	include "DBquery.php";
 	//echo $sql;
+
 
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 	
 	$wk1 = $_GET["weeks1"];
 	$wk2 = $_GET["weeks2"];
@@ -17,6 +18,7 @@
 	$wk15 = $_GET["weeks15"];
 	
 	$sql = "SELECT weekid FROM WeekTable WHERE week1 = $wk1 AND week2 = $wk2 AND week3 = $wk3 AND week4 = $wk4 AND week5 = $wk5 AND week6 = $wk6 AND week7 = $wk7 AND week8 = $wk8 AND week9 = $wk9 AND week10 = $wk10 AND week11 = $wk11 AND week12 = $wk12 AND week13 = $wk13 AND week14 = $wk14 AND week15 = $wk15";
+
     include "DBquery.php";
     $JSON = json_encode($res->fetchAll());
     echo $JSON;

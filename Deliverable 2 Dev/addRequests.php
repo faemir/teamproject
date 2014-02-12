@@ -11,6 +11,7 @@
 
         //needs preferences here!!!!
         var userDepartmentID = "CO";
+
         var hr24format = 0;
 		var periodTime = 1;
 		
@@ -40,6 +41,7 @@
 		var fridaySele = [false,false,false,false,false,false,false,false,false];
 		var DPTArray = [];	//storing day, period, duration
 
+
 		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 		
 		var redirectBool = false;
@@ -62,16 +64,19 @@
             //headers
             codeStr += "<tr>";
             codeStr += "<th class ='daysHeader' rowspan='2'>Days</th>";
+
 			if(periodTime == 1){
 				codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader1 + "</th>";
 			}
 			else{
 				codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader2 + "</th>";
 			}
+
             codeStr += "</tr>";
 
             //pOrT children
             codeStr += "<tr>";
+
 
 			if(periodTime == 1){
 				for(var i = 0;i<pOrTChildren.length;i++){
@@ -90,6 +95,7 @@
 					codeStr += "<th class ='pOrTChildren'>" + array2[i] + "</th>"; 
 				}
 			}
+
 
              codeStr += "</tr>";
 
@@ -195,7 +201,9 @@
 			timetableCollector(wednesdaySele,"Wednesday");
 			timetableCollector(thursdaySele,"Thursday");
 			timetableCollector(fridaySele,"Friday");
+
 			//alert(DPTArray.join("//"));
+
 		}
 
         //collects all day time and period information from input table by day
@@ -278,6 +286,7 @@
                     codeStr +="</div>";
 					codeStr +="<input type='button' value='Clear' onclick='ClrRoom()'>"; //clearRooms
 
+
                     if (sort==false){
 						codeStr +="<input type='button' value='Sort By Capacity' onclick='SortCap()'>"; //clearRooms
 						
@@ -295,6 +304,7 @@
 				sort=false;}
 			GetRoom();
 		}
+
 
 		function roomClick(currentBox){
 			var counter = 0
@@ -330,7 +340,9 @@
 		//-------------Change Room list accordingly
 		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";// declares SQL for room
 		function GetRoom(){
+
 			specBoolArray = [0,0,0,0,0,0,0,0,0,0,0,0];
+
 			if (document.getElementById("QUR").checked == true){specBoolArray[0] = 1;}
 			if (document.getElementById("WHC").checked == true){specBoolArray[1] = 1;}
 			if (document.getElementById("DP1").checked == true){
@@ -347,6 +359,7 @@
 			if (document.getElementById("CMP").checked == true){specBoolArray[6] = 1;}
 			if (document.getElementById("WHB").checked == true){specBoolArray[7] = 1;}
 			if (document.getElementById("CHB").checked == true){specBoolArray[8] = 1;}
+
 			if (document.getElementById("NER").checked == true){specBoolArray[9] = 1;}
 			specBoolArray[10]=document.getElementById("CAP").value;
 			specBoolArray[11]=document.getElementById("PRK").value;
@@ -466,6 +479,7 @@
 				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(location = '" + specBoolArray[11] + "')";}
 				// else{SQLRoom += " AND (location = '" + specBoolArray[11] + "')"}
 			// }
+
 			wrRoomsList();	
 		}
 		//-------validation
@@ -477,6 +491,7 @@
 					capTemp = capTemp + capStr.charAt(i);
 				}
 			}
+
 			if (document.getElementById("CAP").value==""){
 			document.getElementById("CAP").value =0;
 			}else{
@@ -494,6 +509,7 @@
 				document.getElementById("ORE").value=document.getElementById("ORE").value.substring(0,280);
 			}
 		}
+
 
         //------------------------------------------------------------------------------------------------//
 
@@ -541,6 +557,7 @@
 					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom()' class='modChooser'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select></td></tr>";
 					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' onkeyup='countText()' id='ORE' placeholder='Type here...'></td></tr>";
 					codeStr +="<tr><td></td><td><label id='charToGo'> </label></td></tr>";
+
 					codeStr +="<tr><td>Priority:</td><td>";
 					codeStr +="<input type='radio' class='specReqP' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
 					codeStr +="<input type='radio' class='specReqP' id='PRN' name='Priority' ><label for='PRN'>No</label></td></tr></table>";
@@ -549,7 +566,7 @@
                 }, 'json');
                 alreadyLoaded = true;
             }
-			
+
         }
 		
 		//-------------makes the mod code = mod title
@@ -559,7 +576,6 @@
 			document.getElementById("modCodeSelect").selectedIndex=modIndex;
 		}
 
-		
 		function Submit(redirectBool){
 		
 			timetableGetter();
@@ -691,6 +707,7 @@
             
             <!--<div class="contentBox" id="roomActionsBox"></div>-->
 
+
             <div class="contentBox" id="roomSelectorBox"></div>
 
             <div class="contentBox" id="inputWeeksBox">
@@ -731,8 +748,10 @@
 			</div>
             <div class="contentBox" id="formControlsBox">
 				<form>
+
                     <input type="button" value="Submit" onclick="Submit(true)">  <!--changed to button from submit  for testing purposes-->
                     <input type="button" value="Submit & Add Another" onclick="Submit(false)"> <!-- changed to test aswell -->
+
                     <input type="button" value="Clear Form">
                 </form>
             </div>

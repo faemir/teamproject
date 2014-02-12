@@ -10,9 +10,11 @@
     
     body
          {
+
 		background-image: url('crossword.png');
 		background-repeat: repeat;
 		color: #4B0082;
+
     }
 
     /****************************************************** 
@@ -99,7 +101,7 @@
     
     /*** view requests page ***/
 
-    #actionsBox {
+    #detailsBox {
         width: 290px;
         float: left;
         padding: 5px 15px;
@@ -121,7 +123,7 @@
     }
     #tableBox {
         clear: both;
-        padding: 0 15px;
+        padding: 10px;
         margin-bottom: 0px;
     }
 
@@ -160,6 +162,7 @@
         padding: 5px 15px;
         margin-bottom: 5px; 
 		background: #f8f8f8;
+
     }
     
     #formControlsBox {
@@ -169,6 +172,7 @@
         background: #f8f8f8;
   
     }
+
     /*** *********DIVIDER **************** ***/
     #roomsList{
         height:300px;
@@ -487,4 +491,44 @@
 		color: #B32561;
 		text-align:right;
 		
+	}
+
+     #RequestsTable
+        {
+        border: 1px solid black;
+        width: 100%;
+        border-collapse: collapse;
+        
+    }
+
+    #RequestsTable *
+    {
+        border: 1px solid black;
+        text-align: center;
+		padding: 2px;
+    }
+	
+	#RequestsTable th
+        {
+		background-color:#f0efef;
+		cursor: pointer;
+		
+	}
+	#RequestsTable th:hover
+        {
+		background-color:#fff;
+	}
+	
+	.requestsRow
+	{
+		background-color: #fff;
+	}
+	.requestsRowClk
+	{
+		background-color: #ABCDEF;
+	}
+	
+	#RequestsTable tr:hover
+	{
+		background-color:#f0efef;
 	}
