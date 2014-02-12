@@ -32,10 +32,6 @@
 		var userPrefHeader4 = "";
 		var userPrefHeader5 = "";
 		var userPrefHeader6 = "";
-		
-
-		
-
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		
 		function getUserPrefs(){
@@ -78,7 +74,11 @@
                 type: "GET",
                 dataType: "json",
                 url: "GETallRequests.php",
+
 				data: {'type':type, 'searchval': searchval, 'semsval': semsval},
+
+				//data: {'username': $_session['username']},
+
                 success: function(JSON){
                     var codeStr = "";
                     codeStr += '<table id="RequestsTable">';
@@ -97,7 +97,9 @@
 						countersort += 1;
 					}
                     codeStr += '    <th onclick="sortTable(6)">Details</th>';
-                    codeStr += '    <th onclick="sortTable(7)">Status</th>';
+                    codeStr += '    <th onclick="sortTable(7)">Edit Request</th>';
+                    codeStr += '    <th onclick="sortTable(8)">Add Similar Request</th>';
+                    codeStr += '    <th onclick="sortTable(9)">Status</th>';
                     codeStr += '</tr>';
 
                     for(var i=0;i<JSON.length;i++){
@@ -163,11 +165,14 @@
 						
 						
 
+
                         codeStr += '    	<td><input type="button" class="detailsButton" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
-						//codeStr += '    	<td><input type="button" class="editButton" value="editval" onclick="editVal(' + JSON[i].requestid + ')"></input></td>';
+						
+                        codeStr += '    	<td><input type="button" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
+                        codeStr += '    	<td><input type="button" value="AddSimilar" onclick="addSimilarRequest(' + JSON[i].modulecode + JSON[i].moduletitle + JSON[i].noofstudents + ')"></td>';
 
                         codeStr += '    	<td>' + JSON[i].requeststatus + '</td>';
-                        codeStr += '	</tr>';
+						codeStr += '	</tr>';
                     }
                     codeStr += "</table>";
 					
@@ -181,16 +186,16 @@
         }
 
 
+
 		function showDetails(requestID,button){
-				
-			
-			
+
 			
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
 				
 				$("#detailsBox").empty();
 				
 				var codeStl = "<div>";
+
 
 				codeStl += "<td>" + "Request ID: " + JSON[0].requestid + "</br></td>";
 				codeStl += "<td>" + "Duration: " + JSON[0].duration + "</br></td>";
@@ -238,7 +243,28 @@
 				
             }, 'json');
 
+
 			$(button).parent().parent().toggleClass('requestsRowClk');
+	
+        }
+		
+		function editRequest(requestID){
+			//Post into AddRequestTabe.php the information to fill all their selection boxes with this requestID's data.
+			
+		}
+		
+		function addSimilarRequest(modulecode, modluetitle, capacity){
+			//Post into AddRequestTabe.php the information to fill module code, module title and capacity boxes with this requestID's data.
+			// var gatherValues = new Array();
+			// gatherValues[0] = modulecode;
+			// gatherValues[1] = moduletitle;
+			// gatherValues[2] = capacity;
+			// $.ajax({
+				// type: "GET", 
+				// url: "AddSimilar.php",
+				// data: {'values': gatherValues}
+			// });
+
 		}
 			
 			
@@ -304,8 +330,10 @@
 			
 
 			codeStr += '    <th onclick="sortTable(6)">Details</th>';
-			codeStr += '    <th onclick="sortTable(7)">Status</th>';
-			codeStr += '</tr>';
+            codeStr += '    <th onclick="sortTable(7)">Edit Request</th>';
+			codeStr += '    <th onclick="sortTable(8)">Add Similar Request</th>';
+			codeStr += '    <th onclick="sortTable(9)">Status</th>';
+            codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
 				codeStr += '	<tr>';
 				codeStr += '    	<td>' + value[l][0] + '</td>';
@@ -324,11 +352,6 @@
 			document.getElementById("tableBox").innerHTML = codeStr;
 		}
 		
-<<<<<<< HEAD
-=======
-		
-		
-
         </script>
     </head>
 
@@ -373,8 +396,6 @@
 			<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable('')" value="1"/><label>1</label>
 			<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable('')" value="2"/><label>2</label>
 			<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable('')" value="0"/><label>Both</label>
-			
-			
 
 			</div>
             <div class="contentBox" id="detailsBox">
