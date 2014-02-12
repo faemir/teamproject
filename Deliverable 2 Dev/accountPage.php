@@ -12,6 +12,7 @@
 			var weeksValue = "";
 			var weekeValue = "";
 			var parkValue = "";
+			var roomsQueue = [0,2,4,5,7,8];
 			//Read and write the preferences from database into the preferences table.
 			function wrPreferencesTable(){
 				$.ajax({
@@ -43,6 +44,7 @@
 						codeStr += '	<td><select name="weeks" id="weeks">';
 						codeStr += '		<option value="1">1</option>';
 						codeStr += '		<option value="2">2</option>';
+						codeStr += '		<option value="3">3</option>';
 						codeStr += '		<option value="4">4</option>';
 						codeStr += '		<option value="5">5</option>';
 						codeStr += '		<option value="6">6</option>';
@@ -97,12 +99,91 @@
 							document.getElementById('period').checked=true;
 						document.getElementById('weeks').value = JSON[0].defaultstartweek;
 						document.getElementById('weeke').value = JSON[0].defaultendweek;
+						
+						var codeStg = '';
+						codeStg += '<table id="ColumnsTable">';
+						codeStg += '<tr>';
+						codeStg += '<th colspan=2>Show These Columns In Viewing Requests</th>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="0" onclick="clicked(this)" > Module Code</td>';
+						codeStg += '	<td><input type=checkbox id="1" onclick="clicked(this)" > Module Title</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="2" onclick="clicked(this)" > Priority</td>';
+						codeStg += '	<td><input type=checkbox id="3" onclick="clicked(this)" > Year</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="4" onclick="clicked(this)" > Semester</td>';
+						codeStg += '	<td><input type=checkbox id="5" onclick="clicked(this)" > Day</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="6" onclick="clicked(this)" > Start Time</td>';
+						codeStg += '	<td><input type=checkbox id="7" onclick="clicked(this)" > End Time</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="8" onclick="clicked(this)" > Period</td>';
+						codeStg += '	<td><input type=checkbox id="9" onclick="clicked(this)" > Duration</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="10" onclick="clicked(this)" > Number Of Students</td>';
+						codeStg += '	<td><input type=checkbox id="11" onclick="clicked(this)" > Number Of Rooms</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="12" onclick="clicked(this)" > Preferred Rooms</td>';
+						codeStg += '	<td><input type=checkbox id="13" onclick="clicked(this)" > Quality Room</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="14" onclick="clicked(this)" > Wheelchair Access</td>';
+						codeStg += '	<td><input type=checkbox id="15" onclick="clicked(this)" > Data Projector</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="16" onclick="clicked(this)" > Double Projector</td>';
+						codeStg += '	<td><input type=checkbox id="17" onclick="clicked(this)" > Visualiser</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="18" onclick="clicked(this)" > Video/DVD/Bluray</td>';
+						codeStg += '	<td><input type=checkbox id="1" onclick="clicked(this)" > Module Title</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="19" onclick="clicked(this)" > Computer</td>';
+						codeStg += '	<td><input type=checkbox id="1" onclick="clicked(this)" > Module Title</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td><input type=checkbox id="20" onclick="clicked(this)" > White Board</td>';
+						codeStg += '	<td><input type=checkbox id="21" onclick="clicked(this)" > Chalk Board</td>';
+						codeStg += '</tr>';
+						codeStg += '<tr>';
+						codeStg += '	<td colspan=2><input type=button value="Submit" onclick="changeView()"></td>';
+						codeStg += '</tr>';
+						codeStg += '</table>';
+						
+						//clears and writes table into container
+						// UPDATE: empty function produced 'false' onscreen when already empty
+						//$("#prefDemoBox").empty();
+						$("#prefDemoBox").append(codeStg);
+						
+						//Sets the original values to ones pulled from preferences table
+						document.getElementById(JSON[0].header1).checked=true;
+						document.getElementById(JSON[0].header2).checked=true;
+						document.getElementById(JSON[0].header3).checked=true;
+						document.getElementById(JSON[0].header4).checked=true;
+						document.getElementById(JSON[0].header5).checked=true;
+						document.getElementById(JSON[0].header6).checked=true;
+						roomsQueue[0] = document.getElementById(JSON[0].header1).id;
+						roomsQueue[1] = document.getElementById(JSON[0].header2).id;
+						roomsQueue[2] = document.getElementById(JSON[0].header3).id;
+						roomsQueue[3] = document.getElementById(JSON[0].header4).id;
+						roomsQueue[4] = document.getElementById(JSON[0].header5).id;
+						roomsQueue[5] = document.getElementById(JSON[0].header6).id;
+						alert(roomsQueue);
+						
 					}
 				});
 			}
 			//Ensures user can only have a maximum of 8 columns on the view requests page. (RequestDetails and RequestStatus always there)
-			var roomsQueue = [0,2,4,5,7,8];
 			function clicked(currentBox){
+				alert(roomsQueue);
 				var counter = 0;
 				var boxID = currentBox.id;
 				if (currentBox.checked==true){
@@ -130,8 +211,9 @@
 					roomsQueue.length = roomsQueue.length-1;
 				}
 			}
+			//Posts the selected headers to the database to populate view requests table
 			function changeView(){
-				if (roomsQueue.length == 6){s
+				if (roomsQueue.length == 6){
 					var h1=roomsQueue[0];
 					var h2=roomsQueue[1];
 					var h3=roomsQueue[2];
@@ -144,11 +226,13 @@
 						url: "POSTcolumnPrefs.php",
 						data: {'h1': h1, 'h2': h2, 'h3': h3, 'h4': h4, 'h5': h5, 'h5': h6}
 					});
-					
+					alert("Preferences have been saved. \n Feel free to continue.");
 				}
 				else{
-					alert("Please select 6 columns to be shown in the viewing page.");}
+					alert("Please select 6 columns to be shown in the viewing page.");
+				}
 			}
+			//Posts the selected preferences for use in adding new requests
 			function savePrefs(){
 				periodValue = document.getElementsByName('period').value;
 				timeValue = document.getElementsByName('time').value;
@@ -179,64 +263,8 @@
             </ul>
         </div>
         <div id="pagewrap">
-        
-            <div class="contentBox" id="userPrefBox"></div>
 			
-            <div class="contentBox" id="prefDemoBox">
-				<!--Maybe move this table to viewrequests.php-->
-				<table>
-					<tr>
-						<th colspan=2>Show These Columns in View Requests</th>
-					</tr>
-					<tr>
-						<td><input type=checkbox id="0" onclick="clicked(this)" checked> Module Code</td>
-						<td><input type=checkbox id="1" onclick="clicked(this)" > Module Title</td>
-					</tr>
-					<tr>
-						<td><input type=checkbox id="2" onclick="clicked(this)" checked> Priority</td>
-						<td><input type=checkbox id="3" onclick="clicked(this)" > Year</td>
-					</tr>
-					<tr>
-						<td><input type=checkbox id="4" onclick="clicked(this)" checked> Semester</td>
-						<td><input type=checkbox id="5" onclick="clicked(this)" checked> Day</td>
-					</tr>
-					<tr>
-						<td><input type=radio name="start" id="6" onclick="clicked(this)" > Start Time</td>
-						<td><input type=radio name="end" id="7" onclick="clicked(this)" checked> End Time</td>
-					</tr>
-					<tr>
-						<td><input type=radio name="start" id="8" onclick="clicked(this)" checked> Period</td>
-						<td><input type=radio name="end" id="9" onclick="clicked(this)" > Duration</td>
-					</tr>
-					<tr>
-						<td><input type=checkbox id="10" onclick="clicked(this)" > Number Of Students</td>
-						<td><input type=checkbox id="11" onclick="clicked(this)" > Number Of Rooms</td>
-					</tr>
-					<tr>
-						<td><input type=checkbox id="12" onclick="clicked(this)" > Preferred Rooms</td>
-						<td><input type=checkbox id="13" onclick="clicked(this)" > Quality Room</td>
-					</tr>
-					<tr>
-						<td><input type=checkbox id="14" onclick="clicked(this)" > Wheelchair Access</td>
-						<td><input type=checkbox id="15" onclick="clicked(this)" > Data Projector</td>
-					</tr>
-					<tr>
-						<td><input type=checkbox id="16" onclick="clicked(this)" > Double Projector</td>
-						<td><input type=checkbox id="17" onclick="clicked(this)" > Visualiser</td>
-					</tr>
-					<tr>
-						<td><input type=checkbox id="18" onclick="clicked(this)" > Video/DVD/Bluray</td>
-						<td><input type=checkbox id="19" onclick="clicked(this)" > Computer</td>
-					</tr>
-					<tr>
-						<td><input type=checkbox id="20" onclick="clicked(this)" > White Board</td>
-						<td><input type=checkbox id="21" onclick="clicked(this)" > Chalk Board</td>
-					</tr>
-					<tr>
-						<td colspan=2><input type=button value="Submit" onclick="changeView()"></td>
-					</tr>
-				</table>
-			</div>
+            <div class="contentBox" id="prefDemoBox"></div>
 			
 			
 			<div class="contentBox" id="prefBox"></div>
