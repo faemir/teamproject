@@ -461,6 +461,16 @@
         {
 		background-color:#fff;
 	}
+	
+	.requestsRow
+	{
+		background-color: #fff;
+	}
+	.requestsRowClk
+	{
+		background-color: #ABCDEF;
+	}
+	
 	#RequestsTable tr:hover
 	{
 		background-color:#f0efef;
