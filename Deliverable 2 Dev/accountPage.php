@@ -12,7 +12,7 @@
 			var weeksValue = "";
 			var weekeValue = "";
 			var parkValue = "";
-			var roomsQueue = [0,2,4,5,7,8];
+			var roomsQueue = [];
 			//Read and write the preferences from database into the preferences table.
 			function wrPreferencesTable(){
 				$.ajax({
@@ -176,14 +176,12 @@
 						roomsQueue[3] = document.getElementById(JSON[0].header4).id;
 						roomsQueue[4] = document.getElementById(JSON[0].header5).id;
 						roomsQueue[5] = document.getElementById(JSON[0].header6).id;
-						alert(roomsQueue);
 						
 					}
 				});
 			}
 			//Ensures user can only have a maximum of 8 columns on the view requests page. (RequestDetails and RequestStatus always there)
 			function clicked(currentBox){
-				alert(roomsQueue);
 				var counter = 0;
 				var boxID = currentBox.id;
 				if (currentBox.checked==true){
@@ -263,6 +261,8 @@
             </ul>
         </div>
         <div id="pagewrap">
+			
+			<div class="contentBox" id="userPrefBox"></div>
 			
             <div class="contentBox" id="prefDemoBox"></div>
 			
