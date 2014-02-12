@@ -65,7 +65,7 @@
             //days and grid
             for(var j = 1;j<=days.length;j++){
                 codeStr += "<tr>";
-                codeStr += "<th class ='daysChildren'>" + days[j-1] + "</th>";
+                codeStr += "<th class ='#B32561'>" + days[j-1] + "</th>";
                 for(var k = 1;k<=pOrTChildren.length;k++){
                     codeStr += "<td class='grid' onclick='tableSelect(this.id)' id='t" + j + k + "'></td>";
                 }
@@ -323,21 +323,42 @@
 			ClrRoom();
 			$("roomsList").empty();// empties current rooms list
 			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";
-			if (specBoolArray[0]==0 && specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 &&specBoolArray[11]=="ANY"){
+			if (specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 && specBoolArray[11]=="ANY"){
 			}else{SQLRoom  +=" WHERE ";}
 			//SQLRoom += "(qualityroom = " + specBoolArray[0] + ") AND "; 
-			if(specBoolArray[1]==1){SQLRoom  += "(wheelchair = " + specBoolArray[1] + ") AND "; }
-			if(specBoolArray[2]==1){SQLRoom += "(dataprojector = " + specBoolArray[2] + ") AND "; }
-			if(specBoolArray[3]==1){SQLRoom += "(doubleprojector = " + specBoolArray[3] + ") AND "; }
-			if(specBoolArray[4]==1){SQLRoom += "(visualiser = " + specBoolArray[4] + ") AND "; }
-			if(specBoolArray[5]==1){SQLRoom += "(videodvdbluray = " + specBoolArray[5] + ") AND "; }
-			if(specBoolArray[6]==1){SQLRoom += "(computer = " + specBoolArray[6] + ") AND "; }
-			if(specBoolArray[7]==1){SQLRoom += "(whiteboard = " + specBoolArray[7] + ") AND "; }
-			if(specBoolArray[8]==1){SQLRoom += "(chalkboard = " + specBoolArray[8]+ ")"; }
-			//SQLRoom += "(capacity >= " + specBoolArray[10] + ")";
-			if (specBoolArray[11] != "ANY"){ SQLRoom += " AND (location = '" + specBoolArray[11] + "')";}
-			if (sort==true){SQLRoom +=" ORDER BY capacity"}
-			//alert(SQLRoom);
+			// if(specBoolArray[1]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom  += "(wheelchair = " + specBoolArray[1] + ")";}
+				// else{SQLRoom  += " AND (wheelchair = " + specBoolArray[1] + ")";}
+			// }
+			// if(specBoolArray[2]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(dataprojector = " + specBoolArray[2] + ")"; }
+				// else{SQLRoom += " AND (dataprojector = " + specBoolArray[2] + ")";}
+			// }
+			// if(specBoolArray[3]==1){ 
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(doubleprojector = " + specBoolArray[3] + ")";}
+				// else {SQLRoom += " AND (doubleprojector = " + specBoolArray[3] + ")";}
+			// }
+			// if(specBoolArray[4]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(visualiser = " + specBoolArray[4] + ")"; }
+				// else{SQLRoom += " AND (visualiser = " + specBoolArray[4] + ")"; }
+			// }
+			// if(specBoolArray[5]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(videodvdbluray = " + specBoolArray[5] + ")"; }
+				// else
+				
+			// if(specBoolArray[6]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(computer = " + specBoolArray[6] + ")"; }
+			// if(specBoolArray[7]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(whiteboard = " + specBoolArray[7] + ")"; }
+			// if(specBoolArray[8]==1)
+				// if(SQLRoom.search("AND")!=-1){{SQLRoom += "(chalkboard = " + specBoolArray[8]+ ")"; }
+
+			// if (specBoolArray[11] != "ANY"){ 
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(location = '" + specBoolArray[11] + "')";}
+				// else{SQLRoom += " AND (location = '" + specBoolArray[11] + "')"}
+			// }
+			// if (sort==true){SQLRoom +=" ORDER BY capacity"}
+			alert(SQLRoom);
 			wrRoomsList();	
 		}
 		//-------validation
@@ -349,7 +370,10 @@
 					capTemp = capTemp + capStr.charAt(i);
 				}
 			}
-			document.getElementById("CAP").value = parseInt(capTemp);
+			if (document.getElementById("CAP").value==""){
+			document.getElementById("CAP").value =0;
+			}else{
+			document.getElementById("CAP").value = parseInt(capTemp);}
 			GetRoom();
 		}
 		
@@ -357,7 +381,13 @@
 		function getBookedRooms(selectedRooms){
 			$.get("GETbookedRooms.php",{roomsarray: selectedRooms},function(JSON){});
 		}
-		
+		function countText(){
+			//alert(280- document.getElementById("ORE").value.length);
+			document.getElementById("charToGo").innerHTML = (280 - document.getElementById("ORE").value.length) + " Characters remaining"
+			if (document.getElementById("ORE").value.length >= 280){
+				document.getElementById("ORE").value=document.getElementById("ORE").value.substring(0,280);
+			}
+		}
         //------------------------------------------------------------------------------------------------//
         function popModulesList(userDepartmentID){
             //check if lists already loaded
@@ -399,9 +429,10 @@
                     codeStr += "<td><input type='checkbox' class='specReq' id='CHB' onchange='GetRoom()'><label for='CHB'>Chalkboard</label></td>";
 					codeStr += "<td><input type='checkbox' class='specReq' id='NER' onchange='GetRoom()'><label for='NER'>Near Previous Room</label></td>";
 					codeStr += "</tr>";
-					codeStr +="<tr><td>Capacity:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onchange='CapacityChange()'></td></tr>";
+					codeStr +="<tr><td>Capacity:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onchange='CapacityChange()' onkeypress='CapacityChange()'></td></tr>";
 					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom()' class='modChooser'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select></td></tr>";
-					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' id='ORE' placeholder='Type here...'></td></tr>";
+					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' onkeyup='countText()' id='ORE' placeholder='Type here...'></td></tr>";
+					codeStr +="<tr><td></td><td><label id='charToGo'> </label></td></tr>";
 					codeStr +="<tr><td>Priority:</td><td>";
 					codeStr +="<input type='radio' class='specReqP' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
 					codeStr +="<input type='radio' class='specReqP' id='PRN' name='Priority' ><label for='PRN'>No</label></td></tr></table>";
@@ -410,6 +441,7 @@
                 }, 'json');
                 alreadyLoaded = true;
             }
+			
         }
 		
 		//-------------makes the mod code = mod title
@@ -506,6 +538,7 @@
 						});
 					}
 				}
+				
 			}
 			while(i<DPTArray.length);
 			

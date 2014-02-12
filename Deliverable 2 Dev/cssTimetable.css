@@ -5,11 +5,14 @@
     html *
     {
         font-family: 'Open Sans', sans-serif;
+		
     }
     
     body
          {
-        background:#FFF;
+		background-image: url('crossword.png');
+		background-repeat: repeat;
+		color: #4B0082;
     }
 
     /****************************************************** 
@@ -43,6 +46,7 @@
         color:#333;
         text-decoration:none;
         height:100%;
+		color:#431367;
     }
 
     #topnav li a:hover {
@@ -129,7 +133,7 @@
         float: left;
         padding: 5px 15px;
         background: #f8f8f8;
-		min-height:340px;
+		min-height:350px;
     }
     
     #roomActionsBox {
@@ -154,7 +158,8 @@
     #inputTableBox {
         clear:both;
         padding: 5px 15px;
-        margin-bottom: 5px;
+        margin-bottom: 5px; 
+		background: #f8f8f8;
     }
     
     #formControlsBox {
@@ -335,11 +340,10 @@
         
     }
  
-/*     #daysHeader, #daysChildren
+	.daysHeader, .daysChildren
         {
-        
-    } */
-    
+		width:100px;
+	} 
     .grid
         {
         cursor: pointer;
@@ -351,13 +355,13 @@
     
     .gridClicked
         {
-        background-color:#9B30FF;
+        background-color:#431367;
         border: 2px solid black;
     }
     
     .gridClicked:hover
         {
-        background-color:#BF3EFF;
+        background-color:#B32561;
     }
     
             
@@ -374,7 +378,7 @@
         min-width:100%;
 		padding-top:5px;
 		font-size: 16px;
-		color: #333;
+		color: #431367;
 		text-align: center;
 		text-shadow: 0 1px 1px rgba(255,255,255,0.75);
 		vertical-align: middle;
@@ -413,8 +417,8 @@
     
     .wkInput:checked + label,.specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label
         {
-		background-color:#9966FF;
-		color: #FFF;
+		background-color:#dcdcdc;
+		color: #B32561;
         background-image: none;
 		outline: 0;
 		-webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
@@ -429,13 +433,15 @@
 	.modChooser
 	{
 		width:100%;
-		
+		color: #431367;
 	}
 	.modTable
 	{
 		width:100%;
 		border-collapse: collapse;
 		padding: 0px 0px;
+		color: #431367;
+		
 	}
   /** specReq input **/
 
@@ -467,4 +473,13 @@
 	.specReqText
 	{
 		min-width:98%;
+		color: #431367;
+		
+	}
+	#charToGo
+	{
+		font-size: 12px;
+		color: #B32561;
+		text-align:right;
+		
 	}
