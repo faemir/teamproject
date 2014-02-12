@@ -11,13 +11,26 @@
 
         //needs preferences here!!!!
         var userDepartmentID = "CO";
+        var hr24format = 0;
+		var periodTime = 1;
+		
 
 		//pOrT stands for 'Period or Time' - to reflect user preferences
-        var pOrTHeader = "Period";
+        var pOrTHeader1 = "Period";
+		var pOrTHeader2 = "Times"
         var pOrTChildren = ["1","2","3","4","5","6","7","8","9"];
+		var pOrTChildren2 = ["9-9:50","10-10:50","11-11:50","12-12:50"];
+		var pOrTChildren3 = ["13-13:50","14-14:50","15-15:50","16-16:50","17-17:50"];
+		var pOrTChildren4 = ["1-1:50","2-2:50","3-3:50","4-4:50","5-5:50"];
+		
         var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         var alreadyLoaded = false;
 		var roomsQueue = [];
+
+		var roomsNamesQueue = [];
+		var roomsNames = [];
+		var sort = false; // for sorting my capacity
+
 		//Selected periods from table - false = not selected.
 		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
@@ -26,6 +39,11 @@
 		var thursdaySele = [false,false,false,false,false,false,false,false,false];
 		var fridaySele = [false,false,false,false,false,false,false,false,false];
 		var DPTArray = [];	//storing day, period, duration
+
+		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
+		
+		var redirectBool = false;
+
 
         //ONLOAD FUNCTIONS -----------------------------------------//
 
@@ -44,14 +62,35 @@
             //headers
             codeStr += "<tr>";
             codeStr += "<th class ='daysHeader' rowspan='2'>Days</th>";
-            codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader + "</th>";
+			if(periodTime == 1){
+				codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader1 + "</th>";
+			}
+			else{
+				codeStr += "<th class ='pOrTHeader' colspan='9'>" + pOrTHeader2 + "</th>";
+			}
             codeStr += "</tr>";
 
             //pOrT children
             codeStr += "<tr>";
-            for(var i = 0;i<pOrTChildren.length;i++){
-                codeStr += "<th class ='pOrTChildren'>" + pOrTChildren[i] + "</th>";
-            }
+
+			if(periodTime == 1){
+				for(var i = 0;i<pOrTChildren.length;i++){
+					codeStr += "<th class ='pOrTChildren'>" + pOrTChildren[i] + "</th>"; 
+				}
+			}
+			else if(hr24format == 1){
+				var array = pOrTChildren2.concat(pOrTChildren3);
+				for(var i = 0;i<array.length;i++){
+					codeStr += "<th class ='pOrTChildren'>" + array[i] + "</th>"; 
+				}	
+			}
+			else{
+				var array2 = pOrTChildren2.concat(pOrTChildren4);
+				for(var i = 0;i<array2.length;i++){
+					codeStr += "<th class ='pOrTChildren'>" + array2[i] + "</th>"; 
+				}
+			}
+
              codeStr += "</tr>";
 
             //days and grid
@@ -156,7 +195,7 @@
 			timetableCollector(wednesdaySele,"Wednesday");
 			timetableCollector(thursdaySele,"Thursday");
 			timetableCollector(fridaySele,"Friday");
-			alert(DPTArray.join("//"));
+			//alert(DPTArray.join("//"));
 		}
 
         //collects all day time and period information from input table by day
@@ -239,10 +278,23 @@
                     codeStr +="</div>";
 					codeStr +="<input type='button' value='Clear' onclick='ClrRoom()'>"; //clearRooms
 
-                    $("#roomSelectorBox").append(codeStr);
-                }
+                    if (sort==false){
+						codeStr +="<input type='button' value='Sort By Capacity' onclick='SortCap()'>"; //clearRooms
+						
+					}else{
+						codeStr +="<input type='button' value='Sort By Building ID' onclick='SortCap()'>"; //clearRooms
+					}
+					$("#roomSelectorBox").append(codeStr);
+                }  
             });
         }
+		function SortCap(){
+			if (sort==false){
+				sort=true;}
+			else{
+				sort=false;}
+			GetRoom();
+		}
 
 		function roomClick(currentBox){
 			var counter = 0
@@ -278,7 +330,7 @@
 		//-------------Change Room list accordingly
 		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";// declares SQL for room
 		function GetRoom(){
-			var specBoolArray = [0,0,0,0,0,0,0,0,0,0,0];
+			specBoolArray = [0,0,0,0,0,0,0,0,0,0,0,0];
 			if (document.getElementById("QUR").checked == true){specBoolArray[0] = 1;}
 			if (document.getElementById("WHC").checked == true){specBoolArray[1] = 1;}
 			if (document.getElementById("DP1").checked == true){
@@ -295,22 +347,125 @@
 			if (document.getElementById("CMP").checked == true){specBoolArray[6] = 1;}
 			if (document.getElementById("WHB").checked == true){specBoolArray[7] = 1;}
 			if (document.getElementById("CHB").checked == true){specBoolArray[8] = 1;}
-			specBoolArray[9]=document.getElementById("CAP").value;
-			specBoolArray[10]=document.getElementById("PRK").value;
+			if (document.getElementById("NER").checked == true){specBoolArray[9] = 1;}
+			specBoolArray[10]=document.getElementById("CAP").value;
+			specBoolArray[11]=document.getElementById("PRK").value;
 			ClrRoom();
 			$("roomsList").empty();// empties current rooms list
-			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails WHERE ";
-			//SQLRoom += "(qualityroom = " + specBoolArray[0] + ") AND "; 
-			if(specBoolArray[1]==1){SQLRoom  += "(wheelchair = " + specBoolArray[1] + ") AND "; }
-			if(specBoolArray[2]==1){SQLRoom += "(dataprojector = " + specBoolArray[2] + ") AND "; }
-			if(specBoolArray[3]==1){SQLRoom += "(doubleprojector = " + specBoolArray[3] + ") AND "; }
-			if(specBoolArray[4]==1){SQLRoom += "(visualiser = " + specBoolArray[4] + ") AND "; }
-			if(specBoolArray[5]==1){SQLRoom += "(videodvdbluray = " + specBoolArray[5] + ") AND "; }
-			if(specBoolArray[6]==1){SQLRoom += "(computer = " + specBoolArray[6] + ") AND "; }
-			if(specBoolArray[7]==1){SQLRoom += "(whiteboard = " + specBoolArray[7] + ") AND "; }
-			if(specBoolArray[8]==1){SQLRoom += "(chalkboard = " + specBoolArray[8]+ ") AND "; }
-			SQLRoom += "(capacity >= " + specBoolArray[9] + ")";
-			if (specBoolArray[10] != "ANY"){ SQLRoom += " AND (location = '" + specBoolArray[10] + "')";}
+			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";
+			if (specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 && specBoolArray[11]=="ANY"){
+			
+			}
+			else{
+				SQLRoom  +=" WHERE";
+			}
+			//counter to record number of "ANDS" to add
+			counter = 0;
+			for(var i=0;i<9;i++){
+				if(specBoolArray[i]==1){
+					counter ++;
+				}
+			}
+			if(specBoolArray[0] ==1){
+				SQLRoom += " (qualityroom = " + specBoolArray[0] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[1] ==1){
+				SQLRoom += " (wheelchair = " + specBoolArray[1] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[2] ==1){
+				SQLRoom += " (dataprojector = " + specBoolArray[2] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[3] ==1){
+				SQLRoom += " (doubleprojector = " + specBoolArray[3] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[4] ==1){
+				SQLRoom += " (visualiser = " + specBoolArray[4] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[5] ==1){
+				SQLRoom += " (videodvdbluray = " + specBoolArray[5] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[6] ==1){
+				SQLRoom += " (computer = " + specBoolArray[6] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[7] ==1){
+				SQLRoom += " (whiteboard = " + specBoolArray[7] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[8] ==1){
+				SQLRoom += " (chalkboard = " + specBoolArray[8] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if (specBoolArray[11] != "ANY"){ 
+				SQLRoom += " AND (location = '" + specBoolArray[11] + "')";
+			}
+			if (sort==true){
+				SQLRoom +=" ORDER BY capacity"
+			}
+			//if(specBoolArray[1]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom  += "(wheelchair = " + specBoolArray[1] + ")";}
+				// else{SQLRoom  += " AND (wheelchair = " + specBoolArray[1] + ")";}
+			// }
+			// if(specBoolArray[2]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(dataprojector = " + specBoolArray[2] + ")"; }
+				// else{SQLRoom += " AND (dataprojector = " + specBoolArray[2] + ")";}
+			// }
+			// if(specBoolArray[3]==1){ 
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(doubleprojector = " + specBoolArray[3] + ")";}
+				// else {SQLRoom += " AND (doubleprojector = " + specBoolArray[3] + ")";}
+			// }
+			// if(specBoolArray[4]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(visualiser = " + specBoolArray[4] + ")"; }
+				// else{SQLRoom += " AND (visualiser = " + specBoolArray[4] + ")"; }
+			// }
+			// if(specBoolArray[5]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(videodvdbluray = " + specBoolArray[5] + ")"; }
+				// else
+				
+			// if(specBoolArray[6]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(computer = " + specBoolArray[6] + ")"; }
+			// if(specBoolArray[7]==1){
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(whiteboard = " + specBoolArray[7] + ")"; }
+			// if(specBoolArray[8]==1)
+				// if(SQLRoom.search("AND")!=-1){{SQLRoom += "(chalkboard = " + specBoolArray[8]+ ")"; }
+
+			// if (specBoolArray[11] != "ANY"){ 
+				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(location = '" + specBoolArray[11] + "')";}
+				// else{SQLRoom += " AND (location = '" + specBoolArray[11] + "')"}
+			// }
 			wrRoomsList();	
 		}
 		//-------validation
@@ -322,9 +477,24 @@
 					capTemp = capTemp + capStr.charAt(i);
 				}
 			}
-			document.getElementById("CAP").value = parseInt(capTemp);
+			if (document.getElementById("CAP").value==""){
+			document.getElementById("CAP").value =0;
+			}else{
+			document.getElementById("CAP").value = parseInt(capTemp);}
 			GetRoom();
 		}
+
+		
+		function getBookedRooms(selectedRooms){
+			$.get("GETbookedRooms.php",{roomsarray: selectedRooms},function(JSON){});
+		}
+		function countText(){
+			document.getElementById("charToGo").innerHTML = (280 - document.getElementById("ORE").value.length) + " Characters remaining"
+			if (document.getElementById("ORE").value.length >= 280){
+				document.getElementById("ORE").value=document.getElementById("ORE").value.substring(0,280);
+			}
+		}
+
         //------------------------------------------------------------------------------------------------//
 
         function popModulesList(userDepartmentID){
@@ -367,9 +537,10 @@
                     codeStr += "<td><input type='checkbox' class='specReq' id='CHB' onchange='GetRoom()'><label for='CHB'>Chalkboard</label></td>";
 					codeStr += "<td><input type='checkbox' class='specReq' id='NER' onchange='GetRoom()'><label for='NER'>Near Previous Room</label></td>";
 					codeStr += "</tr>";
-					codeStr +="<tr><td>Capacity:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onchange='CapacityChange()'></td></tr>";
+					codeStr +="<tr><td>Capacity:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onchange='CapacityChange()' onkeypress='CapacityChange()'></td></tr>";
 					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom()' class='modChooser'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select></td></tr>";
-					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' id='ORE' placeholder='Type here...'></td></tr>";
+					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' onkeyup='countText()' id='ORE' placeholder='Type here...'></td></tr>";
+					codeStr +="<tr><td></td><td><label id='charToGo'> </label></td></tr>";
 					codeStr +="<tr><td>Priority:</td><td>";
 					codeStr +="<input type='radio' class='specReqP' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
 					codeStr +="<input type='radio' class='specReqP' id='PRN' name='Priority' ><label for='PRN'>No</label></td></tr></table>";
@@ -378,6 +549,7 @@
                 }, 'json');
                 alreadyLoaded = true;
             }
+			
         }
 		
 		//-------------makes the mod code = mod title
@@ -386,7 +558,116 @@
 			document.getElementById("modTitleSelect").selectedIndex=modIndex;
 			document.getElementById("modCodeSelect").selectedIndex=modIndex;
 		}
-		//-------------
+
+		
+		function Submit(redirectBool){
+		
+			timetableGetter();
+			var weekArr = [];
+			//change all data to variables of correct type.
+			var yearID = 13;
+			if(document.getElementById("PRY").checked) {
+				var pri=1;}
+			else{var pri=0;}
+			if(document.getElementById("sem1").checked) {
+				var sem = 1;}
+			else{var sem = 2;}
+			for(var i = 0; i < 15; i++)
+			{
+				if(document.getElementById("wk" +(i+1)).checked){
+					weekArr[i] = 1;}
+				else{weekArr[i] = 0;}
+			}
+			if (roomsQueue.length ==0){
+				var preferredRoom = 0;}
+			else{var preferredRoom = 1;}
+			var weekID = 0;
+			var weekBool = true;
+			$.ajax({
+				type: "GET", 
+				dataType: "json",
+				url:"GETweeksIdExistence.php", 
+				data: {'weeks1': weekArr[0],'weeks2': weekArr[1],'weeks3': weekArr[2],'weeks4': weekArr[3],'weeks5': weekArr[4],'weeks6': weekArr[5],'weeks7': weekArr[6],'weeks8': weekArr[7],'weeks9': weekArr[8],'weeks10': weekArr[9],'weeks11': weekArr[10],'weeks12': weekArr[11],'weeks13': weekArr[12],'weeks14': weekArr[13],'weeks15': weekArr[14]},  
+				async: false,
+				success: function(JSON){
+					if(JSON.length == 1){
+						weekID = JSON[0].weekid;
+						weekBool = false;
+					}
+				}
+			});
+			if (weekBool){
+				$.ajax({
+					type: "GET",
+					url: "POSTnewWeek.php",
+					async: false,
+					data: {'weeks1': weekArr[0],'weeks2': weekArr[1],'weeks3': weekArr[2],'weeks4': weekArr[3],'weeks5': weekArr[4],'weeks6': weekArr[5],'weeks7': weekArr[6],'weeks8': weekArr[7],'weeks9': weekArr[8],'weeks10': weekArr[9],'weeks11': weekArr[10],'weeks12': weekArr[11],'weeks13': weekArr[12],'weeks14': weekArr[13],'weeks15': weekArr[14]},
+				});
+				$.ajax({
+					type: "GET",
+					url: "GETlatestWeekId.php",
+					dataType: "json",
+					async: false,
+					success: function(JSON){
+						weekID = JSON[0].weekid;
+					}
+				});
+			}		
+
+			var i = 0;
+			do{
+				//post new request
+				$.ajax({
+					type: "GET",
+					url: "POSTnewRequest.php",
+					async: false,
+					data: {'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':roomsQueue.length , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value)},
+				});
+				i++;
+				// //get latest request id
+				var lReq = 0;
+				$.ajax({
+					type: "GET",
+					url: "GETlatestRequestID.php",
+					dataType: "json",
+					async: false,
+					success: function(JSON){
+						lReq = JSON[0].requestid;
+					}
+				});
+
+				if (preferredRoom ==1){
+					for(var j =0; j < roomsNamesQueue.length;j++){
+						$.ajax({
+							type: "GET",
+							url: "POSTroomBooking.php",
+							async: false,
+							data: {'requestid':lReq, 'room':roomsNamesQueue[j], 'modulecode':(document.getElementById("modCodeSelect").value)}
+						});
+					}
+				}
+				else{
+					$.ajax({
+						type: "GET",
+						url: "POSTroomBooking.php",
+						async: false,
+						data: {'requestid':lReq, 'room':"NULL", 'modulecode':(document.getElementById("modCodeSelect").value)}
+					});
+				}
+				
+			}
+			while(i<DPTArray.length);
+			
+			if(redirectBool){
+				alert("bye bye");
+				window.location.replace("viewRequests.php");
+			}
+			else{
+				alert("same");
+				window.location.replace("addRequests.php");
+			}
+		}
+		
         </script>
     </head>
 
@@ -407,7 +688,8 @@
                 <select id="modCodeSelect" name="modCodeSelect" class="modChooser" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected></option></select></br>
             </div>
 
-            <div class="contentBox" id="roomActionsBox"></div>
+            
+            <!--<div class="contentBox" id="roomActionsBox"></div>-->
 
             <div class="contentBox" id="roomSelectorBox"></div>
 
@@ -449,8 +731,8 @@
 			</div>
             <div class="contentBox" id="formControlsBox">
 				<form>
-                    <input type="button" value="Submit" onclick="selectedPeriods()">  <!--changed to button from submit  for testing purposes-->
-                    <input type="button" value="Submit & Add Another" onclick="timetableGetter()"> <!-- changed to test aswell -->
+                    <input type="button" value="Submit" onclick="Submit(true)">  <!--changed to button from submit  for testing purposes-->
+                    <input type="button" value="Submit & Add Another" onclick="Submit(false)"> <!-- changed to test aswell -->
                     <input type="button" value="Clear Form">
                 </form>
             </div>
