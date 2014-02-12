@@ -350,9 +350,88 @@
 			$("roomsList").empty();// empties current rooms list
 			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";
 			if (specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 && specBoolArray[11]=="ANY"){
-			}else{SQLRoom  +=" WHERE ";}
-			//SQLRoom += "(qualityroom = " + specBoolArray[0] + ") AND "; 
-			// if(specBoolArray[1]==1){
+			
+			}
+			else{
+				SQLRoom  +=" WHERE";
+			}
+			//counter to record number of "ANDS" to add
+			counter = 0;
+			for(var i=0;i<9;i++){
+				if(specBoolArray[i]==1){
+					counter ++;
+				}
+			}
+			if(specBoolArray[0] ==1){
+				SQLRoom += " (qualityroom = " + specBoolArray[0] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[1] ==1){
+				SQLRoom += " (wheelchair = " + specBoolArray[1] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[2] ==1){
+				SQLRoom += " (dataprojector = " + specBoolArray[2] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[3] ==1){
+				SQLRoom += " (doubleprojector = " + specBoolArray[3] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[4] ==1){
+				SQLRoom += " (visualiser = " + specBoolArray[4] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[5] ==1){
+				SQLRoom += " (videodvdbluray = " + specBoolArray[5] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[6] ==1){
+				SQLRoom += " (computer = " + specBoolArray[6] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[7] ==1){
+				SQLRoom += " (whiteboard = " + specBoolArray[7] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if(specBoolArray[8] ==1){
+				SQLRoom += " (chalkboard = " + specBoolArray[8] + ") ";
+				if(counter>1){
+					SQLRoom += "AND";
+					counter--;
+				}
+			}
+			if (specBoolArray[11] != "ANY"){ 
+				SQLRoom += " AND (location = '" + specBoolArray[11] + "')";
+			}
+			if (sort==true){
+				SQLRoom +=" ORDER BY capacity"
+			}
+			//if(specBoolArray[1]==1){
 				// if(SQLRoom.search("AND")!=-1){SQLRoom  += "(wheelchair = " + specBoolArray[1] + ")";}
 				// else{SQLRoom  += " AND (wheelchair = " + specBoolArray[1] + ")";}
 			// }
@@ -383,8 +462,6 @@
 				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(location = '" + specBoolArray[11] + "')";}
 				// else{SQLRoom += " AND (location = '" + specBoolArray[11] + "')"}
 			// }
-			// if (sort==true){SQLRoom +=" ORDER BY capacity"}
-			alert(SQLRoom);
 			wrRoomsList();	
 		}
 		//-------validation
@@ -408,7 +485,6 @@
 			$.get("GETbookedRooms.php",{roomsarray: selectedRooms},function(JSON){});
 		}
 		function countText(){
-			//alert(280- document.getElementById("ORE").value.length);
 			document.getElementById("charToGo").innerHTML = (280 - document.getElementById("ORE").value.length) + " Characters remaining"
 			if (document.getElementById("ORE").value.length >= 280){
 				document.getElementById("ORE").value=document.getElementById("ORE").value.substring(0,280);
@@ -569,7 +645,7 @@
 						type: "GET",
 						url: "POSTroomBooking.php",
 						async: false,
-						data: {'requestid':lReq, 'room':NULL, 'modulecode':(document.getElementById("modCodeSelect").value)}
+						data: {'requestid':lReq, 'room':"NULL", 'modulecode':(document.getElementById("modCodeSelect").value)}
 					});
 				}
 				
