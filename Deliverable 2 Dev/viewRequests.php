@@ -39,7 +39,7 @@
 				type: "GET",
 				dataType: "json",
 				url: "GETallPreferences.php",
-				//data: username from dan,
+				//data: {'username': $_session['username']},
 				success: function(JSON){
 					userPrefHeader1 = JSON[0].header1;
 					userPrefHeader2 = JSON[0].header2;
@@ -59,6 +59,7 @@
                 type: "GET",
                 dataType: "json",
                 url: "GETallRequests.php",
+				//data: {'username': $_session['username']},
                 success: function(JSON){
                     var codeStr = "";
                     codeStr += '<table id="RequestsTable">';
@@ -82,7 +83,7 @@
                     for(var i=0;i<JSON.length;i++){
                         codeStr += '<tr>';
 						for (var h=0;h<6;h++){
-							var starttime = JSON[i].period + 8;
+							var starttime = parseInt(JSON[i].period) + 8;
 							if (starttime == 9)
 								starttime = "0" + starttime;
 							starttime = starttime + ":00";
