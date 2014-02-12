@@ -31,7 +31,6 @@
 		var userPrefHeader4 = "";
 		var userPrefHeader5 = "";
 		var userPrefHeader6 = "";
-		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		
 		function getUserPrefs(){
@@ -39,7 +38,7 @@
 				type: "GET",
 				dataType: "json",
 				url: "GETallPreferences.php",
-				//data: {'username': $_session['username']}
+				//data: {'username': $_session['username']},
 				success: function(JSON){
 					userPrefHeader1 = JSON[0].header1;
 					userPrefHeader2 = JSON[0].header2;
@@ -59,7 +58,7 @@
                 type: "GET",
                 dataType: "json",
                 url: "GETallRequests.php",
-				//data: {'username': $_session['username']}
+				//data: {'username': $_session['username']},
                 success: function(JSON){
                     var codeStr = "";
                     codeStr += '<table id="RequestsTable">';
@@ -77,7 +76,8 @@
 						countersort += 1;
 					}
                     codeStr += '    <th onclick="sortTable(6)">Details</th>';
-                    codeStr += '    <th onclick="sortTable(7)">Status</th>';
+                    codeStr += '    <th onclick="sortTable(7)">Add Similar</th>';
+                    codeStr += '    <th onclick="sortTable(8)">Status</th>';
                     codeStr += '</tr>';
 
                     for(var i=0;i<JSON.length;i++){
@@ -137,11 +137,17 @@
 							else if(viewHeaders[h] == "21")
 								codeStr += '    	<td>' + JSON[i].chalkboard + '</td>';
 						}
-						codeStr += '    	<td><input type="button" class="detailsButton" value="Details" onclick="showDetails(' + JSON[i].requestid + ')"></input></td>';
+							
+						
+						
+                        codeStr += '    	<td><input type="button" class="detailsButton" value="Details" onclick="showDetails(' + JSON[i].requestid + ')"></input></td>';
+                        codeStr += '    	<td><input type="button" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
+                        codeStr += '    	<td><input type="button" value="AddSimilar" onclick="addSimilarRequest(' + JSON[i].modulecode + JSON[i].moduletitle + JSON[i].noofstudents + ')"></td>';
                         codeStr += '    	<td>' + JSON[i].requeststatus + '</td>';
-                        codeStr += '	</tr>';
+						codeStr += '	</tr>';
                     }
                     codeStr += "</table>";
+					
 
                     //clears and writes table into container
                     // UPDATE: empty function produced 'false' onscreen when already empty
@@ -152,13 +158,48 @@
         }
 
         function showDetails(requestID){
-
-            $.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
-                alert("test!!\n requestsID: " + JSON[0].requestid + "\n" + "Duration: " + JSON[0].duration + "\n" + "NO. Students: " + JSON[0].noofstudents + "\n etc....");
+			
+			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
+				
+				$("#detailsBox").empty();
+				
+				var codeStl = "<div>";
+				
+				codeStl += "<td>" + "Request ID: " + JSON[0].requestid + "</br></td>";
+				codeStl += "<td>" + "Duration: " + JSON[0].duration + "</br></td>";
+				codeStl += "<td>" + "No. Students: " + JSON[0].noofstudents + "</br></td>";
+				codeStl += "<td>" + "No. Rooms: " + JSON[0].noofrooms + "</br></td>";
+				codeStl += "<td>" + "Year: " + JSON[0].year + "</br></td>";
+				codeStl += "<td>" + "Quality Room: " + JSON[0].qualityroom + "</br></td>";
+				codeStl += "</div>";
+				
+				$("#detailsBox").append(codeStl);
+				
+				
             }, 'json');
+			
+        }
+		
+		function editRequest(requestID){
+			//Post into AddRequestTabe.php the information to fill all their selection boxes with this requestID's data.
+			
+		}
+		
+		function addSimilarRequest(modulecode, modluetitle, capacity){
+			//Post into AddRequestTabe.php the information to fill module code, module title and capacity boxes with this requestID's data.
+			// var gatherValues = new Array();
+			// gatherValues[0] = modulecode;
+			// gatherValues[1] = moduletitle;
+			// gatherValues[2] = capacity;
+			// $.ajax({
+				// type: "GET", 
+				// url: "AddSimilar.php",
+				// data: {'values': gatherValues}
+			// });
 		}
 
 		//Sort functions. Asc, Desc alternating. Bubble sort.
+		
 		function sortTable(colnumber){
 			//Fill 2D array with each row of table.
 			var value=new Array();
@@ -214,9 +255,12 @@
 				codeStr += '	<th onclick="sortTable(' + countersort + ')">' + headersArray[viewHeaders[z]] + '</th>';
 				countersort += 1;
 			}
+			
+
 			codeStr += '    <th onclick="sortTable(6)">Details</th>';
-			codeStr += '    <th onclick="sortTable(7)">Status</th>';
-			codeStr += '</tr>';
+			codeStr += '    <th onclick="sortTable(7)">Add Similar</th>';
+			codeStr += '    <th onclick="sortTable(8)">Status</th>';
+            codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
 				codeStr += '	<tr>';
 				codeStr += '    	<td>' + value[l][0] + '</td>';
@@ -234,6 +278,7 @@
 			document.getElementById("tableBox").innerHTML = "";
 			document.getElementById("tableBox").innerHTML = codeStr;
 		}
+		
         </script>
     </head>
 
@@ -248,10 +293,11 @@
             </ul>
         </div>
         <div id="pagewrap">
-            <div class="contentBox" id="searchBox"></div>
-
-            <div class="contentBox" id="filterBox"></div>
-
+            <div class="contentBox" id="searchBox">
+			</div>
+            <div class="contentBox" id="detailsBox">
+			
+			</div>
             <div class="contentBox" id="roundsBox"></div>
 
 
