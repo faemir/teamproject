@@ -489,8 +489,9 @@
 		color: #431367;
 		
 	}
-	#charToGo
+	#charToGo, #cCR
 	{
+		width:100%;
 		font-size: 12px;
 		color: #B32561;
 		text-align:right;
