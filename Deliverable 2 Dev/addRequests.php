@@ -440,6 +440,9 @@
 					counter ++;
 				}
 			}
+			if (specBoolArray[11]!="ANY"){
+				counter ++;
+			}
 			if(specBoolArray[0] ==1){
 				SQLRoom += " (qualityroom = " + 1 + ") ";
 				if(counter>1){
@@ -504,13 +507,14 @@
 				}
 			}
 			if (specBoolArray[11] != "ANY"){ 
-				SQLRoom += " AND (location = '" + specBoolArray[11] + "')";
+				SQLRoom += " (location = '" + specBoolArray[11] + "')";
 			}
 			if (sort==true){
 				SQLRoom +=" ORDER BY capacity"
 			}else{
 				SQLRoom +=" ORDER BY roomid"
 			}
+			//alert(SQLRoom);
 			wrRoomsList();
 			if (!type){
 				EmptyRoom();
@@ -695,11 +699,11 @@
 						lReq = JSON[0].requestid;
 					}
 				});
-				alert(preferredRoom==1);
+				//alert(preferredRoom==1);
 				if (preferredRoom ==1){
-					alert(roomsNamesQueue.length);
+					//alert(roomsNamesQueue.length);
 					for(var j =0; j < roomsNamesQueue.length;j++){
-						alert(j);
+						//alert(j);
 						$.ajax({
 							type: "GET",
 							url: "POSTroomBooking.php",
