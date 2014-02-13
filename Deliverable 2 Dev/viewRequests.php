@@ -10,13 +10,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel='stylesheet' type='text/css' href='cssTimetable.css'>
         <title>View Current Requests</title>
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
         //onload ----------------------------------------------------------------//
 		$(document).ready(function(){getUserPrefs();});
         $(document).ready(function(){wrRequestsTable();});
-
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -32,16 +30,14 @@
 		var userPrefHeader4 = "";
 		var userPrefHeader5 = "";
 		var userPrefHeader6 = "";
+		var lastHead ="";
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
-		
 		function getUserPrefs(){
 			$.ajax({
 				type: "GET",
 				dataType: "json",
 				url: "GETallPreferences.php",
-
 				//data: {'username': $_session['username']},
-
 				success: function(JSON){
 					userPrefHeader1 = JSON[0].header1;
 					userPrefHeader2 = JSON[0].header2;
@@ -51,24 +47,18 @@
 					userPrefHeader6 = JSON[0].header6;
 				}
 			});
-
 		}
-		
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
-
-        function wrRequestsTable(type){
+		function wrRequestsTable(type){
             //writes and populates Requests table. needs preferences input
-			
 			var searchval = document.getElementById("search").value;
 			var semsval = "0";
 			if(type==""){
 				search = " ";
 			}
-			
 			if(document.getElementById("semester1").checked){semsval = '1'};
 			if(document.getElementById("semester2").checked){semsval = '2'};
-			if(document.getElementById("semester0").checked){semsval = '0';}
-			
+			if(document.getElementById("semester0").checked){semsval = '0'};
 			$("#tableBox").empty();
 			$.ajax({
                 type: "GET",
@@ -80,8 +70,7 @@
                     var codeStr = "";
                     codeStr += '<table id="RequestsTable">';
                     codeStr += '<tr id='+i+'>';
-
-                    //Added sorting of th's
+					//Added sorting of th's
 					viewHeaders[0] = userPrefHeader1;
 					viewHeaders[1] = userPrefHeader2;
 					viewHeaders[2] = userPrefHeader3;
@@ -90,13 +79,13 @@
 					viewHeaders[5] = userPrefHeader6;
 					var countersort = 0;
 					for (var z=0;z < viewHeaders.length;z++){
-						codeStr += '	<th onclick="sortTable(' + countersort + ')">' + headersArray[viewHeaders[z]] + '</th>';
+						codeStr += '	<th onclick="sortTable(' + countersort + ',this)" id="h'+countersort+'" class="tableH">' + headersArray[viewHeaders[z]] + '</th>';
 						countersort += 1;
 					}
-                    codeStr += '    <th onclick="sortTable(6)">Details</th>';
-                    codeStr += '    <th onclick="sortTable(7)">Edit</th>';
-                    codeStr += '    <th onclick="sortTable(8)">Add Similar</th>';
-                    codeStr += '    <th onclick="sortTable(9)">Status</th>';
+                    codeStr += '    <th onclick="sortTable(6,this)" id="h6" class="tableH">Details</th>';
+                    codeStr += '    <th onclick="sortTable(7,this)" id="h7" class="tableH">Edit</th>';
+                    codeStr += '    <th onclick="sortTable(8,this)" id="h8" class="tableH">Add Similar</th>';
+                    codeStr += '    <th onclick="sortTable(9,this)" id="h9" class="tableH">Status</th>';
                     codeStr += '</tr>';
 					if(JSON.length == 0){
 						codeStr += '<tr class="requestsRow">';
@@ -105,9 +94,7 @@
 					}
 					else{
 						for(var i=0;i<JSON.length;i++){
-
 							codeStr += '<tr class="requestsRow">';
-
 							for (var h=0;h<6;h++){
 								var starttime = parseInt(JSON[i].period) + 8;
 								if (starttime == 9)
@@ -117,7 +104,6 @@
 								if (endtime == 9)
 									endtime = "0" + endtime;
 								endtime = endtime + ":50";
-								
 								if(viewHeaders[h] == "0")
 									codeStr += '    	<td>' + JSON[i].modulecode + '</td>';
 								else if(viewHeaders[h] == "1")
@@ -163,112 +149,89 @@
 								else if(viewHeaders[h] == "21")
 									codeStr += '    	<td>' + JSON[i].chalkboard + '</td>';
 							}
-								
 							codeStr += '    	<td><input type="button" class="detailsButton" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
-							
 							codeStr += '    	<td><input type="button" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td><input type="button" value="+" onclick="addSimilarRequest(' + JSON[i].modulecode + ','+ JSON[i].moduletitle +','+ JSON[i].noofstudents + ')"></td>';
-
+							codeStr += '    	<td><input type="button" value="+" onclick="addSimilarRequest(' + JSON[i].requestid + ')"></td>';
 							codeStr += '    	<td>' + JSON[i].requeststatus + '</td>';
 							codeStr += '	</tr>';
 						}
 					}
                     codeStr += "</table>";
-                    //clears and writes table into container
-                    // UPDATE: empty function produced 'false' onscreen when already empty
+                    //Writes table into div tag
                     $("#tableBox").append(codeStr);
                 }
             });
         }
-
-
-
+		
 		function showDetails(requestID,button){
-
-			
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
-				
 				$("#detailsBox").empty();
-				
 				var codeStl = "<div>";
-
-
 				codeStl += "<td>" + "Request ID: " + JSON[0].requestid + "</br></td>";
 				codeStl += "<td>" + "Duration: " + JSON[0].duration + "</br></td>";
 				var starttime = parseInt(JSON[0].period) + 8;
 				if (starttime == 9)
-								starttime = "0" + starttime;
-							starttime = starttime + ":00";
-							var endtime = parseInt(JSON[0].period) + parseInt(JSON[0].duration) + 7;
-							if (endtime == 9)
-								endtime = "0" + endtime;
-							endtime = endtime + ":50";
+					starttime = "0" + starttime;
+				starttime = starttime + ":00";
+				var endtime = parseInt(JSON[0].period) + parseInt(JSON[0].duration) + 7;
+				if (endtime == 9)
+					endtime = "0" + endtime;
+				endtime = endtime + ":50";
 				codeStl += "<td>" + "Start Time: " + starttime + "</br></td>";
 				codeStl += "<td>" + "End Time: " + endtime + "</br></td>";
 				codeStl += "<td>" + "No. Students: " + JSON[0].noofstudents + "</br></td>";
 				codeStl += "<td>" + "No. Rooms: " + JSON[0].noofrooms + "</br></td>";
-							 if(JSON[0].preferredrooms==1){
-				 codeStl += "<td>" + "Preferred room: "+ JSON[0].roomid +"</br></td>";}
-				
+				if(JSON[0].preferredrooms==1){
+					codeStl += "<td>" + "Preferred room: "+ JSON[0].roomid +"</br></td>";}
 				codeStl += "<td>" + "Year: " + JSON[0].year + "</br></td>";
-							if(JSON[0].qualityroom==1){
-				codeStl += "<td>" + "Quality Room" + "</br></td>";}
+				if(JSON[0].qualityroom==1){
+					codeStl += "<td>" + "Quality Room" + "</br></td>";}
 				if(JSON[0].wheelchairaccess==1){
-				codeStl += "<td>" + "Wheelchair Access" + "</br></td>";}
+					codeStl += "<td>" + "Wheelchair Access" + "</br></td>";}
 				if(JSON[0].dataprojector==1){
-				codeStl += "<td>" + "Data Projector" + "</br></td>";}
+					codeStl += "<td>" + "Data Projector" + "</br></td>";}
 				if(JSON[0].doubleprojector==1){
-				codeStl += "<td>" + "Double Projector" + "</br></td>";}
+					codeStl += "<td>" + "Double Projector" + "</br></td>";}
 				if(JSON[0].visualiser==1){
-				codeStl += "<td>" + "Visualiser" + "</br></td>";}
+					codeStl += "<td>" + "Visualiser" + "</br></td>";}
 				codeStl += "</div>";
 				if(JSON[0].videodvdbluray==1){
-				codeStl += "<td>" + "Video/DVD/Bluray" + "</br></td>";}
+					codeStl += "<td>" + "Video/DVD/Bluray" + "</br></td>";}
 				if(JSON[0].computer==1){
-				codeStl += "<td>" + "Computer" + "</br></td>";}
+					codeStl += "<td>" + "Computer" + "</br></td>";}
 				if(JSON[0].whiteboard==1){
-				codeStl += "<td>" + "White Board" + "</br></td>";}
+					codeStl += "<td>" + "White Board" + "</br></td>";}
 				if(JSON[0].chalkboard==1){
-				codeStl += "<td>" + "Chalk Board" + "</br></td>";}
+					codeStl += "<td>" + "Chalk Board" + "</br></td>";}
 				if(JSON[0].nearestroom==1){
-				codeStl += "<td>" + "Nearest Room" + "</br></td>";}
-
-				
+					codeStl += "<td>" + "Nearest Room" + "</br></td>";}
 				$("#detailsBox").append(codeStl);
-				
-				
-            }, 'json');
-
+			}, 'json');
 
 			$(button).parent().parent().toggleClass('requestsRowClk');
-	
-        }
+		}
 		
 		function editRequest(requestID){
-			//Post into AddRequestTabe.php the information to fill all their selection boxes with this requestID's data.
-			
+			//Post into AddRequestTable.php the requestID's data.
+			$.ajax({
+				type: "GET", 
+				url: "POSTeditRequest.php",
+				data: {'id': requestID}
+			});
 		}
 		
-		function addSimilarRequest(modulecode, modluetitle, capacity){
-			//Post into AddRequestTabe.php the information to fill module code, module title and capacity boxes with this requestID's data.
-			// var gatherValues = new Array();
-			// gatherValues[0] = modulecode;
-			// gatherValues[1] = moduletitle;
-			// gatherValues[2] = capacity;
-			// $.ajax({
-				// type: "GET", 
-				// url: "AddSimilar.php",
-				// data: {'values': gatherValues}
-			// });
+		function addSimilarRequest(requestID){
+			//Post into AddRequestTable.php the requestID's data.
+			$.ajax({
+				type: "GET", 
+				url: "POSTaddSimilar.php",
+				data: {'id': requestID}
+			});
 
 		}
 			
-			
-
-
 		//Sort functions. Asc, Desc alternating. Bubble sort.
-		
-		function sortTable(colnumber){
+		function sortTable(colnumber,JsonObj){
 			//Fill 2D array with each row of table.
 			var value=new Array();
 			var rows = RequestsTable.getElementsByTagName('tr');
@@ -320,18 +283,16 @@
 			codeStr += '<tr>';
 			var countersort = 0;
 			for (var z=0;z<viewHeaders.length;z++){
-				codeStr += '	<th onclick="sortTable(' + countersort + ')">' + headersArray[viewHeaders[z]] + '</th>';
+				codeStr += '	<th onclick="sortTable(' + countersort + ')",this)"id="h'+countersort+'" class="tableH">' + headersArray[viewHeaders[z]] + '</th>';
 				countersort += 1;
 			}
-			
-
-			codeStr += '    <th onclick="sortTable(6)">Details</th>';
-            codeStr += '    <th onclick="sortTable(7)">Edit Request</th>';
-			codeStr += '    <th onclick="sortTable(8)">Add Similar Request</th>';
-			codeStr += '    <th onclick="sortTable(9)">Status</th>';
+			codeStr += '    <th onclick="sortTable(6,this)"id="h6" class="tableH">Details</th>';
+            codeStr += '    <th onclick="sortTable(7,this)"id="h7" class="tableH">Edit</th>';
+			codeStr += '    <th onclick="sortTable(8,this)"id="h8" class="tableH">Add Similar</th>';
+			codeStr += '    <th onclick="sortTable(9,this)"id="h9" class="tableH">Status</th>';
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
-				codeStr += '	<tr>';
+				codeStr += '	<tr class="requestsRow">';
 				codeStr += '    	<td>' + value[l][0] + '</td>';
 				codeStr += '    	<td>' + value[l][1] + '</td>';
 				codeStr += '    	<td>' + value[l][2] + '</td>';
@@ -340,15 +301,22 @@
 				codeStr += '    	<td>' + value[l][5] + '</td>';
 				codeStr += '    	<td>' + value[l][6] + '</td>';
 				codeStr += '    	<td>' + value[l][7] + '</td>';
+				codeStr += '    	<td>' + value[l][8] + '</td>';
+				codeStr += '    	<td>' + value[l][9] + '</td>';
 				codeStr += '	</tr>';
 			}
 			codeStr += '</table>';
 			//Empty and refill table's div tag.
 			document.getElementById("tableBox").innerHTML = "";
 			document.getElementById("tableBox").innerHTML = codeStr;
+			// if (lastHead!=""){
+				// $('#'+lastHead).toggleClass('tableH');
+			// }
+			// lastHead=$(JsonObj).parent().parent().attr('id');
+			// alert($(JsonObj).parent().parent().attr('id'));
+			$(JsonObj).parent().parent().toggleClass('tableHClick');
 		}
-		
-        </script>
+		</script>
     </head>
 
     <body>
@@ -364,36 +332,34 @@
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
-
 			<input type="text" name="search" id="search" onkeyup="wrRequestsTable(colSelect.value)" />
 			<select id="colSelect" name="colSelect" onclick="" onchange="">
-			<option value="">Search by</option>
-			<option value="0">Module Code</option>
-			<option value="1">Module Title</option>
-			<option value="2">Day</option>
-			<option value="3">Status</option>
-			<option value="4">Period</option>
-			<option value="5">Duration</option>
-			<option value="6">Priority</option>
-			<option value="7">No of Students</option>
-			<option value="8">Quality Room</option>
-			<option value="9">Preferred Room</option>
-			<option value="11">No of Rooms</option>
-			<option value="12">Wheelchair Access</option>
-			<option value="13">Data Projector</option>
-			<option value="14">Double Projector</option>
-			<option value="15">Visualiser</option>
-			<option value="16">Video/DVD/Bluray</option>
-			<option value="17">Computer</option>
-			<option value="18">White Board</option>
-			<option value="19">Chalk Board</option>
+				<option value="">Search by</option>
+				<option value="0">Module Code</option>
+				<option value="1">Module Title</option>
+				<option value="2">Day</option>
+				<option value="3">Status</option>
+				<option value="4">Period</option>
+				<option value="5">Duration</option>
+				<option value="6">Priority</option>
+				<option value="7">No of Students</option>
+				<option value="8">Quality Room</option>
+				<option value="9">Preferred Room</option>
+				<option value="11">No of Rooms</option>
+				<option value="12">Wheelchair Access</option>
+				<option value="13">Data Projector</option>
+				<option value="14">Double Projector</option>
+				<option value="15">Visualiser</option>
+				<option value="16">Video/DVD/Bluray</option>
+				<option value="17">Computer</option>
+				<option value="18">White Board</option>
+				<option value="19">Chalk Board</option>
 			</select>
 			</br>
 			<label id="semLabel">Semester</label>
 			<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable('')" value="1"/><label>1</label>
 			<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable('')" value="2"/><label>2</label>
 			<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable('')" value="0"/><label>Both</label>
-
 			</div>
             <div class="contentBox" id="detailsBox">
 			</div>

@@ -7,12 +7,17 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script type='text/javascript'>
 			$(document).ready(function(){wrPreferencesTable();});
+			$(document).ready(function(){clearAddBoxes();});
 			var periodValue = "";
 			var timeValue = "";
 			var weeksValue = "";
 			var weekeValue = "";
 			var parkValue = "";
 			var roomsQueue = [];
+			function clearAddBoxes(){
+				document.getElementById("entercode").value="";
+				document.getElementById("entertitle").value="";
+			}
 			//Read and write the preferences from database into the preferences table.
 			function wrPreferencesTable(){
 				$.ajax({
@@ -26,10 +31,10 @@
 						codeStr += '<th colspan=4>Preferences for Viewing Requests</th>';
 						codeStr += '</tr>';
 						codeStr += '<tr>';
-						codeStr += '	<td><input type="Radio" name="park" value="any" id="any">Default Location: Any</td>';
-						codeStr += '	<td><input type="Radio" name="park" value="central" id="central">Default Location: Central Park</td>';
-						codeStr += '	<td><input type="Radio" name="park" value="west" id="west">Default Location: West Park</td>';
-						codeStr += '	<td><input type="Radio" name="park" value="east" id="east">Default Location: East Park</td>';
+						codeStr += '	<td><input type="Radio" name="park" value="ANY" id="ANY">Default Location: Any</td>';
+						codeStr += '	<td><input type="Radio" name="park" value="C" id="C">Default Location: Central Park</td>';
+						codeStr += '	<td><input type="Radio" name="park" value="W" id="W">Default Location: West Park</td>';
+						codeStr += '	<td><input type="Radio" name="park" value="E" id="E">Default Location: East Park</td>';
 						codeStr += '</tr>';
 						codeStr += '<tr>';
 						codeStr += '	<td><input type="Radio" name="time" value="1" id="24hr">24hour Format</td>';
@@ -143,11 +148,7 @@
 						codeStg += '</tr>';
 						codeStg += '<tr>';
 						codeStg += '	<td><input type=checkbox id="18" onclick="clicked(this)" > Video/DVD/Bluray</td>';
-						codeStg += '	<td><input type=checkbox id="1" onclick="clicked(this)" > Module Title</td>';
-						codeStg += '</tr>';
-						codeStg += '<tr>';
 						codeStg += '	<td><input type=checkbox id="19" onclick="clicked(this)" > Computer</td>';
-						codeStg += '	<td><input type=checkbox id="1" onclick="clicked(this)" > Module Title</td>';
 						codeStg += '</tr>';
 						codeStg += '<tr>';
 						codeStg += '	<td><input type=checkbox id="20" onclick="clicked(this)" > White Board</td>';
@@ -222,9 +223,10 @@
 					$.ajax({
 						type: "GET", 
 						url: "POSTcolumnPrefs.php",
-						data: {'h1': h1, 'h2': h2, 'h3': h3, 'h4': h4, 'h5': h5, 'h5': h6}
+						async: false,
+						data: {'h1': h1, 'h2': h2, 'h3': h3, 'h4': h4, 'h5': h5, 'h6': h6},
+						success: function(){alert("Preferences have been saved. \n Feel free to continue.");},
 					});
-					alert("Preferences have been saved. \n Feel free to continue.");
 				}
 				else{
 					alert("Please select 6 columns to be shown in the viewing page.");
@@ -232,19 +234,82 @@
 			}
 			//Posts the selected preferences for use in adding new requests
 			function savePrefs(){
-				periodValue = document.getElementsByName('period').value;
-				timeValue = document.getElementsByName('time').value;
-				weeksValue = document.getElementsByName('weeks').value;
-				weekeValue = document.getElementsByName('weeke').value;
-				parkValue = document.getElementsByName('park').value;
+			
+				for (var i=0;i<document.getElementsByName('period').length;i++){
+					if (document.getElementsByName('period')[i].checked=true)
+						periodValue = document.getElementsByName('period')[i].value;
+				}
+				for (var i=0;i<document.getElementsByName('time').length;i++){
+					if (document.getElementsByName('time')[i].checked=true)
+						timeValue = document.getElementsByName('time')[i].value;
+				}
+				for (var i=0;i<document.getElementsByName('weeks').length;i++){
+					if (document.getElementsByName('weeks')[i].checked=true)
+						weeksValue = document.getElementsByName('weeks')[i].value;
+				}
+				for (var i=0;i<document.getElementsByName('weeke').length;i++){
+					if (document.getElementsByName('weeke')[i].checked=true)
+						weekeValue = document.getElementsByName('weeke')[i].value;
+				}
+				for (var i=0;i<document.getElementsByName('park').length;i++){
+					if (document.getElementsByName('park')[i].checked=true)
+						parkValue = document.getElementsByName('park')[i].value;
+				}
 				//POST values in prefBox to Preferences table
 				$.ajax({
 					type: "GET", 
 					url: "POSTviewingPrefs.php",
-					data: {'per': periodValue, 'hour': timeValue, 'start': weeksValue, 'end': weekeValue, 'location': parkValue}
+					async: false,
+					data: {'per': periodValue, 'hour': timeValue, 'start': weeksValue, 'end': weekeValue, 'location': parkValue},
+					success: function(){alert("Preferences have been saved. \n Feel free to continue.");},
 				});
-				alert("Preferences have been saved. \n Feel free to continue.");
+			}
+			
+			//Checks input of new module and adds to database if valid
+			function addModule(){
+				//Gather data for add
+				var newModuleCode = document.getElementById("entercode").value;
+				var newModuleTitle = document.getElementById("entertitle").value;
+				//var newUsername = $_session['username'];
+				var newUsername = 'admin';
+				var newDepartmentID = "";
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: "GETdepartmentID.php",
+					//data: {'username': $_session['username']},
+					success: function(JSON){
+						newDepartmentID = JSON[0].departmentid;
+					}
+				});
 				
+				//Validation of input
+				var patt1 = /(A|B|C|D|F)$/;
+				var patt2 = /[0-9]{3}$/;
+				
+				if (newModuleCode.substr(0,2) == newDepartmentID){
+					if (patt1.test(newModuleCode.substr(2,1))){
+						if (patt2.test(newModuleCode.substr(3,3))){
+							if (newModuleTitle != ""){
+								//AJAX POST TO ModuleTable
+								$.ajax({
+									type: "GET", 
+									url: "POSTmoduleTable.php",
+									data: {'code': newModuleCode, 'title': newModuleTitle, 'dept': newDepartmentID},
+									success: function(){alert("The new module has been added to the database. \n Feel free to continue.");},
+								});
+							}
+							else{
+								alert("Please enter a valid module title.");}
+						}
+						else{
+							alert("3Please enter a valid module code.");}
+					}
+					else{
+						alert("2Please enter a valid module code.");}
+				}
+				else{
+					alert("1Please enter a valid module code.");}
 			}
 		</script>
     </head>
@@ -263,7 +328,24 @@
         </div>
         <div id="pagewrap">
 			
-			<div class="contentBox" id="userPrefBox"></div>
+			<div class="contentBox" id="userPrefBox">
+			<table>
+				<tr>
+					<td>Add New Module</td>
+				</tr>
+				<tr>
+					<td>Module Code: </td>
+					<td><input type="text" name="entercode" id="entercode"></td>
+				</tr>
+				<tr>
+					<td>Module Title: </td>
+					<td><input type="text" name="entertitle" id="entertitle"></td>
+				</tr>
+				<tr>
+					<td><input type="button" value="Submit" onclick="addModule()"></td>
+				</tr>
+			</table>
+			</div>
 			
             <div class="contentBox" id="prefDemoBox"></div>
 			
