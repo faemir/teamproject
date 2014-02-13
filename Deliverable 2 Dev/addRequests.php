@@ -20,8 +20,15 @@
 
         var hr24format = 0;
 		var periodTime = 1;
+		var startwk = 1;
+		var endwk = 12;
+		var prefLoc = "ANY";
 		
-
+		
+		var editBool = false;
+		var editrequestid = 134;
+		//var $_SESSION["editrequestid"];
+		
 		//pOrT stands for 'Period or Time' - to reflect user preferences
         var pOrTHeader1 = "Period";
 		var pOrTHeader2 = "Times"
@@ -54,13 +61,36 @@
 
 
         //ONLOAD FUNCTIONS -----------------------------------------//
-
+		$(document).ready(function(){GetPrefData()});
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrRoomsList()});
 		$(document).ready(function(){popModulesList(userDepartmentID)});
+		//$(document).ready(function(){addEditedData(requestid)});
+		
 
         //FUNCTIONS --------------------------------------------------//
+		
+		function GetPrefData(){	
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "GETallPreferences.php",
+				async: false,
+				//data: {'username': $_session['username']},
+				success: function(JSON){
+					hr24format = JSON[0].hr24format;
+					periodTime = JSON[0].period;
+					startwk = JSON[0].defaultstartweek;
+					endwk = JSON[0].defaultendweek;
+					prefLoc = JSON[0].defaultlocation;
+					
+				}
+			});
+
+		}
+		
+		
         function wrInputTable(){
 
 			var codeStr = "";
@@ -272,22 +302,11 @@
 		}
 
 
-        function loadDefaultWeeks(){//will change...
-            $("#wk1").prop('checked',true);
-            $("#wk2").prop('checked',true);
-            $("#wk3").prop('checked',true);
-            $("#wk4").prop('checked',true);
-            $("#wk5").prop('checked',true);
-            $("#wk6").prop('checked',true);
-            $("#wk7").prop('checked',true);
-            $("#wk8").prop('checked',true);
-            $("#wk9").prop('checked',true);
-            $("#wk10").prop('checked',true);
-            $("#wk11").prop('checked',true);
-            $("#wk12").prop('checked',true);
-            $("#wk13").prop('checked',false);
-            $("#wk14").prop('checked',false);
-            $("#wk15").prop('checked',false);
+        function loadDefaultWeeks(){
+            for(var i = parseInt(startwk); i < parseInt(endwk)+1; i++){
+				$("#wk" + i).prop('checked',true);
+			}
+            
         }
 
         function getWeeksSelectionArray(){
@@ -425,6 +444,7 @@
 			if (document.getElementById("NER").checked == true){specBoolArray[9] = 1;}
 			specBoolArray[10]=document.getElementById("CAP").value;
 			specBoolArray[11]=document.getElementById("PRK").value;
+			
 			$("roomsList").empty();// empties current rooms list
 			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";
 			if (specBoolArray[0]==0 && specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 && specBoolArray[11]=="ANY"){
@@ -514,7 +534,6 @@
 			}else{
 				SQLRoom +=" ORDER BY roomid"
 			}
-			//alert(SQLRoom);
 			wrRoomsList();
 			if (!type){
 				EmptyRoom();
@@ -542,6 +561,7 @@
 		function getBookedRooms(selectedRooms){
 			$.get("GETbookedRooms.php",{roomsarray: selectedRooms},function(JSON){});
 		}
+		
 		function countText(){
 			document.getElementById("charToGo").innerHTML = (280 - document.getElementById("ORE").value.length) + " Characters remaining"
 			if (document.getElementById("ORE").value.length >= 280){
@@ -593,7 +613,20 @@
 					codeStr += "<td><input type='checkbox' class='specReq' id='NER' onchange='GetRoom(false)'><label for='NER'>Near Previous Room</label></td>";
 					codeStr += "</tr>";
 					codeStr +="<tr><td>Capacity:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onclick='CapacityChange()' onchange='CapacityChange()' onkeypress='CapacityChange()' onkeyup='CapacityChange()'></td></tr>";
-					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom(false)' class='modChooser'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select></td></tr>";
+					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom(false)' class='modChooser'>";
+					if(prefLoc == "ANY"){
+						codeStr +="<option value='ANY' selected>Any</option><option value='E'>East</option><option value='C'>Central</option><option value='W'>West</option>"
+					}
+					if(prefLoc == "E"){
+						codeStr +="<option value='ANY'>Any</option><option value='E' selected>East</option><option value='C'>Central</option><option value='W'>West</option>"
+					}
+					if(prefLoc == "C"){
+						codeStr +="<option value='ANY'>Any</option><option value='E'>East</option><option value='C' selected>Central</option><option value='W'>West</option>"
+					}
+					if(prefLoc == "W"){
+						codeStr +="<option value='ANY'>Any</option><option value='E'>East</option><option value='C'>Central</option><option value='W' selected>West</option>"
+					}
+					codeStr +="</select></td></tr>";
 					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' onkeyup='countText()' id='ORE' placeholder='Type here...'></td></tr>";
 					codeStr +="<tr><td></td><td><label id='charToGo'> </label></td></tr>";
 					codeStr +="<tr><td>Priority:</td><td>";
@@ -614,7 +647,7 @@
 			document.getElementById("modCodeSelect").selectedIndex=modIndex;
 		}
 
-		function Submit(redirectBool){
+		function Submit(redirectBool,eBool){
 		
 			timetableGetter();
 			var weekArr = [];
@@ -685,7 +718,7 @@
 					type: "GET",
 					url: "POSTnewRequest.php",
 					async: false,
-					data: {'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':roomsQueue.length , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value)},
+					data: {'editrequestid': editrequestid,'editBool': eBool,'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':roomsQueue.length , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value)},
 				});
 				i++;
 				// //get latest request id
@@ -700,15 +733,21 @@
 					}
 				});
 				//alert(preferredRoom==1);
+				
+				if(editBool){
+					$.get("POSTdeleteBooking.php", {'editrequestid': editrequestid});
+					lReq = editrequestid;
+				}
+				
 				if (preferredRoom ==1){
-					//alert(roomsNamesQueue.length);
+					
 					for(var j =0; j < roomsNamesQueue.length;j++){
-						//alert(j);
+						
 						$.ajax({
 							type: "GET",
 							url: "POSTroomBooking.php",
 							async: false,
-							data: {'requestid':lReq, 'room':roomsNamesQueue[j], 'modulecode':(document.getElementById("modCodeSelect").value)}
+							data: {'editBool': eBool, 'requestid':lReq, 'room':roomsNamesQueue[j], 'modulecode':(document.getElementById("modCodeSelect").value)}
 						});
 					}
 				}
@@ -724,14 +763,14 @@
 			}
 			while(i<DPTArray.length);
 
- 			if(redirectBool){
+ 			// if(redirectBool){
 				
-				window.location.replace("viewRequests.php");
-			}
-			else{
+				// window.location.replace("viewRequests.php");
+			// }
+			// else{
 				
-				window.location.replace("addRequests.php");
-			}
+				// window.location.replace("addRequests.php");
+			// }
 		}
 		
 		
@@ -800,8 +839,8 @@
             <div class="contentBox" id="formControlsBox">
 				<form>
 
-                    <input type="button" value="Submit" onclick="Submit(true)">  <!--changed to button from submit  for testing purposes-->
-                    <input type="button" value="Submit & Add Another" onclick="Submit(false)"> <!-- changed to test aswell -->
+                    <input type="button" value="Submit" onclick="Submit(true,editBool)">  
+                    <input type="button" value="Submit & Add Another" onclick="Submit(false,editBool)">
 
                     <input type="button" value="Clear Form" onclick="ClrAll()">
                 </form>
