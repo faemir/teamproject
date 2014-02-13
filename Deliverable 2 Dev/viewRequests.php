@@ -30,6 +30,7 @@
 		var userPrefHeader4 = "";
 		var userPrefHeader5 = "";
 		var userPrefHeader6 = "";
+		var lastHead ="";
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUserPrefs(){
 			$.ajax({
@@ -78,13 +79,13 @@
 					viewHeaders[5] = userPrefHeader6;
 					var countersort = 0;
 					for (var z=0;z < viewHeaders.length;z++){
-						codeStr += '	<th onclick="sortTable(' + countersort + ')">' + headersArray[viewHeaders[z]] + '</th>';
+						codeStr += '	<th onclick="sortTable(' + countersort + ',this)" id="h'+countersort+'" class="tableH">' + headersArray[viewHeaders[z]] + '</th>';
 						countersort += 1;
 					}
-                    codeStr += '    <th onclick="sortTable(6)">Details</th>';
-                    codeStr += '    <th onclick="sortTable(7)">Edit</th>';
-                    codeStr += '    <th onclick="sortTable(8)">Add Similar</th>';
-                    codeStr += '    <th onclick="sortTable(9)">Status</th>';
+                    codeStr += '    <th onclick="sortTable(6,this)" id="h6" class="tableH">Details</th>';
+                    codeStr += '    <th onclick="sortTable(7,this)" id="h7" class="tableH">Edit</th>';
+                    codeStr += '    <th onclick="sortTable(8,this)" id="h8" class="tableH">Add Similar</th>';
+                    codeStr += '    <th onclick="sortTable(9,this)" id="h9" class="tableH">Status</th>';
                     codeStr += '</tr>';
 					if(JSON.length == 0){
 						codeStr += '<tr class="requestsRow">';
@@ -150,7 +151,7 @@
 							}
 							codeStr += '    	<td><input type="button" class="detailsButton" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
 							codeStr += '    	<td><input type="button" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td><input type="button" value="+" onclick="addSimilarRequest(' + JSON[i].modulecode + ','+ JSON[i].moduletitle +','+ JSON[i].noofstudents + ')"></td>';
+							codeStr += '    	<td><input type="button" value="+" onclick="addSimilarRequest(' + JSON[i].requestid + ')"></td>';
 							codeStr += '    	<td>' + JSON[i].requeststatus + '</td>';
 							codeStr += '	</tr>';
 						}
@@ -211,26 +212,26 @@
 		}
 		
 		function editRequest(requestID){
-			//Post into AddRequestTabe.php the information to fill all their selection boxes with this requestID's data.
-			
+			//Post into AddRequestTable.php the requestID's data.
+			$.ajax({
+				type: "GET", 
+				url: "POSTeditRequest.php",
+				data: {'id': requestID}
+			});
 		}
 		
-		function addSimilarRequest(modulecode, modluetitle, capacity){
-			//Post into AddRequestTabe.php the information to fill module code, module title and capacity boxes with this requestID's data.
-			// var gatherValues = new Array();
-			// gatherValues[0] = modulecode;
-			// gatherValues[1] = moduletitle;
-			// gatherValues[2] = capacity;
-			// $.ajax({
-				// type: "GET", 
-				// url: "AddSimilar.php",
-				// data: {'values': gatherValues}
-			// });
+		function addSimilarRequest(requestID){
+			//Post into AddRequestTable.php the requestID's data.
+			$.ajax({
+				type: "GET", 
+				url: "POSTaddSimilar.php",
+				data: {'id': requestID}
+			});
 
 		}
 			
 		//Sort functions. Asc, Desc alternating. Bubble sort.
-		function sortTable(colnumber){
+		function sortTable(colnumber,JsonObj){
 			//Fill 2D array with each row of table.
 			var value=new Array();
 			var rows = RequestsTable.getElementsByTagName('tr');
@@ -282,13 +283,13 @@
 			codeStr += '<tr>';
 			var countersort = 0;
 			for (var z=0;z<viewHeaders.length;z++){
-				codeStr += '	<th onclick="sortTable(' + countersort + ')">' + headersArray[viewHeaders[z]] + '</th>';
+				codeStr += '	<th onclick="sortTable(' + countersort + ')",this)"id="h'+countersort+'" class="tableH">' + headersArray[viewHeaders[z]] + '</th>';
 				countersort += 1;
 			}
-			codeStr += '    <th onclick="sortTable(6)">Details</th>';
-            codeStr += '    <th onclick="sortTable(7)">Edit</th>';
-			codeStr += '    <th onclick="sortTable(8)">Add Similar</th>';
-			codeStr += '    <th onclick="sortTable(9)">Status</th>';
+			codeStr += '    <th onclick="sortTable(6,this)"id="h6" class="tableH">Details</th>';
+            codeStr += '    <th onclick="sortTable(7,this)"id="h7" class="tableH">Edit</th>';
+			codeStr += '    <th onclick="sortTable(8,this)"id="h8" class="tableH">Add Similar</th>';
+			codeStr += '    <th onclick="sortTable(9,this)"id="h9" class="tableH">Status</th>';
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
 				codeStr += '	<tr class="requestsRow">';
@@ -308,9 +309,14 @@
 			//Empty and refill table's div tag.
 			document.getElementById("tableBox").innerHTML = "";
 			document.getElementById("tableBox").innerHTML = codeStr;
+			// if (lastHead!=""){
+				// $('#'+lastHead).toggleClass('tableH');
+			// }
+			// lastHead=$(JsonObj).parent().parent().attr('id');
+			// alert($(JsonObj).parent().parent().attr('id'));
+			$(JsonObj).parent().parent().toggleClass('tableHClick');
 		}
-		
-        </script>
+		</script>
     </head>
 
     <body>
