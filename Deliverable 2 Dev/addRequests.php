@@ -394,8 +394,11 @@
 				roomsNamesQueue[i] = roomsNames[roomsQueue[i]];
 			}
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+			AlreadyBooked()
 		}
+		function AlreadyBooked(){
 		
+		}
 		
 		
 		

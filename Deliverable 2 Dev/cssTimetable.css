@@ -131,10 +131,17 @@
 	.tableH
 	{
 		color:#431367;
+		cursor: pointer;
 	}
 	.tableHClick
 	{
 		color: #B32561;
+		cursor: pointer;
+	}
+	.change
+	{
+		background-color: #B32561;
+		border: 3px;
 	}
     /********************* add requests page ********************/
     
@@ -333,7 +340,7 @@
 
     /*** Input Table ***/
     
-     #inputTable
+     #inputTable,.table
         {
         border: 1px solid black;
         width: 100%;
@@ -342,11 +349,15 @@
         
     }
 
-    #inputTable *
+    #inputTable *,.table *
     {
         border: 1px solid black;
         
     }
+	.tabledays
+	{
+		width: 130px;
+	}
  
  
  
