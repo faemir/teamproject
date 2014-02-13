@@ -7,12 +7,17 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script type='text/javascript'>
 			$(document).ready(function(){wrPreferencesTable();});
+			$(document).ready(function(){clearAddBoxes();});
 			var periodValue = "";
 			var timeValue = "";
 			var weeksValue = "";
 			var weekeValue = "";
 			var parkValue = "";
 			var roomsQueue = [];
+			function clearAddBoxes(){
+				document.getElementById("entercode").value="";
+				document.getElementById("entertitle").value="";
+			}
 			//Read and write the preferences from database into the preferences table.
 			function wrPreferencesTable(){
 				$.ajax({
@@ -265,7 +270,8 @@
 				//Gather data for add
 				var newModuleCode = document.getElementById("entercode").value;
 				var newModuleTitle = document.getElementById("entertitle").value;
-				var newUsername = $_session['username'];
+				//var newUsername = $_session['username'];
+				var newUsername = 'admin';
 				var newDepartmentID = "";
 				$.ajax({
 					type: "GET",
@@ -278,30 +284,32 @@
 				});
 				
 				//Validation of input
+				var patt1 = /(A|B|C|D|F)$/;
+				var patt2 = /[0-9]{3}$/;
+				
 				if (newModuleCode.substr(0,2) == newDepartmentID){
-					if (newModuleCode.substr(2,3) == /[ABCDF]$/){
-						if (newModuleCode.substr(3,6) == /^[0-9]{3}$/){
+					if (patt1.test(newModuleCode.substr(2,1))){
+						if (patt2.test(newModuleCode.substr(3,3))){
 							if (newModuleTitle != ""){
-							//AJAX POST TO ModuleTable
-							$.ajax({
-								type: "GET", 
-								url: "POSTmoduleTable.php",
-								async: false,
-								data: {'code': newModuleCode, 'title': newModuleTitle, 'dept': newDepartmentID},
-								success: function(){alert("The new module has been added to the database. \n Feel free to continue.");},
-							});
+								//AJAX POST TO ModuleTable
+								$.ajax({
+									type: "GET", 
+									url: "POSTmoduleTable.php",
+									data: {'code': newModuleCode, 'title': newModuleTitle, 'dept': newDepartmentID},
+									success: function(){alert("The new module has been added to the database. \n Feel free to continue.");},
+								});
 							}
 							else{
 								alert("Please enter a valid module title.");}
 						}
 						else{
-							alert("Please enter a valid module code.");}
+							alert("3Please enter a valid module code.");}
 					}
 					else{
-						alert("Please enter a valid module code.");}
+						alert("2Please enter a valid module code.");}
 				}
 				else{
-					alert("Please enter a valid module code.");}
+					alert("1Please enter a valid module code.");}
 			}
 		</script>
     </head>
