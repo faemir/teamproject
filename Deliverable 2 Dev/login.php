@@ -49,7 +49,7 @@
             <img alt="Home" src="LU-mark-rgb.png">
 
                 <table align="center">
-                    <form action="" method="post">
+                    <form action="auth.php" method="post">
                     <tr>
                         <td><input type="text" placeholder="username" name="user_input"></td>
                     </tr>
@@ -57,13 +57,6 @@
                         <td><input type="password" placeholder="password" name="pass_input" onclick="checkusername();"></td>
                     </form>
                     </tr>
-                    <?php
-                        if (isset($_POST['submit'])){
-                            echo "bob";
-                            $_SESSION['username']=$_GET['user_input'];
-                            $_SESSION['password']=$_GET['pass_input'];
-                        }
-                    ?>
                     <tr>
                         <td><input type="submit" id="submit" name="submit" value="Submit"></td>
                     </tr>
