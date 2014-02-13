@@ -19,18 +19,12 @@ $(document).ready ( function(){
     var userUser = "<?php echo $_SESSION['username']; ?>";
     var userPass = "<?php echo $_SESSION['password']; ?>";
     for(var i=0;i<JSON.length;i++){
-        console.log("in the loop");
         users = JSON[i].username;
         passes = JSON[i].password;
-        console.log(userUser);
-        console.log(userPass);
-        console.log(users);
-        console.log(passes);
         if (users == userUser && passes == userPass)
             auth=true;
         }
         if (auth == true){
-            console.log("authorised");
             window.location.replace("viewRequests.php?" + sessid);
         }
         else {
