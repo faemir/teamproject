@@ -33,15 +33,14 @@ $(document).ready ( function(){
             console.log("authorised");
             window.location.replace("viewRequests.php?" + sessid);
         }
+        else {
+            window.location.replace("login.php?" + sessid)
+
+        }
 		},'JSON');
 });
 </script>
 </head>
 <body>
-<?php
-
-    echo $_SESSION['username'];
-    echo $_SESSION['password'];
-?>
 </body>
 </html>
