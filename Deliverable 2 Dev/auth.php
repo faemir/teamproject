@@ -3,12 +3,14 @@
     ini_set("session.use_only_cookies",0);
     ini_set("session.use_trans_sid",1);
     session_start();
+    $_SESSION['username']=$_POST['user_input'];
+    $_SESSION['password']=$_POST['pass_input'];
 ?>
 <html>
 <head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript">
-function checkusername(){
+$(document).ready ( function(){
     var auth=false;
 		$.get("GETauth.php",function(JSON){
     var sessid = "<?php echo SID ?>";
@@ -32,13 +34,12 @@ function checkusername(){
             window.location.replace("viewRequests.php?" + sessid);
         }
 		},'JSON');
-}
+});
 </script>
 </head>
 <body>
 <?php
-    $_SESSION['username']=$_POST['user_input'];
-    $_SESSION['password']=$_POST['pass_input'];
+
     echo $_SESSION['username'];
     echo $_SESSION['password'];
 ?>
