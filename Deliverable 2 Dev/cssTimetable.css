@@ -128,7 +128,14 @@
 		background: #f0efef;
 		min-height: 0px;
     }
-
+	.tableH
+	{
+		color:#431367;
+	}
+	.tableHClick
+	{
+		color: #B32561;
+	}
     /********************* add requests page ********************/
     
     #basicBox, #roomSelectorBox 
