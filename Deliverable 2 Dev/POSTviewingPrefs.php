@@ -7,7 +7,7 @@
 	$end = $_GET["end"];
 	$location = $_GET["location"];
 	
-	$sql="UPDATE Preferences SET period='$per', hr24format='$hour', defaultstartweek='$start', defaultendweek='$end', defaultlocation='$location' WHERE username='$username'";
+	$sql="UPDATE Preferences SET period=$per, hr24format=$hour, defaultstartweek=$start, defaultendweek=$end, defaultlocation='$location' WHERE username='$username'";
 	include "DBquery.php";
 
 ?>
