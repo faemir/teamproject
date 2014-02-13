@@ -1,9 +1,8 @@
 <?php
-	$code= $_GET["newModuleCode"];
-	$title= $_GET["newModuleTitle"];
-	$dept= $_GET["newDepartmentID"];
-	
-	$sql="INSERT INTO ModuleTable VALUES ($code, $title, $dept)";
+	$code= $_GET["code"];
+	$title= $_GET["title"];
+	$dept= $_GET["dept"];
+	$sql="INSERT INTO ModuleTable VALUES ('$code', '$title', '$dept');";
 	include "DBquery.php";
 
 ?>
