@@ -33,9 +33,9 @@
         var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         var alreadyLoaded = false;
 		var roomsQueue = [];
-
 		var roomsNamesQueue = [];
 		var roomsNames = [];
+		var roomsJSONchecker = true;
 		var sort = false; // for sorting my capacity
 
 		//Selected periods from table - false = not selected.
@@ -120,7 +120,7 @@
 			codeStr += "<input type='button' value='Clear Timetable' onclick='ClrTab()'>"
             $("#inputTableBox").append(codeStr);
         }
-
+//****************************************CLEAR FUNCTIONS
         function ClrTab(){
 			for(var k = 1;k<=pOrTChildren.length;k++){
 				if (mondaySele[k-1]==true)
@@ -140,8 +140,45 @@
 			thursdaySele = [false,false,false,false,false,false,false,false,false];
 			fridaySele = [false,false,false,false,false,false,false,false,false];
 		}
-		
-		
+		function ClrSpec(){
+			document.getElementById("QUR").checked=false;
+			document.getElementById("WHC").checked=false;
+			document.getElementById("DP1").checked=false;
+			document.getElementById("DP2").checked=false;
+			document.getElementById("VIS").checked=false;
+			document.getElementById("VDB").checked=false;
+			document.getElementById("CMP").checked=false;
+			document.getElementById("WHB").checked=false;
+			document.getElementById("CHB").checked=false;
+			document.getElementById("NER").checked=false;
+			document.getElementById("CAP").value=0;
+			document.getElementById("ORE").value="";
+			document.getElementById("PRK").selectedIndex=0;
+			document.getElementById("modTitleSelect").selectedIndex=0;
+			document.getElementById("modCodeSelect").selectedIndex=0;
+			//defaults?
+		}
+		function ClrRoom(){
+			if (roomsJSONchecker){
+				for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
+						document.getElementById("r"+roomsQueue[j]).checked = false;
+				}
+			}
+			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+		}
+		function EmptyRoom(){
+			
+			ClrRoom();
+			roomsQueue = [];
+			roomsNamesQueue = [];
+			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+		}
+		function ClrAll(){
+			ClrRoom();
+			ClrTab();
+			ClrSpec();
+		}
+//****************************************CLEAR COMPLETE
 		//---------------------------------------------------------------------------------------------//
         //onclick for table buttons
         function tableSelect(gridRef){
@@ -280,17 +317,23 @@
                 type: "GET",
                 dataType: "json",
                 url: "GETroomsList.php",
+				async: false,
 				data: {'sqlrooms': SQLRoom},
                 success: function(JSON){
-
                     var codeStr = "";
                     codeStr +="<div id='roomsList'>";
-                    for(var i =0;i<JSON.length;i++){
-                        codeStr += "<span title= 'Building: " + JSON[i].building+"'><input type='checkbox' id='r"+i+"' class='roomSele' onclick='roomClick(this)'><label for='r"+i+"'>" + JSON[i].roomid +" : "+ JSON[i].capacity+  "</label></span></br>";
-                    }
-
-                    codeStr +="</div>";
-					codeStr +="<input type='button' value='Clear' onclick='ClrRoom()'>"; //clearRooms
+					if (JSON.length != 0){
+						roomsJSONchecker=true;
+						for(var i =0;i<JSON.length;i++){
+							codeStr += "<span title= 'Building: " + JSON[i].building+"'><input type='checkbox' id='r"+i+"' class='roomSele' onclick='roomClick(this)'><label for='r"+i+"'>" + JSON[i].roomid +" : "+ JSON[i].capacity+  "</label></span></br>";
+							roomsNames[i] = JSON[i].roomid;
+						}
+					}else{
+						roomsJSONchecker=false;
+						codeStr += "<input type='checkbox' id='r1' class='roomSele' onclick=''><label for='r1'>There are no rooms for your requirements, please try again</label>";
+					}
+					codeStr +="</div>";
+					codeStr +="<input type='button' value='Clear' onclick='EmptyRoom()'>"; //clearRooms
 
 
                     if (sort==false){
@@ -299,16 +342,27 @@
 					}else{
 						codeStr +="<input type='button' value='Sort By Building ID' onclick='SortCap()'>"; //clearRooms
 					}
+					codeStr +="<label id='cCR'>" + roomsNamesQueue.length + " Rooms Selected</label>";
 					$("#roomSelectorBox").append(codeStr);
+					for(var i =0;i<roomsNamesQueue.length;i++){
+						for(var j=0; j<JSON.length;j++){
+							if(roomsNamesQueue[i]==JSON[j].roomid){
+								document.getElementById("r"+j).checked=true;
+								roomsQueue[i]=j;
+							}
+						}
+					}
                 }  
             });
+			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
         }
 		function SortCap(){
 			if (sort==false){
 				sort=true;}
 			else{
 				sort=false;}
-			GetRoom();
+			
+			GetRoom(true);
 		}
 
 
@@ -334,21 +388,20 @@
 					roomsQueue[j]=roomsQueue[j+1];
 				}
 				roomsQueue.length = roomsQueue.length-1;
+				roomsNamesQueue.length = roomsNamesQueue.length-1;
 			}
-			//alert(roomsQueue);
+			for(var i = 0; i<roomsQueue.length;i++){
+				roomsNamesQueue[i] = roomsNames[roomsQueue[i]];
+			}
+			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 		}
 		
 		
-		function ClrRoom(){
-			for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
-					document.getElementById("r"+roomsQueue[j]).checked = false;
-			}
-			roomsQueue = [];
-		}
+		
 		
 		//-------------Change Room list accordingly
-		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";// declares SQL for room
-		function GetRoom(){
+		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails ORDER BY roomid";// declares SQL for room
+		function GetRoom(type){
 
 			specBoolArray = [0,0,0,0,0,0,0,0,0,0,0,0];
 
@@ -372,10 +425,9 @@
 			if (document.getElementById("NER").checked == true){specBoolArray[9] = 1;}
 			specBoolArray[10]=document.getElementById("CAP").value;
 			specBoolArray[11]=document.getElementById("PRK").value;
-			ClrRoom();
 			$("roomsList").empty();// empties current rooms list
 			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";
-			if (specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 && specBoolArray[11]=="ANY"){
+			if (specBoolArray[0]==0 && specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 && specBoolArray[11]=="ANY"){
 			
 			}
 			else{
@@ -388,76 +440,86 @@
 					counter ++;
 				}
 			}
+			if (specBoolArray[11]!="ANY"){
+				counter ++;
+			}
 			if(specBoolArray[0] ==1){
-				SQLRoom += " (qualityroom = " + specBoolArray[0] + ") ";
+				SQLRoom += " (qualityroom = " + 1 + ") ";
 				if(counter>1){
 					SQLRoom += "AND";
 					counter--;
 				}
 			}
 			if(specBoolArray[1] ==1){
-				SQLRoom += " (wheelchair = " + specBoolArray[1] + ") ";
+				SQLRoom += " (wheelchairaccess = " + 1 + ") ";
 				if(counter>1){
 					SQLRoom += "AND";
 					counter--;
 				}
 			}
 			if(specBoolArray[2] ==1){
-				SQLRoom += " (dataprojector = " + specBoolArray[2] + ") ";
+				SQLRoom += " (dataprojector = " + 1 + ") ";
 				if(counter>1){
 					SQLRoom += "AND";
 					counter--;
 				}
 			}
 			if(specBoolArray[3] ==1){
-				SQLRoom += " (doubleprojector = " + specBoolArray[3] + ") ";
+				SQLRoom += " (doubleprojector = " + 1 + ") ";
 				if(counter>1){
 					SQLRoom += "AND";
 					counter--;
 				}
 			}
 			if(specBoolArray[4] ==1){
-				SQLRoom += " (visualiser = " + specBoolArray[4] + ") ";
+				SQLRoom += " (visualiser = " + 1 + ") ";
 				if(counter>1){
 					SQLRoom += "AND";
 					counter--;
 				}
 			}
 			if(specBoolArray[5] ==1){
-				SQLRoom += " (videodvdbluray = " + specBoolArray[5] + ") ";
+				SQLRoom += " (videodvdbluray = " + 1 + ") ";
 				if(counter>1){
 					SQLRoom += "AND";
 					counter--;
 				}
 			}
 			if(specBoolArray[6] ==1){
-				SQLRoom += " (computer = " + specBoolArray[6] + ") ";
+				SQLRoom += " (computer = " + 1 + ") ";
 				if(counter>1){
 					SQLRoom += "AND";
 					counter--;
 				}
 			}
 			if(specBoolArray[7] ==1){
-				SQLRoom += " (whiteboard = " + specBoolArray[7] + ") ";
+				SQLRoom += " (whiteboard = " + 1 + ") ";
 				if(counter>1){
 					SQLRoom += "AND";
 					counter--;
 				}
 			}
 			if(specBoolArray[8] ==1){
-				SQLRoom += " (chalkboard = " + specBoolArray[8] + ") ";
+				SQLRoom += " (chalkboard = " + 1 + ") ";
 				if(counter>1){
 					SQLRoom += "AND";
 					counter--;
 				}
 			}
 			if (specBoolArray[11] != "ANY"){ 
-				SQLRoom += " AND (location = '" + specBoolArray[11] + "')";
+				SQLRoom += " (location = '" + specBoolArray[11] + "')";
 			}
 			if (sort==true){
 				SQLRoom +=" ORDER BY capacity"
+			}else{
+				SQLRoom +=" ORDER BY roomid"
 			}
-			wrRoomsList();	
+			//alert(SQLRoom);
+			wrRoomsList();
+			if (!type){
+				EmptyRoom();
+			}
+			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 		}
 		
 		
@@ -470,11 +532,10 @@
 					capTemp = capTemp + capStr.charAt(i);
 				}
 			}
-
-			if (document.getElementById("CAP").value==""){
-			document.getElementById("CAP").value =0;
+			if (capTemp==""){
+				document.getElementById("CAP").value =0;
 			}else{
-			document.getElementById("CAP").value = parseInt(capTemp);}
+				document.getElementById("CAP").value = parseInt(capTemp);}
 		}
 
 		
@@ -516,26 +577,25 @@
 
                     //spec requirements populator
 					codeStr += "<table class='modTable'><tr>"
-                    codeStr += "<td><input type='checkbox' class='specReq' id='QUR' onchange='GetRoom()'><label for='QUR'>Quality Room</label></td>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='WHC' onchange='GetRoom()'><label for='WHC'>Wheelchair</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='QUR' onchange='GetRoom(false)'><label for='QUR'>Quality Room</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='WHC' onchange='GetRoom(false)'><label for='WHC'>Wheelchair</label></td>";
                     codeStr += "</tr><tr>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='DP1' onchange='GetRoom()'><label for='DP1'>Data Projector</label></td>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='DP2' disabled='true' onchange='GetRoom()'><label for='DP2'>Data Projector * 2</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='DP1' onchange='GetRoom(false)'><label for='DP1'>Data Projector</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='DP2' disabled='true' onchange='GetRoom(false)'><label for='DP2'>Data Projector * 2</label></td>";
 					codeStr += "</tr><tr>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='VIS' onchange='GetRoom()'><label for='VIS'>Visualiser</label></td>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='VDB' onchange='GetRoom()'><label for='VDB'>Video/DVD/BluRay</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='VIS' onchange='GetRoom(false)'><label for='VIS'>Visualiser</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='VDB' onchange='GetRoom(false)'><label for='VDB'>Video/DVD/BluRay</label></td>";
 					codeStr += "</tr><tr>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='CMP' onchange='GetRoom()'><label for='CMP'>Computer</label></td>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='WHB' onchange='GetRoom()'><label for='WHB'>Whiteboard</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='CMP' onchange='GetRoom(false)'><label for='CMP'>Computer</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='WHB' onchange='GetRoom(false)'><label for='WHB'>Whiteboard</label></td>";
 					codeStr += "</tr><tr>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='CHB' onchange='GetRoom()'><label for='CHB'>Chalkboard</label></td>";
-					codeStr += "<td><input type='checkbox' class='specReq' id='NER' onchange='GetRoom()'><label for='NER'>Near Previous Room</label></td>";
+                    codeStr += "<td><input type='checkbox' class='specReq' id='CHB' onchange='GetRoom(false)'><label for='CHB'>Chalkboard</label></td>";
+					codeStr += "<td><input type='checkbox' class='specReq' id='NER' onchange='GetRoom(false)'><label for='NER'>Near Previous Room</label></td>";
 					codeStr += "</tr>";
-					codeStr +="<tr><td>Capacity:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onchange='CapacityChange()' onkeypress='CapacityChange()'></td></tr>";
-					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom()' class='modChooser'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select></td></tr>";
+					codeStr +="<tr><td>Capacity:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onclick='CapacityChange()' onchange='CapacityChange()' onkeypress='CapacityChange()' onkeyup='CapacityChange()'></td></tr>";
+					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom(false)' class='modChooser'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select></td></tr>";
 					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' onkeyup='countText()' id='ORE' placeholder='Type here...'></td></tr>";
 					codeStr +="<tr><td></td><td><label id='charToGo'> </label></td></tr>";
-
 					codeStr +="<tr><td>Priority:</td><td>";
 					codeStr +="<input type='radio' class='specReqP' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
 					codeStr +="<input type='radio' class='specReqP' id='PRN' name='Priority' ><label for='PRN'>No</label></td></tr></table>";
@@ -639,9 +699,11 @@
 						lReq = JSON[0].requestid;
 					}
 				});
-				alert(preferredRoom);
+				//alert(preferredRoom==1);
 				if (preferredRoom ==1){
+					//alert(roomsNamesQueue.length);
 					for(var j =0; j < roomsNamesQueue.length;j++){
+						//alert(j);
 						$.ajax({
 							type: "GET",
 							url: "POSTroomBooking.php",
@@ -661,8 +723,8 @@
 				
 			}
 			while(i<DPTArray.length);
-			
-			if(redirectBool){
+
+ 			if(redirectBool){
 				
 				window.location.replace("viewRequests.php");
 			}
@@ -671,6 +733,7 @@
 				window.location.replace("addRequests.php");
 			}
 		}
+		
 		
         </script>
     </head>
@@ -740,7 +803,7 @@
                     <input type="button" value="Submit" onclick="Submit(true)">  <!--changed to button from submit  for testing purposes-->
                     <input type="button" value="Submit & Add Another" onclick="Submit(false)"> <!-- changed to test aswell -->
 
-                    <input type="button" value="Clear Form">
+                    <input type="button" value="Clear Form" onclick="ClrAll()">
                 </form>
             </div>
         </div>
