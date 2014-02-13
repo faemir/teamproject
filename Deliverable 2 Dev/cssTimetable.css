@@ -136,6 +136,10 @@
 	{
 		color: #B32561;
 	}
+	.requestButtons
+	{
+		width:100%;
+	}
     /********************* add requests page ********************/
     
     #basicBox, #roomSelectorBox 
@@ -391,7 +395,7 @@
         {
          display:none;
     }
-	.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel
+	.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.requestButtons
         {
         display:inline-block;
         min-height:25px;
@@ -571,3 +575,6 @@
 	{
 		border-collapse: collapse;
 	}
+	
+
+
