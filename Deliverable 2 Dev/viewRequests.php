@@ -57,7 +57,7 @@
 			}
 			if(document.getElementById("semester1").checked){semsval = '1'};
 			if(document.getElementById("semester2").checked){semsval = '2'};
-			if(document.getElementById("semester0").checked){semsval = '0';}
+			if(document.getElementById("semester0").checked){semsval = '0'};
 			$("#tableBox").empty();
 			$.ajax({
                 type: "GET",
@@ -286,12 +286,12 @@
 				countersort += 1;
 			}
 			codeStr += '    <th onclick="sortTable(6)">Details</th>';
-            codeStr += '    <th onclick="sortTable(7)">Edit Request</th>';
-			codeStr += '    <th onclick="sortTable(8)">Add Similar Request</th>';
+            codeStr += '    <th onclick="sortTable(7)">Edit</th>';
+			codeStr += '    <th onclick="sortTable(8)">Add Similar</th>';
 			codeStr += '    <th onclick="sortTable(9)">Status</th>';
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
-				codeStr += '	<tr>';
+				codeStr += '	<tr class="requestsRow">';
 				codeStr += '    	<td>' + value[l][0] + '</td>';
 				codeStr += '    	<td>' + value[l][1] + '</td>';
 				codeStr += '    	<td>' + value[l][2] + '</td>';

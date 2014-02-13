@@ -259,6 +259,50 @@
 					success: function(){alert("Preferences have been saved. \n Feel free to continue.");},
 				});
 			}
+			
+			//Checks input of new module and adds to database if valid
+			function addModule(){
+				//Gather data for add
+				var newModuleCode = document.getElementById("entercode").value;
+				var newModuleTitle = document.getElementById("entertitle").value;
+				var newUsername = $_session['username'];
+				var newDepartmentID = "";
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: "GETdepartmentID.php",
+					//data: {'username': $_session['username']},
+					success: function(JSON){
+						newDepartmentID = JSON[0].departmentid;
+					}
+				});
+				
+				//Validation of input
+				if (newModuleCode.substr(0,2) == newDepartmentID){
+					if (newModuleCode.substr(2,3) == /[ABCDF]$/){
+						if (newModuleCode.substr(3,6) == /^[0-9]{3}$/){
+							if (newModuleTitle != ""){
+							//AJAX POST TO ModuleTable
+							$.ajax({
+								type: "GET", 
+								url: "POSTmoduleTable.php",
+								async: false,
+								data: {'code': newModuleCode, 'title': newModuleTitle, 'dept': newDepartmentID},
+								success: function(){alert("The new module has been added to the database. \n Feel free to continue.");},
+							});
+							}
+							else{
+								alert("Please enter a valid module title.");}
+						}
+						else{
+							alert("Please enter a valid module code.");}
+					}
+					else{
+						alert("Please enter a valid module code.");}
+				}
+				else{
+					alert("Please enter a valid module code.");}
+			}
 		</script>
     </head>
      
@@ -276,7 +320,24 @@
         </div>
         <div id="pagewrap">
 			
-			<div class="contentBox" id="userPrefBox"></div>
+			<div class="contentBox" id="userPrefBox">
+			<table>
+				<tr>
+					<td>Add New Module</td>
+				</tr>
+				<tr>
+					<td>Module Code: </td>
+					<td><input type="text" name="entercode" id="entercode"></td>
+				</tr>
+				<tr>
+					<td>Module Title: </td>
+					<td><input type="text" name="entertitle" id="entertitle"></td>
+				</tr>
+				<tr>
+					<td><input type="button" value="Submit" onclick="addModule()"></td>
+				</tr>
+			</table>
+			</div>
 			
             <div class="contentBox" id="prefDemoBox"></div>
 			
