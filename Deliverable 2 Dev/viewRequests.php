@@ -74,11 +74,8 @@
                 type: "GET",
                 dataType: "json",
                 url: "GETallRequests.php",
-
 				data: {'type':type, 'searchval': searchval, 'semsval': semsval},
-
 				//data: {'username': $_session['username']},
-
                 success: function(JSON){
                     var codeStr = "";
                     codeStr += '<table id="RequestsTable">';
@@ -97,89 +94,88 @@
 						countersort += 1;
 					}
                     codeStr += '    <th onclick="sortTable(6)">Details</th>';
-                    codeStr += '    <th onclick="sortTable(7)">Edit Request</th>';
-                    codeStr += '    <th onclick="sortTable(8)">Add Similar Request</th>';
+                    codeStr += '    <th onclick="sortTable(7)">Edit</th>';
+                    codeStr += '    <th onclick="sortTable(8)">Add Similar</th>';
                     codeStr += '    <th onclick="sortTable(9)">Status</th>';
                     codeStr += '</tr>';
+					if(JSON.length == 0){
+						codeStr += '<tr class="requestsRow">';
+						codeStr += '<td colspan="10"> No Results Found </td>';
+						codeStr += '</tr>';
+					}
+					else{
+						for(var i=0;i<JSON.length;i++){
 
-                    for(var i=0;i<JSON.length;i++){
+							codeStr += '<tr class="requestsRow">';
 
-                        codeStr += '<tr class="requestsRow">';
-
-						for (var h=0;h<6;h++){
-							var starttime = parseInt(JSON[i].period) + 8;
-							if (starttime == 9)
-								starttime = "0" + starttime;
-							starttime = starttime + ":00";
-							var endtime = parseInt(JSON[i].period) + parseInt(JSON[i].duration) + 7;
-							if (endtime == 9)
-								endtime = "0" + endtime;
-							endtime = endtime + ":50";
+							for (var h=0;h<6;h++){
+								var starttime = parseInt(JSON[i].period) + 8;
+								if (starttime == 9)
+									starttime = "0" + starttime;
+								starttime = starttime + ":00";
+								var endtime = parseInt(JSON[i].period) + parseInt(JSON[i].duration) + 7;
+								if (endtime == 9)
+									endtime = "0" + endtime;
+								endtime = endtime + ":50";
+								
+								if(viewHeaders[h] == "0")
+									codeStr += '    	<td>' + JSON[i].modulecode + '</td>';
+								else if(viewHeaders[h] == "1")
+									codeStr += '    	<td>' + JSON[i].moduletitle + '</td>';
+								else if(viewHeaders[h] == "2")
+									codeStr += '    	<td>' + JSON[i].priority + '</td>';
+								else if(viewHeaders[h] == "3")
+									codeStr += '    	<td>' + JSON[i].year + '</td>';
+								else if(viewHeaders[h] == "4")
+									codeStr += '    	<td>' + JSON[i].semester + '</td>';
+								else if(viewHeaders[h] == "5")
+									codeStr += '    	<td>' + JSON[i].day + '</td>';
+								else if(viewHeaders[h] == "6")
+									codeStr += '    	<td>' + starttime + '</td>';
+								else if(viewHeaders[h] == "7")
+									codeStr += '    	<td>' + endtime + '</td>';
+								else if(viewHeaders[h] == "8")
+									codeStr += '    	<td>' + JSON[i].period + '</td>';
+								else if(viewHeaders[h] == "9")
+									codeStr += '    	<td>' + JSON[i].duration + '</td>';
+								else if(viewHeaders[h] == "10")
+									codeStr += '    	<td>' + JSON[i].noofstudents + '</td>';
+								else if(viewHeaders[h] == "11")
+									codeStr += '    	<td>' + JSON[i].noofrooms + '</td>';
+								else if(viewHeaders[h] == "12")
+									codeStr += '    	<td>' + JSON[i].preferredrooms + '</td>';
+								else if(viewHeaders[h] == "13")
+									codeStr += '    	<td>' + JSON[i].qualityroom + '</td>';
+								else if(viewHeaders[h] == "14")
+									codeStr += '    	<td>' + JSON[i].wheelchairaccess + '</td>';
+								else if(viewHeaders[h] == "15")
+									codeStr += '    	<td>' + JSON[i].dataprojector + '</td>';
+								else if(viewHeaders[h] == "16")
+									codeStr += '    	<td>' + JSON[i].doubleprojector + '</td>';
+								else if(viewHeaders[h] == "17")
+									codeStr += '    	<td>' + JSON[i].visualiser + '</td>';
+								else if(viewHeaders[h] == "18")
+									codeStr += '    	<td>' + JSON[i].videodvdbluray + '</td>';
+								else if(viewHeaders[h] == "19")
+									codeStr += '    	<td>' + JSON[i].computer + '</td>';
+								else if(viewHeaders[h] == "20")
+									codeStr += '    	<td>' + JSON[i].whiteboard + '</td>';
+								else if(viewHeaders[h] == "21")
+									codeStr += '    	<td>' + JSON[i].chalkboard + '</td>';
+							}
+								
+							codeStr += '    	<td><input type="button" class="detailsButton" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
 							
-							if(viewHeaders[h] == "0")
-								codeStr += '    	<td>' + JSON[i].modulecode + '</td>';
-							else if(viewHeaders[h] == "1")
-								codeStr += '    	<td>' + JSON[i].moduletitle + '</td>';
-							else if(viewHeaders[h] == "2")
-								codeStr += '    	<td>' + JSON[i].priority + '</td>';
-							else if(viewHeaders[h] == "3")
-								codeStr += '    	<td>' + JSON[i].year + '</td>';
-							else if(viewHeaders[h] == "4")
-								codeStr += '    	<td>' + JSON[i].semester + '</td>';
-							else if(viewHeaders[h] == "5")
-								codeStr += '    	<td>' + JSON[i].day + '</td>';
-							else if(viewHeaders[h] == "6")
-								codeStr += '    	<td>' + starttime + '</td>';
-							else if(viewHeaders[h] == "7")
-								codeStr += '    	<td>' + endtime + '</td>';
-							else if(viewHeaders[h] == "8")
-								codeStr += '    	<td>' + JSON[i].period + '</td>';
-							else if(viewHeaders[h] == "9")
-								codeStr += '    	<td>' + JSON[i].duration + '</td>';
-							else if(viewHeaders[h] == "10")
-								codeStr += '    	<td>' + JSON[i].noofstudents + '</td>';
-							else if(viewHeaders[h] == "11")
-								codeStr += '    	<td>' + JSON[i].noofrooms + '</td>';
-							else if(viewHeaders[h] == "12")
-								codeStr += '    	<td>' + JSON[i].preferredrooms + '</td>';
-							else if(viewHeaders[h] == "13")
-								codeStr += '    	<td>' + JSON[i].qualityroom + '</td>';
-							else if(viewHeaders[h] == "14")
-								codeStr += '    	<td>' + JSON[i].wheelchairaccess + '</td>';
-							else if(viewHeaders[h] == "15")
-								codeStr += '    	<td>' + JSON[i].dataprojector + '</td>';
-							else if(viewHeaders[h] == "16")
-								codeStr += '    	<td>' + JSON[i].doubleprojector + '</td>';
-							else if(viewHeaders[h] == "17")
-								codeStr += '    	<td>' + JSON[i].visualiser + '</td>';
-							else if(viewHeaders[h] == "18")
-								codeStr += '    	<td>' + JSON[i].videodvdbluray + '</td>';
-							else if(viewHeaders[h] == "19")
-								codeStr += '    	<td>' + JSON[i].computer + '</td>';
-							else if(viewHeaders[h] == "20")
-								codeStr += '    	<td>' + JSON[i].whiteboard + '</td>';
-							else if(viewHeaders[h] == "21")
-								codeStr += '    	<td>' + JSON[i].chalkboard + '</td>';
+							codeStr += '    	<td><input type="button" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td><input type="button" value="+" onclick="addSimilarRequest(' + JSON[i].modulecode + ','+ JSON[i].moduletitle +','+ JSON[i].noofstudents + ')"></td>';
+
+							codeStr += '    	<td>' + JSON[i].requeststatus + '</td>';
+							codeStr += '	</tr>';
 						}
-							
-						
-						
-
-
-                        codeStr += '    	<td><input type="button" class="detailsButton" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
-						
-                        codeStr += '    	<td><input type="button" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
-                        codeStr += '    	<td><input type="button" value="AddSimilar" onclick="addSimilarRequest(' + JSON[i].modulecode + JSON[i].moduletitle + JSON[i].noofstudents + ')"></td>';
-
-                        codeStr += '    	<td>' + JSON[i].requeststatus + '</td>';
-						codeStr += '	</tr>';
-                    }
+					}
                     codeStr += "</table>";
-					
-
                     //clears and writes table into container
                     // UPDATE: empty function produced 'false' onscreen when already empty
-                    //$("#tableBox").empty();
                     $("#tableBox").append(codeStr);
                 }
             });
@@ -363,6 +359,7 @@
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
                 <li><a href="accountPage.php">Username(pref)</a></li>
+                <li><a href="login.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">
@@ -399,7 +396,6 @@
 
 			</div>
             <div class="contentBox" id="detailsBox">
-			
 			</div>
             <div class="contentBox" id="roundsBox"></div>
 

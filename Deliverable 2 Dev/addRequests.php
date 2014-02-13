@@ -1,3 +1,9 @@
+<?php
+    ini_set("session.use_cookies",0);
+    ini_set("session.use_only_cookies",0);
+    ini_set("session.use_trans_sid",1);
+    session_start();
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
@@ -331,12 +337,15 @@
 			}
 			//alert(roomsQueue);
 		}
+		
+		
 		function ClrRoom(){
 			for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
 					document.getElementById("r"+roomsQueue[j]).checked = false;
 			}
 			roomsQueue = [];
 		}
+		
 		//-------------Change Room list accordingly
 		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";// declares SQL for room
 		function GetRoom(){
@@ -448,40 +457,10 @@
 			if (sort==true){
 				SQLRoom +=" ORDER BY capacity"
 			}
-			//if(specBoolArray[1]==1){
-				// if(SQLRoom.search("AND")!=-1){SQLRoom  += "(wheelchair = " + specBoolArray[1] + ")";}
-				// else{SQLRoom  += " AND (wheelchair = " + specBoolArray[1] + ")";}
-			// }
-			// if(specBoolArray[2]==1){
-				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(dataprojector = " + specBoolArray[2] + ")"; }
-				// else{SQLRoom += " AND (dataprojector = " + specBoolArray[2] + ")";}
-			// }
-			// if(specBoolArray[3]==1){ 
-				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(doubleprojector = " + specBoolArray[3] + ")";}
-				// else {SQLRoom += " AND (doubleprojector = " + specBoolArray[3] + ")";}
-			// }
-			// if(specBoolArray[4]==1){
-				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(visualiser = " + specBoolArray[4] + ")"; }
-				// else{SQLRoom += " AND (visualiser = " + specBoolArray[4] + ")"; }
-			// }
-			// if(specBoolArray[5]==1){
-				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(videodvdbluray = " + specBoolArray[5] + ")"; }
-				// else
-				
-			// if(specBoolArray[6]==1){
-				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(computer = " + specBoolArray[6] + ")"; }
-			// if(specBoolArray[7]==1){
-				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(whiteboard = " + specBoolArray[7] + ")"; }
-			// if(specBoolArray[8]==1)
-				// if(SQLRoom.search("AND")!=-1){{SQLRoom += "(chalkboard = " + specBoolArray[8]+ ")"; }
-
-			// if (specBoolArray[11] != "ANY"){ 
-				// if(SQLRoom.search("AND")!=-1){SQLRoom += "(location = '" + specBoolArray[11] + "')";}
-				// else{SQLRoom += " AND (location = '" + specBoolArray[11] + "')"}
-			// }
-
 			wrRoomsList();	
 		}
+		
+		
 		//-------validation
 		function CapacityChange(){
 			var capStr = document.getElementById("CAP").value;
@@ -496,7 +475,6 @@
 			document.getElementById("CAP").value =0;
 			}else{
 			document.getElementById("CAP").value = parseInt(capTemp);}
-			GetRoom();
 		}
 
 		
@@ -583,20 +561,30 @@
 			//change all data to variables of correct type.
 			var yearID = 13;
 			if(document.getElementById("PRY").checked) {
-				var pri=1;}
-			else{var pri=0;}
-			if(document.getElementById("sem1").checked) {
-				var sem = 1;}
-			else{var sem = 2;}
-			for(var i = 0; i < 15; i++)
-			{
+				var pri=1;
+			}
+			else{
+				var pri=0;
+			}
+			
+			if(document.getElementById("sem1").checked){
+				var sem = 1;
+			}
+			else{
+				var sem = 2;
+			}
+			
+			for(var i = 0; i < 15; i++){
 				if(document.getElementById("wk" +(i+1)).checked){
 					weekArr[i] = 1;}
 				else{weekArr[i] = 0;}
 			}
 			if (roomsQueue.length ==0){
-				var preferredRoom = 0;}
-			else{var preferredRoom = 1;}
+				var preferredRoom = 0;
+			}
+			else{
+				var preferredRoom = 1;
+			}
 			var weekID = 0;
 			var weekBool = true;
 			$.ajax({
@@ -651,7 +639,7 @@
 						lReq = JSON[0].requestid;
 					}
 				});
-
+				alert(preferredRoom);
 				if (preferredRoom ==1){
 					for(var j =0; j < roomsNamesQueue.length;j++){
 						$.ajax({
@@ -675,11 +663,11 @@
 			while(i<DPTArray.length);
 			
 			if(redirectBool){
-				alert("bye bye");
+				
 				window.location.replace("viewRequests.php");
 			}
 			else{
-				alert("same");
+				
 				window.location.replace("addRequests.php");
 			}
 		}

@@ -5,16 +5,13 @@
     html *
     {
         font-family: 'Open Sans', sans-serif;
-		
     }
     
     body
          {
-
 		background-image: url('crossword.png');
 		background-repeat: repeat;
 		color: #4B0082;
-
     }
 
     /****************************************************** 
@@ -60,9 +57,9 @@
         width:auto;
     }
 
-    /******************************************************************* 
-    LAYOUT STRUCTURE 
-    *******************************************************************/
+    /************************************************************************************************************* 
+    GENERAL LAYOUT STRUCTURE 
+    *************************************************************************************************************/
 
     .contentBox
         {
@@ -86,7 +83,7 @@
         
     }
     
-    /*** login page ***/
+    /***************** login page ******************/
     
     #loginBox
         {
@@ -94,17 +91,19 @@
         height:200px;
         position:absolute;
         left:50%;
-        top:50%;
+        top:30%;
         margin:-100px 0 0 -150px;
         text-align:center;
+		background: #fff;
     }
     
-    /*** view requests page ***/
+    /***************** view requests page *************/
 
     #detailsBox {
         width: 290px;
         float: left;
         padding: 5px 15px;
+		margin: 0px 5px 0px 0px;
         background: #f8f8f8;
     }
 
@@ -112,7 +111,8 @@
         width: 294px; /* Account for margins + border values */
         float: left;
         padding: 5px 15px;
-        margin: 0px 5px 5px 5px;
+        margin: 0px 5px 0px 0px;
+		background: #fff;
     }
 
     #roundsBox {
@@ -125,9 +125,11 @@
         clear: both;
         padding: 10px;
         margin-bottom: 0px;
+		background: #f0efef;
+		min-height: 0px;
     }
 
-    /*********** add requests page ***********/
+    /********************* add requests page ********************/
     
     #basicBox, #roomSelectorBox 
 	{
@@ -173,22 +175,10 @@
   
     }
 
-    /*** *********DIVIDER **************** ***/
-    #roomsList{
-        height:300px;
-        width:100%;
-        border:1px solid #AAA;
-        overflow-y:auto;
-    }
+    /***************************** account/prefrences pages *******************/
     
-    #roomsList li{
-        display:block;
-        border:1px solid #ddd;
-    }
-
-    /*** account/prefrences pages ***/
-    
-    #userPrefBox {
+    #userPrefBox
+	{
         width: 441px;
         float: left;
         padding: 5px 15px;
@@ -196,12 +186,19 @@
         margin: 0px 5px 5px 0px;
     }
     
-    #prefDemoBox {
+    #prefDemoBox 
+	{
         width: 450px;
         padding: 5px 15px;
         float: left;
         background: #f0efef;
     }
+	
+	#prefBox
+	{
+		clear:both;
+		background: #fff
+	}
     
     /*** Timetable viewer page ***/
     
@@ -344,6 +341,13 @@
         
     }
  
+ 
+ 
+ 
+	/***************************************************************
+	GENERAL CSS 
+	****************************************************************/
+ 
 	.daysHeader, .daysChildren
         {
 		width:100px;
@@ -452,7 +456,7 @@
 		color: #431367;
 		
 	}
-  /** specReq input **/
+	/** specReq input **/
 
     .specReq, .specReqP, .roomSele
         {
@@ -532,3 +536,15 @@
 	{
 		background-color:#f0efef;
 	}
+	
+    #roomsList{
+        height:300px;
+        width:100%;
+        border:1px solid #AAA;
+        overflow-y:auto;
+    }
+    
+    #roomsList li{
+        display:block;
+        border:1px solid #ddd;
+    }
