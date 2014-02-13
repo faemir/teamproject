@@ -15,9 +15,13 @@
 		$sql .= "AND semester = '$semsval';";
 		
 	}
-	if($type != ""){
+	if($type != "" AND $type != "20"){
 		$sql .= "AND $typearray[$type] LIKE '%$searchval%';";
 	}
+	if($type == "20"){
+		$sql .= "AND EntryRequestTable.modulecode LIKE '%$searchval%' OR moduletitle LIKE '%$searchval%' OR day LIKE '%$searchval%' OR requeststatus LIKE '%$searchval%' OR period LIKE '%$searchval%' OR duration LIKE '%$searchval%' OR priority LIKE '%$searchval%' OR noofstudents LIKE '%$searchval%' OR qualityroom LIKE '%$searchval%' OR preferredrooms LIKE '%$searchval%' OR semester LIKE '%$searchval%' OR noofrooms LIKE '%$searchval%' OR wheelchairaccess LIKE '%$searchval%' OR dataprojector LIKE '%$searchval%' OR doubleprojector LIKE '%$searchval%' OR visualiser LIKE '%$searchval%' OR videodvdbluray LIKE '%$searchval%' OR computer LIKE '%$searchval%' OR whiteboard LIKE '%$searchval%' OR chalkboard LIKE '%$searchval%';"; 
+	}
+	
 	
 	
 
