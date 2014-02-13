@@ -15,6 +15,7 @@
         //onload ----------------------------------------------------------------//
 		$(document).ready(function(){getUserPrefs();});
         $(document).ready(function(){wrRequestsTable();});
+		$(document).ready(function(){wrRoundsTable();});
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -31,6 +32,7 @@
 		var userPrefHeader5 = "";
 		var userPrefHeader6 = "";
 		var lastHead ="";
+		var lastRow = "";
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUserPrefs(){
 			$.ajax({
@@ -84,8 +86,9 @@
 					}
                     codeStr += '    <th onclick="sortTable(6,this)" id="h6" class="tableH">Details</th>';
                     codeStr += '    <th onclick="sortTable(7,this)" id="h7" class="tableH">Edit</th>';
-                    codeStr += '    <th onclick="sortTable(8,this)" id="h8" class="tableH">Add Similar</th>';
-                    codeStr += '    <th onclick="sortTable(9,this)" id="h9" class="tableH">Status</th>';
+					codeStr += '    <th onclick="sortTable(8,this)" id="h8" class="tableH">Delete</th>';
+                    codeStr += '    <th onclick="sortTable(9,this)" id="h9" class="tableH">Add Similar</th>';
+                    codeStr += '    <th onclick="sortTable(10,this)" id="h10" class="tableH">Status</th>';
                     codeStr += '</tr>';
 					if(JSON.length == 0){
 						codeStr += '<tr class="requestsRow">';
@@ -94,7 +97,7 @@
 					}
 					else{
 						for(var i=0;i<JSON.length;i++){
-							codeStr += '<tr class="requestsRow">';
+							codeStr += '<tr class="requestsRow" id=r'+i+'>';
 							for (var h=0;h<6;h++){
 								var starttime = parseInt(JSON[i].period) + 8;
 								if (starttime == 9)
@@ -151,6 +154,7 @@
 							}
 							codeStr += '    	<td><input type="button" class="detailsButton" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
 							codeStr += '    	<td><input type="button" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td><input type="button" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
 							codeStr += '    	<td><input type="button" value="+" onclick="addSimilarRequest(' + JSON[i].requestid + ')"></td>';
 							codeStr += '    	<td>' + JSON[i].requeststatus + '</td>';
 							codeStr += '	</tr>';
@@ -166,9 +170,21 @@
 		function showDetails(requestID,button){
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
 				$("#detailsBox").empty();
-				var codeStl = "<div>";
+
+				var codeStl = "<table id='detailsTable'>";
+
+				codeStl += "<tr>";
 				codeStl += "<td>" + "Request ID: " + JSON[0].requestid + "</br></td>";
+				codeStl += "<td>" + "Year: " + JSON[0].year + "</br></td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
+				codeStl += "<td>" + JSON[0].modulecode + "</br></td>";
 				codeStl += "<td>" + "Duration: " + JSON[0].duration + "</br></td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
+				codeStl += "<td colspan = 2>" + JSON[0].moduletitle + "</br></td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
 				var starttime = parseInt(JSON[0].period) + 8;
 				if (starttime == 9)
 					starttime = "0" + starttime;
@@ -179,35 +195,59 @@
 				endtime = endtime + ":50";
 				codeStl += "<td>" + "Start Time: " + starttime + "</br></td>";
 				codeStl += "<td>" + "End Time: " + endtime + "</br></td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
 				codeStl += "<td>" + "No. Students: " + JSON[0].noofstudents + "</br></td>";
 				codeStl += "<td>" + "No. Rooms: " + JSON[0].noofrooms + "</br></td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
 				if(JSON[0].preferredrooms==1){
-					codeStl += "<td>" + "Preferred room: "+ JSON[0].roomid +"</br></td>";}
-				codeStl += "<td>" + "Year: " + JSON[0].year + "</br></td>";
+					codeStl += "<td>" + "Preferred room: "+ JSON[0].roomid +"</br></td>";
+				}
+				codeStl += "<tr><td colspan='2'>";
 				if(JSON[0].qualityroom==1){
-					codeStl += "<td>" + "Quality Room" + "</br></td>";}
+					codeStl += "Quality Room, ";
+				}
 				if(JSON[0].wheelchairaccess==1){
-					codeStl += "<td>" + "Wheelchair Access" + "</br></td>";}
+					codeStl += "Wheelchair Access, ";
+				}
 				if(JSON[0].dataprojector==1){
-					codeStl += "<td>" + "Data Projector" + "</br></td>";}
+					codeStl += "Data Projector, ";
+				}
 				if(JSON[0].doubleprojector==1){
-					codeStl += "<td>" + "Double Projector" + "</br></td>";}
+					codeStl += "Double Projector, ";
+				}
 				if(JSON[0].visualiser==1){
-					codeStl += "<td>" + "Visualiser" + "</br></td>";}
-				codeStl += "</div>";
+					codeStl += "Visualiser, ";
+				}
 				if(JSON[0].videodvdbluray==1){
-					codeStl += "<td>" + "Video/DVD/Bluray" + "</br></td>";}
+					codeStl += "Video/DVD/Bluray, ";
+				}
 				if(JSON[0].computer==1){
-					codeStl += "<td>" + "Computer" + "</br></td>";}
+					codeStl += "Computer, ";
+				}
 				if(JSON[0].whiteboard==1){
-					codeStl += "<td>" + "White Board" + "</br></td>";}
+					codeStl += "White Board, ";
+				}
 				if(JSON[0].chalkboard==1){
-					codeStl += "<td>" + "Chalk Board" + "</br></td>";}
+					codeStl += "Chalk Board, ";
+				}
 				if(JSON[0].nearestroom==1){
-					codeStl += "<td>" + "Nearest Room" + "</br></td>";}
+					codeStl += "Nearest Room, ";
+				}
+				codeStl = codeStl.substring(0,codeStl.length-2);
+				codeStl += ".</tr>";
+				
 				$("#detailsBox").append(codeStl);
-			}, 'json');
+				
+				
+            }, 'json');
 
+			//beginning
+			if (lastRow!=""){
+				$("#"+lastRow).toggleClass('requestsRowClk');
+			}
+			lastRow = $(button).parent().parent().attr('id');
 			$(button).parent().parent().toggleClass('requestsRowClk');
 		}
 		
@@ -227,9 +267,14 @@
 				url: "POSTaddSimilar.php",
 				data: {'id': requestID}
 			});
-
 		}
-			
+		
+		function deleteRequest(requestID){
+			$.get("GETdeleterequest.php", {'id': requestID});
+			$(document).ready(function(){wrRequestsTable();});
+			$("#detailsBox").empty();
+		}
+
 		//Sort functions. Asc, Desc alternating. Bubble sort.
 		function sortTable(colnumber,JsonObj){
 			//Fill 2D array with each row of table.
@@ -288,8 +333,9 @@
 			}
 			codeStr += '    <th onclick="sortTable(6,this)"id="h6" class="tableH">Details</th>';
             codeStr += '    <th onclick="sortTable(7,this)"id="h7" class="tableH">Edit</th>';
-			codeStr += '    <th onclick="sortTable(8,this)"id="h8" class="tableH">Add Similar</th>';
-			codeStr += '    <th onclick="sortTable(9,this)"id="h9" class="tableH">Status</th>';
+			codeStr += '    <th onclick="sortTable(8,this)"id="h8" class="tableH">Delete</th>';
+			codeStr += '    <th onclick="sortTable(9,this)"id="h9" class="tableH">Add Similar</th>';
+			codeStr += '    <th onclick="sortTable(10,this)"id="h10" class="tableH">Status</th>';
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
 				codeStr += '	<tr class="requestsRow">';
@@ -303,6 +349,7 @@
 				codeStr += '    	<td>' + value[l][7] + '</td>';
 				codeStr += '    	<td>' + value[l][8] + '</td>';
 				codeStr += '    	<td>' + value[l][9] + '</td>';
+				codeStr += '    	<td>' + value[l][10] + '</td>';
 				codeStr += '	</tr>';
 			}
 			codeStr += '</table>';
@@ -316,7 +363,32 @@
 			// alert($(JsonObj).parent().parent().attr('id'));
 			$(JsonObj).parent().parent().toggleClass('tableHClick');
 		}
-		</script>
+		
+		function wrRoundsTable(){
+		
+			$.get("GETRoundsDetails.php", function(JSON){
+				var codeStp = "<table id='roundsInfoTable'>";
+				codeStp += "<tr>";
+				codeStp += "<td>" + "Semester" + "</td>";
+				codeStp += "<td>" + "Rounds Num" + "</td>";
+				codeStp += "<td>" + "Start Date" + "</td>";
+				codeStp += "<td>" + "End Date" + "</td>";
+				codeStp += "</tr>";
+				
+				for(var i=0;i<JSON.length;i++){
+					codeStp += "<tr>";
+					codeStp += "<td>" + JSON[i].semester + "</td>";
+					codeStp += "<td>" + JSON[i].roundsnum + "</td>";
+					codeStp += "<td>" + JSON[i].startdate + "</td>";
+					codeStp += "<td>" + JSON[i].enddate + "</td>";
+					codeStp += "</tr>";
+				}
+				codeStp +="</table>";
+				$("#roundsBox").append(codeStp);
+			},'json');	
+		}
+		
+        </script>
     </head>
 
     <body>
@@ -332,40 +404,41 @@
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
-			<input type="text" name="search" id="search" onkeyup="wrRequestsTable(colSelect.value)" />
-			<select id="colSelect" name="colSelect" onclick="" onchange="">
-				<option value="">Search by</option>
-				<option value="0">Module Code</option>
-				<option value="1">Module Title</option>
-				<option value="2">Day</option>
-				<option value="3">Status</option>
-				<option value="4">Period</option>
-				<option value="5">Duration</option>
-				<option value="6">Priority</option>
-				<option value="7">No of Students</option>
-				<option value="8">Quality Room</option>
-				<option value="9">Preferred Room</option>
-				<option value="11">No of Rooms</option>
-				<option value="12">Wheelchair Access</option>
-				<option value="13">Data Projector</option>
-				<option value="14">Double Projector</option>
-				<option value="15">Visualiser</option>
-				<option value="16">Video/DVD/Bluray</option>
-				<option value="17">Computer</option>
-				<option value="18">White Board</option>
-				<option value="19">Chalk Board</option>
-			</select>
-			</br>
-			<label id="semLabel">Semester</label>
-			<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable('')" value="1"/><label>1</label>
-			<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable('')" value="2"/><label>2</label>
-			<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable('')" value="0"/><label>Both</label>
+				<input type="text" name="search" id="search" onkeyup="wrRequestsTable(colSelect.value)" /></br>
+				<label id="wkLabel" class="wkInput">Search by</label>
+				<select id="colSelect" name="colSelect" onclick="search.value=''" onchange="">
+					<option value="20">All</option>
+					<option value="0">Module Code</option>
+					<option value="1">Module Title</option>
+					<option value="2">Day</option>
+					<option value="3">Status</option>
+					<option value="4">Period</option>
+					<option value="5">Duration</option>
+					<option value="6">Priority</option>
+					<option value="7">No of Students</option>
+					<option value="8">Quality Room</option>
+					<option value="9">Preferred Room</option>
+					<option value="11">No of Rooms</option>
+					<option value="12">Wheelchair Access</option>
+					<option value="13">Data Projector</option>
+					<option value="14">Double Projector</option>
+					<option value="15">Visualiser</option>
+					<option value="16">Video/DVD/Bluray</option>
+					<option value="17">Computer</option>
+					<option value="18">White Board</option>
+					<option value="19">Chalk Board</option>
+				</select>
+				</br>
+				<label id="wkLabel" class="wkInput">Semester</label>
+				<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable('')" value="1" class="wkInput" /><label for="semester1">1</label>
+				<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable('')" value="2" class="wkInput"/><label for="semester2">2</label>
+				<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable('')" value="0" class="wkInput"/><label for="semester0">Both</label>
+
+
 			</div>
-            <div class="contentBox" id="detailsBox">
-			</div>
+			
+            <div class="contentBox" id="detailsBox"></div>
             <div class="contentBox" id="roundsBox"></div>
-
-
             <div class="contentBox" id="tableBox"></div>
 
         </div>

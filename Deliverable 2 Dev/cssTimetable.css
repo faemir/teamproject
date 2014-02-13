@@ -108,7 +108,7 @@
     }
 
     #searchBox {
-        width: 294px; /* Account for margins + border values */
+        width: 244px; /* Account for margins + border values */
         float: left;
         padding: 5px 15px;
         margin: 0px 5px 0px 0px;
@@ -116,7 +116,7 @@
     }
 
     #roundsBox {
-        width: 270px;
+        width: 320px;
         padding: 5px 15px;
         float: left;
         background: #f0efef;
@@ -537,12 +537,14 @@
 	}
 	.requestsRowClk
 	{
-		background-color: #ABCDEF;
+		background-color:#f0efef;
+		color: #B32561;
+
 	}
 	
-	#RequestsTable tr:hover
+	.requestsRow:hover
 	{
-		background-color:#f0efef;
+		background-color:#f8f8f8;
 	}
 	
     #roomsList{
@@ -556,3 +558,16 @@
         display:block;
         border:1px solid #ddd;
     }
+	
+	#roundsInfoTable *
+	{ 
+		border-collapse: collapse;
+		text-align:center;
+		border: 1px solid #333;
+		
+	}
+
+	#roundsInfoTable td
+	{
+		border-collapse: collapse;
+	}
