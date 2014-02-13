@@ -340,6 +340,8 @@
 				codeStr += '    	<td>' + value[l][5] + '</td>';
 				codeStr += '    	<td>' + value[l][6] + '</td>';
 				codeStr += '    	<td>' + value[l][7] + '</td>';
+				codeStr += '    	<td>' + value[l][8] + '</td>';
+				codeStr += '    	<td>' + value[l][9] + '</td>';
 				codeStr += '	</tr>';
 			}
 			codeStr += '</table>';
