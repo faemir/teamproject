@@ -24,7 +24,6 @@
                     </tr>
                     <tr>
                         <td><input type="password" placeholder="password" name="pass_input" onclick="checkusername();"></td>
-                    </form>
                     </tr>
                     <tr>
                         <td><input type="submit" id="submit" name="submit" value="Submit"></td>
@@ -32,6 +31,7 @@
                     <tr>
                         <td><a href="#">Forgot Password?</a></td>
                     </tr>
+                    </form>
                 </table>
         </div>
 
