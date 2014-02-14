@@ -1,4 +1,5 @@
 <?php	
+	$editBool = $_GET["editBool"];
 	$requestid = $_GET["requestid"];
 	$room = $_GET["room"];
 	$modulecode = $_GET["modulecode"];

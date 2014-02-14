@@ -267,10 +267,11 @@
 		
 		function editRequest(requestID){
 			//Post into AddRequestTable.php the requestID's data.
+			alert("hi:" + requestID);
 			$.ajax({
 				type: "GET", 
 				url: "POSTeditRequest.php",
-				data: {'id': requestID}
+				data: {'id': requestID},
 			});
 		}
 		
