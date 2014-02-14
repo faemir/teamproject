@@ -13,6 +13,7 @@
         <title>Account Preferences</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script type='text/javascript'>
+			$(document).ready(function(){getUser();});
 			$(document).ready(function(){wrPreferencesTable();});
 			$(document).ready(function(){clearAddBoxes();});
 			var periodValue = "";
@@ -21,6 +22,10 @@
 			var weekeValue = "";
 			var parkValue = "";
 			var roomsQueue = [];
+			var passedUsername = "";
+			function getUser(){
+				passedUsername = "<?php echo $_SESSION['username'] ?>";
+			}
 			function clearAddBoxes(){
 				document.getElementById("entercode").value="";
 				document.getElementById("entertitle").value="";
@@ -31,6 +36,7 @@
 					type: "GET",
 					dataType: "json",
 					url: "GETallPreferences.php",
+					data: {'username': passedUsername},
 					success: function(JSON){
 						var codeStr = '';
 						codeStr += '<table id="PreferencesTable">';
@@ -231,7 +237,7 @@
 						type: "GET", 
 						url: "POSTcolumnPrefs.php",
 						async: false,
-						data: {'h1': h1, 'h2': h2, 'h3': h3, 'h4': h4, 'h5': h5, 'h6': h6},
+						data: {'username': passedUsername, 'h1': h1, 'h2': h2, 'h3': h3, 'h4': h4, 'h5': h5, 'h6': h6},
 						success: function(){alert("Preferences have been saved. \n Feel free to continue.");},
 					});
 				}
@@ -267,7 +273,7 @@
 					type: "GET", 
 					url: "POSTviewingPrefs.php",
 					async: false,
-					data: {'per': periodValue, 'hour': timeValue, 'start': weeksValue, 'end': weekeValue, 'location': parkValue},
+					data: {'username': passedUsername, 'per': periodValue, 'hour': timeValue, 'start': weeksValue, 'end': weekeValue, 'location': parkValue},
 					success: function(){alert("Preferences have been saved. \n Feel free to continue.");},
 				});
 			}
@@ -284,7 +290,7 @@
 					type: "GET",
 					dataType: "json",
 					url: "GETdepartmentID.php",
-					//data: {'username': $_session['username']},
+					data: {'username': passedUsername},
 					success: function(JSON){
 						newDepartmentID = JSON[0].departmentid;
 					}

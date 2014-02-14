@@ -14,9 +14,8 @@
         <script type="text/javascript">
 
 		//GLOBALS -------------------------------------------------//
-
-        //needs preferences here!!!!
-        var userDepartmentID = "CO";
+		
+        var userDepartmentID = "";
 
         var hr24format = 0;
 		var periodTime = 1;
@@ -54,7 +53,7 @@
 		var thursdaySele = [false,false,false,false,false,false,false,false,false];
 		var fridaySele = [false,false,false,false,false,false,false,false,false];
 		var DPTArray = [];	//storing day, period, duration
-
+		var passedUsername = "";
 
 		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 		
@@ -62,6 +61,8 @@
 
 
         //ONLOAD FUNCTIONS -----------------------------------------//
+
+		$(document).ready(function(){getUser();});
 		$(document).ready(function(){GetPrefData()});
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
@@ -71,14 +72,18 @@
 		
 
         //FUNCTIONS --------------------------------------------------//
-		
+
+		function getUser(){
+			passedUsername = "<?php echo $_SESSION['username'] ?>";
+		}
 		function GetPrefData(){	
 			$.ajax({
 				type: "GET",
 				dataType: "json",
 				url: "GETallPreferences.php",
 				async: false,
-				//data: {'username': $_session['username']},
+				data: {'username': passedUsername},
+
 				success: function(JSON){
 					hr24format = JSON[0].hr24format;
 					periodTime = JSON[0].period;
@@ -584,7 +589,7 @@
             //check if lists already loaded
             if(alreadyLoaded == false){
                 //if not then send php
-                $.get("GETmodulesList.php", {id: userDepartmentID}, function(JSON){
+                $.get("GETmodulesList.php", {username: passedUsername, id: userDepartmentID}, function(JSON){
                     titleOpt = "";
                     codeOpt = "";
                     codeStr ="";
