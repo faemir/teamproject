@@ -17,7 +17,8 @@ $(document).ready ( function(){
     var users = "";
     var passes = "";
     var userUser = "<?php echo $_SESSION['username']; ?>";
-    var userPass = "<?php echo $_SESSION['password']; ?>";
+    var userPass = "<?php echo md5($_SESSION['password'] + '4509ns;epkgjs3u'); ?>";
+    console.log(userPass);
     for(var i=0;i<JSON.length;i++){
         users = JSON[i].username;
         passes = JSON[i].password;

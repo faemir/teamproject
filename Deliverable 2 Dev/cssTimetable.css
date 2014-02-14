@@ -131,10 +131,17 @@
 	.tableH
 	{
 		color:#431367;
+		cursor: pointer;
 	}
 	.tableHClick
 	{
 		color: #B32561;
+		cursor: pointer;
+	}
+	.change
+	{
+		background-color: #B32561;
+		border: 3px;
 	}
 	.requestButtons
 	{
@@ -337,7 +344,7 @@
 
     /*** Input Table ***/
     
-     #inputTable
+     #inputTable,.table
         {
         border: 1px solid black;
         width: 100%;
@@ -346,11 +353,15 @@
         
     }
 
-    #inputTable *
+    #inputTable *,.table *
     {
         border: 1px solid black;
         
     }
+	.tabledays
+	{
+		width: 130px;
+	}
  
  
  
@@ -391,11 +402,14 @@
             
     /** weeks input **/
 
-    .wkInput
+    .wkInput,.specReqR 
         {
          display:none;
     }
-	.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.requestButtons
+
+	.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.requestButtons,.specReqR + label 
+
+
         {
         display:inline-block;
         min-height:25px;
@@ -439,7 +453,7 @@
         cursor: pointer;
     }
     
-    .wkInput:checked + label,.specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label
+    .wkInput:checked + label,.specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label,.specReqR:checked + label 
         {
 		background-color:#dcdcdc;
 		color: #B32561;
@@ -452,6 +466,10 @@
 	#SemWekTab td
 	{
 		padding: 0px 5px;
+	}
+	.specReqR + label 
+	{
+		min-width:50px;
 	}
 	/* Module selector */
 	.modChooser
@@ -483,7 +501,7 @@
 	{
         min-width:110px;
 	}
-	.specReq + label
+	.specReq + label,.specReqR + label
         {
         cursor: pointer;
     }

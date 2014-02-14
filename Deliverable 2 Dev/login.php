@@ -20,10 +20,10 @@
                 <table align="center">
                     <form action="auth.php" method="post">
                     <tr>
-                        <td><input type="text" placeholder="username" name="user_input"></td>
+                        <td><input type="text" placeholder="username" value="team04" name="user_input"></td>
                     </tr>
                     <tr>
-                        <td><input type="password" placeholder="password" name="pass_input" onclick="checkusername();"></td>
+                        <td><input type="password" placeholder="password" name="pass_input" ></td>
                     </tr>
                     <tr>
                         <td><input type="submit" id="submit" name="submit" value="Submit"></td>
