@@ -97,7 +97,7 @@
 				}
 			});
 
-		} 
+		}
 		
 		function validateUser(){
 				var user= "<?php echo $_SESSION['username'] ?>";
@@ -757,7 +757,6 @@
 							weekArr[i] = 1;}
 						else{weekArr[i] = 0;}
 					}
-
 					if (roomsQueue.length ==0){
 						var preferredRoom = 0;
 					}
