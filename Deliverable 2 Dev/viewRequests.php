@@ -38,6 +38,7 @@
 		var timehour2 = ["13:00-13:50","14:00-14:50","15:00-15:50","16:00-16:50","17:00-17:50"];
 		var timehour3 = ["01:00-1:50","02:00-2:50","03:00-3:50","04:00-4:50","05:00-5:50"];
 		var passedUsername = "";
+
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username'] ?>";
@@ -61,21 +62,25 @@
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){
 		
+
 			//writes and populates Requests table. needs preferences input
 			var searchval = document.getElementById("search").value;
 			var searchtype = document.getElementById("colSelect").value;
 			var semsval = "0";
 			
+
 			if(document.getElementById("semester1").checked){semsval = '1'};
 			if(document.getElementById("semester2").checked){semsval = '2'};
 			if(document.getElementById("semester0").checked){semsval = '0'};
 			
+
 			$("#tableBox").empty();
 			$.ajax({
                 type: "GET",
                 dataType: "json",
                 url: "GETallRequests.php",
 				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername},
+
 				//data: {'username': $_session['username']},
                 success: function(JSON){
                     var codeStr = "";
@@ -183,6 +188,7 @@
 		function showDetails(requestID,button){
 			var timeFormat;
 			$.get("GETallPreferences.php", {username: passedUsername}, function(JSON){
+
 				timeFormat = JSON[0].hr24format;
 			}, 'json');
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){

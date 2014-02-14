@@ -43,7 +43,8 @@
 		var roomsNames = [];
 		var roomsJSONchecker = true;
 		var sort = false; // for sorting my capacity
-		var ARooms = 1;
+		var ARooms = 0;
+		var AClick = 0;
 
 		//Selected periods from table - false = not selected.
 		//............................input table
@@ -83,7 +84,6 @@
 				url: "GETallPreferences.php",
 				async: false,
 				data: {'username': passedUsername},
-
 				success: function(JSON){
 					hr24format = JSON[0].hr24format;
 					periodTime = JSON[0].period;
@@ -94,7 +94,8 @@
 				}
 			});
 
-		}
+		} 
+
 		
 		
         function wrInputTable(){
@@ -201,6 +202,8 @@
 				}
 			}
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+			ARooms=0;
+			document.getElementById("room1").checked = true;
 		}
 		function EmptyRoom(){
 			
@@ -389,11 +392,36 @@
 			
 			GetRoom(true);
 		}
-
-
+		function roomamount(valuess){
+			if(valuess < ARooms){
+				for(i=valuess; i <ARooms;i++){
+					document.getElementById("r"+roomsQueue[i]).checked = false;
+				}
+				roomsQueue.length = valuess;
+				roomsNamesQueue.length = valuess;
+				ARooms = valuess;
+			}
+			AClick = valuess;
+			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+			
+		}
 		function roomClick(currentBox){
+			if(currentBox.checked){
+				if (ARooms <5){
+					ARooms++;
+				}
+			}
+			else{
+				ARooms--
+			}
+			if(AClick==roomsQueue.length){AClick=0;}
+			if((AClick != 0 && AClick <= ARooms) || AClick==0 && ARooms !=0){
+				document.getElementById("room"+ARooms).checked=true;
+			}
+			
 			var counter = 0
 			var boxID = currentBox.id.substring(1,currentBox.length);
+			
 			if (currentBox.checked==true){
 				if (roomsQueue.length < ARooms){
 					roomsQueue[roomsQueue.length] = boxID;
@@ -421,6 +449,10 @@
 			}
 			for(var i = 0; i<roomsQueue.length;i++){
 				roomsNamesQueue[i] = roomsNames[roomsQueue[i]];
+			}
+			if(ARooms==0){
+				roomsQueue=[];
+				roomsNamesQueue = [];
 			}
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 			AlreadyBooked()
@@ -657,16 +689,7 @@
             }
 
         }
-		function roomamount(valuess){
-			if(valuess < ARooms){
-				for(i=valuess; i <ARooms;i++){
-					document.getElementById("r"+roomsQueue[i]).checked = false;
-				}
-				roomsQueue.length = valuess;
-				roomsNamesQueue.length = valuess;
-			}
-			ARooms =  valuess;
-		}
+
 		//-------------makes the mod code = mod title
 		function ModuleSelector(modList){
 			var modIndex = modList.selectedIndex;
@@ -675,130 +698,139 @@
 		}
 
 		function Submit(redirectBool,eBool){
-		
+		var checkRoom=1;
+		for(var i = 1; i <= 5; i++){
+			if (document.getElementById("room"+i).checked == true)
+			checkRoom = i;
+		}
+		if(roomsQueue.length != checkRoom && roomsQueue.length!=0){
+			var num = checkRoom-roomsQueue.length;
+			if(num==1){
+				alert("Please enter " + num + " more room OR no rooms");
+			}else{
+				alert("Please enter " + num + " more rooms OR no rooms");
+			}
+		}else{
 			timetableGetter();
-			var weekArr = [];
-			//change all data to variables of correct type.
-			var yearID = 13;
-			if(document.getElementById("PRY").checked) {
-				var pri=1;
-			}
-			else{
-				var pri=0;
-			}
-			
-			if(document.getElementById("sem1").checked){
-				var sem = 1;
-			}
-			else{
-				var sem = 2;
-			}
-			
-			for(var i = 0; i < 15; i++){
-				if(document.getElementById("wk" +(i+1)).checked){
-					weekArr[i] = 1;}
-				else{weekArr[i] = 0;}
-			}
-			if (roomsQueue.length ==0){
-				var preferredRoom = 0;
-			}
-			else{
-				var preferredRoom = 1;
-			}
-			var weekID = 0;
-			var weekBool = true;
-			$.ajax({
-				type: "GET", 
-				dataType: "json",
-				url:"GETweeksIdExistence.php", 
-				data: {'weeks1': weekArr[0],'weeks2': weekArr[1],'weeks3': weekArr[2],'weeks4': weekArr[3],'weeks5': weekArr[4],'weeks6': weekArr[5],'weeks7': weekArr[6],'weeks8': weekArr[7],'weeks9': weekArr[8],'weeks10': weekArr[9],'weeks11': weekArr[10],'weeks12': weekArr[11],'weeks13': weekArr[12],'weeks14': weekArr[13],'weeks15': weekArr[14]},  
-				async: false,
-				success: function(JSON){
-					if(JSON.length == 1){
-						weekID = JSON[0].weekid;
-						weekBool = false;
-					}
+			if(DPTArray.length==0){
+				alert("Please enter a time slot");
+			}else{
+				var weekArr = [];
+				//change all data to variables of correct type.
+				var yearID = 13;
+
+				if(document.getElementById("PRY").checked) {
+					var pri=1;
 				}
-			});
-			if (weekBool){
+				else{
+					var pri=0;
+				}
+				if(document.getElementById("sem1").checked){
+					var sem = 1;
+				}
+				else{
+					var sem = 2;
+				}
+				for(var i = 0; i < 15; i++){
+					if(document.getElementById("wk" +(i+1)).checked){
+						weekArr[i] = 1;}
+					else{weekArr[i] = 0;}
+				}
+				if (roomsQueue.length ==0){
+					var preferredRoom = 0;
+				}
+				else{
+					var preferredRoom = 1;
+				}
+				var weekID = 0;
+				var weekBool = true;
 				$.ajax({
-					type: "GET",
-					url: "POSTnewWeek.php",
-					async: false,
-					data: {'weeks1': weekArr[0],'weeks2': weekArr[1],'weeks3': weekArr[2],'weeks4': weekArr[3],'weeks5': weekArr[4],'weeks6': weekArr[5],'weeks7': weekArr[6],'weeks8': weekArr[7],'weeks9': weekArr[8],'weeks10': weekArr[9],'weeks11': weekArr[10],'weeks12': weekArr[11],'weeks13': weekArr[12],'weeks14': weekArr[13],'weeks15': weekArr[14]},
-				});
-				$.ajax({
-					type: "GET",
-					url: "GETlatestWeekId.php",
+					type: "GET", 
 					dataType: "json",
+					url:"GETweeksIdExistence.php", 
+					data: {'weeks1': weekArr[0],'weeks2': weekArr[1],'weeks3': weekArr[2],'weeks4': weekArr[3],'weeks5': weekArr[4],'weeks6': weekArr[5],'weeks7': weekArr[6],'weeks8': weekArr[7],'weeks9': weekArr[8],'weeks10': weekArr[9],'weeks11': weekArr[10],'weeks12': weekArr[11],'weeks13': weekArr[12],'weeks14': weekArr[13],'weeks15': weekArr[14]},  
 					async: false,
 					success: function(JSON){
-						weekID = JSON[0].weekid;
+						if(JSON.length == 1){
+							weekID = JSON[0].weekid;
+							weekBool = false;
+						}
 					}
 				});
-			}		
+				if (weekBool){
+					$.ajax({
+						type: "GET",
+						url: "POSTnewWeek.php",
+						async: false,
+						data: {'weeks1': weekArr[0],'weeks2': weekArr[1],'weeks3': weekArr[2],'weeks4': weekArr[3],'weeks5': weekArr[4],'weeks6': weekArr[5],'weeks7': weekArr[6],'weeks8': weekArr[7],'weeks9': weekArr[8],'weeks10': weekArr[9],'weeks11': weekArr[10],'weeks12': weekArr[11],'weeks13': weekArr[12],'weeks14': weekArr[13],'weeks15': weekArr[14]},
+					});
+					$.ajax({
+						type: "GET",
+						url: "GETlatestWeekId.php",
+						dataType: "json",
+						async: false,
+						success: function(JSON){
+							weekID = JSON[0].weekid;
+						}
+					});
+				}	
 
-			var i = 0;
-			do{
-				//post new request
-				$.ajax({
+				var i = 0;
+				do{
+					//post new request
+					$.ajax({
 					type: "GET",
 					url: "POSTnewRequest.php",
 					async: false,
-					data: {'editrequestid': editrequestid,'editBool': eBool,'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':roomsQueue.length , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value)},
-				});
-				i++;
-				// //get latest request id
-				var lReq = 0;
-				$.ajax({
-					type: "GET",
-					url: "GETlatestRequestID.php",
-					dataType: "json",
-					async: false,
-					success: function(JSON){
-						lReq = JSON[0].requestid;
-					}
-				});
-				//alert(preferredRoom==1);
-				
-				if(editBool){
-					$.get("POSTdeleteBooking.php", {'editrequestid': editrequestid});
-					lReq = editrequestid;
-				}
-				
-				if (preferredRoom ==1){
-					
-					for(var j =0; j < roomsNamesQueue.length;j++){
-						
-						$.ajax({
-							type: "GET",
-							url: "POSTroomBooking.php",
-							async: false,
-							data: {'editBool': eBool, 'requestid':lReq, 'room':roomsNamesQueue[j], 'modulecode':(document.getElementById("modCodeSelect").value)}
-						});
-					}
-				}
-				else{
+					data: {'editrequestid': editrequestid,'editBool': eBool,'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':checkRoom , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value)},
+					});
+					i++;
+					// //get latest request id
+					var lReq = 0;
 					$.ajax({
 						type: "GET",
-						url: "POSTroomBooking.php",
+						url: "GETlatestRequestID.php",
+						dataType: "json",
 						async: false,
-						data: {'requestid':lReq, 'room':"NULL", 'modulecode':(document.getElementById("modCodeSelect").value)}
+						success: function(JSON){
+							lReq = JSON[0].requestid;
+						}
 					});
+					//alert(preferredRoom==1);
+					if(editBool){
+						$.get("POSTdeleteBooking.php", {'editrequestid': editrequestid});
+						lReq = editrequestid;
+					}
+					if (preferredRoom ==1){
+						for(var j =0; j < checkRoom.length;j++){
+							$.ajax({
+								type: "GET",
+								url: "POSTroomBooking.php",
+								async: false,
+								data: {'editBool': eBool, 'requestid':lReq, 'room':roomsNamesQueue[j], 'modulecode':(document.getElementById("modCodeSelect").value)}
+							});
+						}
+					}
+					else{
+						for(var j =0; j < checkRoom.length;j++){
+							$.ajax({
+								type: "GET",
+								url: "POSTroomBooking.php",
+								async: false,
+								data: {'requestid':lReq, 'room':"NULL", 'modulecode':(document.getElementById("modCodeSelect").value)}
+							});
+						}
+					}
 				}
-				
+				while(i<DPTArray.length);
+				if(redirectBool){
+				window.location.replace("viewRequests.php");
+				}else{
+				window.location.replace("addRequests.php");
+				}	
 			}
-			while(i<DPTArray.length);
-
- 			// if(redirectBool){
-				
-				// window.location.replace("viewRequests.php");
-			// }
-			// else{
-				
-				// window.location.replace("addRequests.php");
-			// }
 		}
+	}
 		
 		
         </script>
