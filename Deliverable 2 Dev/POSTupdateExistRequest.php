@@ -1,6 +1,0 @@
-<?php
-
-UPDATE EntryRequestTable SET
-
-
-?>
