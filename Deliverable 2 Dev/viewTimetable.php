@@ -14,7 +14,6 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
 			var days = ["Monday", "Tuesday", "Wednesday", "Thurday", "Friday"];
-
 			var passedUsername = "";
 			
 			$(document).ready(function(){getUser();});

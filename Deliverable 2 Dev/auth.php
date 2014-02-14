@@ -12,7 +12,6 @@
 <script type="text/javascript">
 $(document).ready ( function(){
     var auth=false;
-
 	$.get("GETauth.php",function(JSON){
 		var sessid = "<?php echo SID ?>";
 		var users = [];

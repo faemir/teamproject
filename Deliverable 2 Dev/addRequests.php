@@ -16,17 +16,14 @@
 		//GLOBALS -------------------------------------------------//
 		
         var userDepartmentID = "";
-
         var hr24format = 0;
 		var periodTime = 1;
 		var startwk = 1;
 		var endwk = 12;
 		var prefLoc = "ANY";
-		
-		
+
 		var editBool = false;
 		var editrequestid = 134;
-		//var $_SESSION["editrequestid"];
 		
 		//pOrT stands for 'Period or Time' - to reflect user preferences
         var pOrTHeader1 = "Period";
@@ -46,6 +43,7 @@
 		var ARooms = 0;
 		var AClick = 0;
 
+
 		//Selected periods from table - false = not selected.
 		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
@@ -63,7 +61,7 @@
 
         //ONLOAD FUNCTIONS -----------------------------------------//
 
-		$(document).ready(function(){getUser();});
+		$(document).ready(function(){getUser()});
 		$(document).ready(function(){GetPrefData()});
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
@@ -73,9 +71,18 @@
 		
 
         //FUNCTIONS --------------------------------------------------//
-
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username'] ?>";
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "GETdepartmentID.php",
+				async: false,
+				data:{'username': passedUsername},
+				success: function(JSON){
+					userDepartmentID = JSON[0].departmentid;
+				}
+			});
 		}
 		function GetPrefData(){	
 			$.ajax({
@@ -621,7 +628,7 @@
             //check if lists already loaded
             if(alreadyLoaded == false){
                 //if not then send php
-                $.get("GETmodulesList.php", {username: passedUsername, id: userDepartmentID}, function(JSON){
+                $.get("GETmodulesList.php", {'id': userDepartmentID}, function(JSON){
                     titleOpt = "";
                     codeOpt = "";
                     codeStr ="";
@@ -690,6 +697,16 @@
 
         }
 
+		function roomamount(valuess){
+			if(valuess < ARooms){
+				for(i=valuess; i <ARooms;i++){
+					document.getElementById("r"+roomsQueue[i]).checked = false;
+				}
+				roomsQueue.length = valuess;
+				roomsNamesQueue.length = valuess;
+			}
+			ARooms =  valuess;
+		}
 		//-------------makes the mod code = mod title
 		function ModuleSelector(modList){
 			var modIndex = modList.selectedIndex;
