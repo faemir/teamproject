@@ -10,6 +10,20 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link href='cssTimetable.css' rel='stylesheet' type='text/css'>
         <title>Help Page</title>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript">
+		$(document).ready(function(){validateUser();});
+		
+			function validateUser(){
+				var user= "<?php echo $_SESSION['username'] ?>";
+				var sessionid= "<?php echo session_id(); ?>";
+				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+					if (JSON.length==0)
+					window.location.replace("login.php");
+				}, 'json');
+			}	
+		
+		</script>
     </head>
 
     <body>

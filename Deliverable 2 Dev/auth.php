@@ -18,6 +18,14 @@ $(document).ready ( function(){
 		var passes = [];
 		var userUser = "<?php echo $_SESSION['username']; ?>";
 		var userPass = "<?php echo md5($_SESSION['password'] + '4509ns;epkgjs3u'); ?>";
+		
+		<?php
+			$sessid = session_id();
+			$username = $_SESSION['username']; 
+			$sql="UPDATE UserTable SET sessid='$sessid' WHERE username = '$username'";
+			include 'DBquery.php';
+		?>
+		
 		console.log(userPass);
 		for(var i=0;i<JSON.length;i++){
 			users[i] = JSON[i].username;

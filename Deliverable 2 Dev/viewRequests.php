@@ -13,6 +13,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
         //onload ----------------------------------------------------------------//
+		$(document).ready(function(){validateUser();});
 		$(document).ready(function(){getUser();});
 		$(document).ready(function(){getUserPrefs();});
         $(document).ready(function(){wrRequestsTable();});
@@ -60,6 +61,15 @@
 				}
 			});
 		}
+		function validateUser(){
+				var user= "<?php echo $_SESSION['username'] ?>";
+				var sessionid= "<?php echo session_id(); ?>";
+				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+					if (JSON.length==0)
+					window.location.replace("login.php");
+				}, 'json');
+			}	
+			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){
 			//writes and populates Requests table. needs preferences input
@@ -291,9 +301,7 @@
 				dataType: "json",
 				async: false,
 				success: function(JSON){
-					alert(JSON[0].requeststatus);
 					var statuses = JSON[0].requeststatus;
-					alert(statuses == "accepted");
 					if (statuses == "accepted"){
 						status = 1;
 					}
