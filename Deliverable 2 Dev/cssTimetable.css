@@ -398,11 +398,11 @@
             
     /** weeks input **/
 
-    .wkInput
+    .wkInput,.specReqR 
         {
          display:none;
     }
-	.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel
+	.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.specReqR + label 
         {
         display:inline-block;
         min-height:25px;
@@ -446,7 +446,7 @@
         cursor: pointer;
     }
     
-    .wkInput:checked + label,.specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label
+    .wkInput:checked + label,.specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label,.specReqR:checked + label 
         {
 		background-color:#dcdcdc;
 		color: #B32561;
@@ -459,6 +459,10 @@
 	#SemWekTab td
 	{
 		padding: 0px 5px;
+	}
+	.specReqR + label 
+	{
+		min-width:50px;
 	}
 	/* Module selector */
 	.modChooser
@@ -490,7 +494,7 @@
 	{
         min-width:110px;
 	}
-	.specReq + label
+	.specReq + label,.specReqR + label
         {
         cursor: pointer;
     }
