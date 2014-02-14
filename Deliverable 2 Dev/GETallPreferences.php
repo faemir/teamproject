@@ -1,5 +1,6 @@
 <?php
 
+
 	$username = $_GET["username"];
     $sql="SELECT * FROM Preferences WHERE username='$username'";
     include "DBquery.php";

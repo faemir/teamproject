@@ -33,7 +33,8 @@
 	$nearestroom = $_GET["nearestroom"];
 	$other = $_GET["other"];
 	
-	if(editBool){
+	if($editBool == 'true'){
+
 		$sql = "UPDATE EntryRequestTable ";
 		$sql .= "SET Year=$year,ModuleCode='$modulecode',Priority=$priority,Semester=$semester,Day='$day',Period=$period,Duration=$duration,WeekID=$weekid,NoOfStudents=$noofstudents,NoOfRooms=$noofrooms,";
 		$sql .= "PreferredRooms=$preferredroom,RequestStatus='$requeststatus',QualityRoom=$qualityroom,WheelChairAccess=$wheelchair,DataProjector=$dataprojector,DoubleProjector=$doubleprojector,Visualiser=$visualiser,VideoDVDBluray=$videodvdbluray,";
@@ -49,6 +50,6 @@
 		$sql .= "$computer,$whiteboard,$chalkboard,$nearestroom,'$other');";
 	}
 	include "DBquery.php";
-
+	echo $sql;
 
 ?>
