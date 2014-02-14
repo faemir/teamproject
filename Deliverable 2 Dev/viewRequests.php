@@ -48,6 +48,7 @@
 				type: "GET",
 				dataType: "json",
 				url: "GETallPreferences.php",
+				async: false,
 				data: {'username': passedUsername},
 				success: function(JSON){
 					userPrefHeader1 = JSON[0].header1;
