@@ -37,6 +37,7 @@
 		var roomsNames = [];
 		var roomsJSONchecker = true;
 		var sort = false; // for sorting my capacity
+		var ARooms = 1;
 
 		//Selected periods from table - false = not selected.
 		//............................input table
@@ -370,15 +371,19 @@
 			var counter = 0
 			var boxID = currentBox.id.substring(1,currentBox.length);
 			if (currentBox.checked==true){
-				if (roomsQueue.length <= 4){
+				if (roomsQueue.length < ARooms){
 					roomsQueue[roomsQueue.length] = boxID;
 				}else{
 					document.getElementById("r"+roomsQueue[0]).checked = false;
-					roomsQueue[0]=roomsQueue[1];
+					for (var i = 0; i < ARooms; i++){
+						roomsQueue[i]=roomsQueue[i+1];
+					}
+					roomsQueue[ARooms-1]=boxID;
+					/* roomsQueue[0]=roomsQueue[1];
 					roomsQueue[1]=roomsQueue[2];
 					roomsQueue[2]=roomsQueue[3];
 					roomsQueue[3]=roomsQueue[4];
-					roomsQueue[4] = boxID;
+					roomsQueue[4] = boxID; */
 				}
 			}else{
 				while (roomsQueue[counter] != boxID){
@@ -394,8 +399,11 @@
 				roomsNamesQueue[i] = roomsNames[roomsQueue[i]];
 			}
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+			AlreadyBooked()
 		}
+		function AlreadyBooked(){
 		
+		}
 		
 		
 		
@@ -596,6 +604,11 @@
 					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom(false)' class='modChooser'><option selected>ANY</option><option>E</option><option>C</option><option>W</option></select></td></tr>";
 					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' onkeyup='countText()' id='ORE' placeholder='Type here...'></td></tr>";
 					codeStr +="<tr><td></td><td><label id='charToGo'> </label></td></tr>";
+					codeStr +="<tr><td>Amount of rooms:</td><td><input type='radio' class='specReqR' id='room1' value='1' name='RoomCount' onclick='roomamount(1)' checked><label for='room1'>1</label>";
+					codeStr +="<input type='radio' class='specReqR' id='room2' value='2' name='RoomCount' onclick='roomamount(2)' ><label for='room2'>2</label>";
+					codeStr +="<input type='radio' class='specReqR' id='room3' value='3' name='RoomCount' onclick='roomamount(3)' ><label for='room3'>3</label>";
+					codeStr +="<input type='radio' class='specReqR' id='room4' value='4' name='RoomCount' onclick='roomamount(4)' ><label for='room4'>4</label>";
+					codeStr +="<input type='radio' class='specReqR' id='room5' value='5' name='RoomCount' onclick='roomamount(5)' ><label for='room5'>5</label></td></tr>";
 					codeStr +="<tr><td>Priority:</td><td>";
 					codeStr +="<input type='radio' class='specReqP' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
 					codeStr +="<input type='radio' class='specReqP' id='PRN' name='Priority' ><label for='PRN'>No</label></td></tr></table>";
@@ -606,7 +619,16 @@
             }
 
         }
-		
+		function roomamount(valuess){
+			if(valuess < ARooms){
+				for(i=valuess; i <ARooms;i++){
+					document.getElementById("r"+roomsQueue[i]).checked = false;
+				}
+				roomsQueue.length = valuess;
+				roomsNamesQueue.length = valuess;
+			}
+			ARooms =  valuess;
+		}
 		//-------------makes the mod code = mod title
 		function ModuleSelector(modList){
 			var modIndex = modList.selectedIndex;
