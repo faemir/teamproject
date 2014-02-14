@@ -1,3 +1,10 @@
+<?php
+    ini_set("session.use_cookies",0);
+    ini_set("session.use_only_cookies",0);
+    ini_set("session.use_trans_sid",1);
+    session_start();
+?>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
