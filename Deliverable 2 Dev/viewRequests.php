@@ -41,9 +41,6 @@
 		var endTimeList1 = ["09:50","10:50","11:50","12:50"];
 		var endTimeList2 = ["13:50","14:50","15:50","16:50","17:50"];
 		var endTimeList3 = ["01:50","02:50","03:50","04:50","05:50"];
-		var timehour1 = ["09:00-09:50","10:00-10:50","11:00-11:50","12:00-12:50"];
-		var timehour2 = ["13:00-13:50","14:00-14:50","15:00-15:50","16:00-16:50","17:00-17:50"];
-		var timehour3 = ["01:00-01:50","02:00-02:50","03:00-03:50","04:00-04:50","05:00-05:50"];
 		var passedUsername = "";
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
@@ -130,8 +127,12 @@
 									codeStr += '    	<td>' + JSON[i].modulecode + '</td>';
 								else if(viewHeaders[h] == "1")
 									codeStr += '    	<td>' + JSON[i].moduletitle + '</td>';
-								else if(viewHeaders[h] == "2")
-									codeStr += '    	<td>' + JSON[i].priority + '</td>';
+								else if(viewHeaders[h] == "2"){
+									if (JSON[i].priority == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
 								else if(viewHeaders[h] == "3")
 									codeStr += '    	<td>' + JSON[i].year + '</td>';
 								else if(viewHeaders[h] == "4")
@@ -150,26 +151,66 @@
 									codeStr += '    	<td>' + JSON[i].noofstudents + '</td>';
 								else if(viewHeaders[h] == "11")
 									codeStr += '    	<td>' + JSON[i].noofrooms + '</td>';
-								else if(viewHeaders[h] == "12")
-									codeStr += '    	<td>' + JSON[i].preferredrooms + '</td>';
-								else if(viewHeaders[h] == "13")
-									codeStr += '    	<td>' + JSON[i].qualityroom + '</td>';
-								else if(viewHeaders[h] == "14")
-									codeStr += '    	<td>' + JSON[i].wheelchairaccess + '</td>';
-								else if(viewHeaders[h] == "15")
-									codeStr += '    	<td>' + JSON[i].dataprojector + '</td>';
-								else if(viewHeaders[h] == "16")
-									codeStr += '    	<td>' + JSON[i].doubleprojector + '</td>';
-								else if(viewHeaders[h] == "17")
-									codeStr += '    	<td>' + JSON[i].visualiser + '</td>';
-								else if(viewHeaders[h] == "18")
-									codeStr += '    	<td>' + JSON[i].videodvdbluray + '</td>';
-								else if(viewHeaders[h] == "19")
-									codeStr += '    	<td>' + JSON[i].computer + '</td>';
-								else if(viewHeaders[h] == "20")
-									codeStr += '    	<td>' + JSON[i].whiteboard + '</td>';
-								else if(viewHeaders[h] == "21")
-									codeStr += '    	<td>' + JSON[i].chalkboard + '</td>';
+								else if(viewHeaders[h] == "12"){
+									if (JSON[i].preferredrooms == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "13"){
+									if (JSON[i].qualityroom == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "14"){
+									if (JSON[i].wheelchairaccess == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "15"){
+									if (JSON[i].dataprojector == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "16"){
+									if (JSON[i].doubleprojector == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "17"){
+									if (JSON[i].visualiser == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "18"){
+									if (JSON[i].videodvdbluray == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "19"){
+									if (JSON[i].computer == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "20"){
+									if (JSON[i].whiteboard == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "21"){
+									if (JSON[i].chalkboard == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
 							}
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
@@ -197,16 +238,18 @@
 				var codeStl = "<table id='detailsTable'>";
 				
 				codeStl += "<tr>";
-				codeStl += "<td>" + "Request ID: " + JSON[0].requestid + "</br></td>";
-				codeStl += "<td>" + "Year: " + JSON[0].year + "</br></td>";
+				codeStl += "<td>Request ID: " + JSON[0].requestid + "</td>";
+				codeStl += "<td>Year: " + JSON[0].year + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				codeStl += "<td>" + "Period: " + JSON[0].period + "</br></td>";
-				codeStl += "<td>" + "Duration: " + JSON[0].duration + "</br></td>";
+				codeStl += "<td>Module Code: " + JSON[0].modulecode + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				codeStl += "<td>" + "Module Code: " + JSON[0].modulecode + "</br></td>";
-				codeStl += "<td>" + JSON[0].moduletitle + "</br></td>";
+				codeStl += "<td colspan='2'>" + JSON[0].moduletitle + "</td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
+				codeStl += "<td>Period: " + JSON[0].period + "</td>";
+				codeStl += "<td>Duration: " + JSON[0].duration + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
 				
@@ -218,26 +261,18 @@
 					var Starttime = startTimeList1.concat(startTimeList3);
 					var Endtime = endTimeList1.concat(endTimeList3);
 				}
-				var starttime = Starttime[JSON[i].period-1];
-				var endtime = Endtime[(parseInt(JSON[i].period) + parseInt(JSON[i].duration)-2)];
+				var starttime = Starttime[JSON[0].period-1];
+				var endtime = Endtime[(parseInt(JSON[0].period) + parseInt(JSON[0].duration)-2)];
 				
-				
-				//if (timeFormat==1)
-				//var time = timehour1.concat(timehour2);
-				//else
-				//var time = timehour1.concat(timehour3);
-				//var time2 = time[JSON[0].period-1];
-				
-				codeStl += "<td>" + "Start Time: " + starttime + "</br></td>";
-				codeStl += "<td>" + "End Time: " + endtime + "</br></td>";
+				codeStl += "<td colspan='2'>Requested Time: " + starttime + "-" + endtime + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				codeStl += "<td>" + "No. Students: " + JSON[0].noofstudents + "</br></td>";
-				codeStl += "<td>" + "No. Rooms: " + JSON[0].noofrooms + "</br></td>";
+				codeStl += "<td>No. Students: " + JSON[0].noofstudents + "</td>";
+				codeStl += "<td>No. Rooms: " + JSON[0].noofrooms + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
 				if(JSON[0].preferredrooms==1){
-					codeStl += "<td>" + "Preferred room: "+ JSON[0].roomid +"</br></td>";
+					codeStl += "<td colspan='2'>Preferred room: "+ JSON[0].roomid +"</td>";
 				}
 				codeStl += "<tr><td colspan='2'>";
 				if(JSON[0].qualityroom==1){
