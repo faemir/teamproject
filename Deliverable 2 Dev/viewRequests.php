@@ -256,8 +256,6 @@
 				
 				
             }, 'json');
-
-			//beginning
 			if (lastRow!=""){
 				$("#"+lastRow).toggleClass('requestsRowClk');
 			}
@@ -307,7 +305,7 @@
 		}
 
 		//Sort functions. Asc, Desc alternating. Bubble sort.
-		function sortTable(colnumber,JsonObj){
+		function sortTable(colnumber,heads){
 			//Fill 2D array with each row of table.
 			var value=new Array();
 			var rows = RequestsTable.getElementsByTagName('tr');
@@ -359,7 +357,7 @@
 			codeStr += '<tr>';
 			var countersort = 0;
 			for (var z=0;z<viewHeaders.length;z++){
-				codeStr += '	<th onclick="sortTable(' + countersort + ')",this)"id="h'+countersort+'" class="tableH">' + headersArray[viewHeaders[z]] + '</th>';
+				codeStr += '	<th onclick="sortTable(' + countersort +',this)"id="h'+countersort+'" class="tableH">' + headersArray[viewHeaders[z]] + '</th>';
 				countersort += 1;
 			}
 			codeStr += '    <th onclick="sortTable(6,this)"id="h6" class="tableH">Details</th>';
@@ -369,7 +367,7 @@
 			codeStr += '    <th onclick="sortTable(10,this)"id="h10" class="tableH">Status</th>';
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
-				codeStr += '	<tr class="requestsRow">';
+				codeStr += '	<tr class="requestsRow" id=r'+i+'>';
 				codeStr += '    	<td>' + value[l][0] + '</td>';
 				codeStr += '    	<td>' + value[l][1] + '</td>';
 				codeStr += '    	<td>' + value[l][2] + '</td>';
@@ -391,8 +389,10 @@
 				// $('#'+lastHead).toggleClass('tableH');
 			// }
 			// lastHead=$(JsonObj).parent().parent().attr('id');
-			// alert($(JsonObj).parent().parent().attr('id'));
-			$(JsonObj).parent().parent().toggleClass('tableHClick');
+			//alert($(column).attr('id'));
+			$(heads).toggleClass("tableHClick");
+
+			
 		}
 		
 		function wrRoundsTable(){
