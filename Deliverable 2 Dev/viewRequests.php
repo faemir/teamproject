@@ -38,10 +38,12 @@
 		var timehour2 = ["13:00-13:50","14:00-14:50","15:00-15:50","16:00-16:50","17:00-17:50"];
 		var timehour3 = ["01:00-1:50","02:00-2:50","03:00-3:50","04:00-4:50","05:00-5:50"];
 		var passedUsername = "";
+		var seshId = "";
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username'] ?>";
+			seshId = "<?php echo session_id();?>";
 		}
 		function getUserPrefs(){
 			$.ajax({
@@ -265,12 +267,20 @@
 		
 		function editRequest(requestID){
 			//Post into AddRequestTable.php the requestID's data.
-			alert("hi:" + requestID);
+			// $.ajax({
+				// type: "GET", 
+				// url: "POSTeditRequest.php",
+				// data: {'id': requestID},
+				// async: false,
+			// });
+			
+			<?php $_SESSION["editBoolean"] = true; ?>
 			$.ajax({
-				type: "GET", 
-				url: "POSTeditRequest.php",
-				data: {'id': requestID},
+				type: "POST",
+				url: "addRequests.php",
+				data:{'id': requestID},
 			});
+			window.location.replace("addRequests.php?PHPSESSID=" +seshId);
 		}
 		
 		function addSimilarRequest(requestID){

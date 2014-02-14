@@ -3,6 +3,7 @@
     ini_set("session.use_only_cookies",0);
     ini_set("session.use_trans_sid",1);
     session_start();
+	$_SESSION["editreqid"] = $_POST["id"];
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -24,7 +25,7 @@
 		var prefLoc = "ANY";
 		var redirectBool = false;
 		var editBool = false;
-		var editrequestid = 134;
+		var editrequestid = "";
 		
 		//pOrT stands for 'Period or Time' - to reflect user preferences
         var pOrTHeader1 = "Period";
@@ -63,10 +64,11 @@
         $(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrRoomsList()});
 		$(document).ready(function(){popModulesList(userDepartmentID)});
+		$(document).ready(function(){isEditreq()});
 		
         //FUNCTIONS --------------------------------------------------//
 		function getUser(){
-			passedUsername = "<?php echo $_SESSION['username'] ?>";
+			passedUsername = "<?php echo $_SESSION['username']; ?>";
 			seshId = "<?php echo session_id();?>";
 			$.ajax({
 				type: "GET",
@@ -97,6 +99,20 @@
 			});
 
 		} 
+
+		function isEditreq(){
+			
+			editBool = <?php echo $_SESSION['editBoolean']; ?>;
+			editrequestid = "<?php echo $_SESSION["editreqid"]; ?>";
+			alert(editBool);
+			alert(editrequestid);
+			
+			if(editBool == true){
+				alert("yes");
+				//wrEditrequest();
+			}
+		}
+		
 
 		
 		
