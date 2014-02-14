@@ -1,6 +1,6 @@
 <?php
 
-	$username = 'admin';
+	$username = $_GET['username'];
 	$per = $_GET["per"];
 	$hour = $_GET["hour"];
 	$start = $_GET["start"];

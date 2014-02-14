@@ -13,6 +13,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
         //onload ----------------------------------------------------------------//
+		$(document).ready(function(){getUser();});
 		$(document).ready(function(){getUserPrefs();});
         $(document).ready(function(){wrRequestsTable();});
 		$(document).ready(function(){wrRoundsTable();});
@@ -33,13 +34,20 @@
 		var userPrefHeader6 = "";
 		var lastHead ="";
 		var lastRow = "";
+		var timehour1 = ["09:00-09:50","10:00-10:50","11:00-11:50","12:00-12:50"];
+		var timehour2 = ["13:00-13:50","14:00-14:50","15:00-15:50","16:00-16:50","17:00-17:50"];
+		var timehour3 = ["01:00-1:50","02:00-2:50","03:00-3:50","04:00-4:50","05:00-5:50"];
+		var passedUsername = "";
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
+		function getUser(){
+			passedUsername = "<?php echo $_SESSION['username'] ?>";
+		}
 		function getUserPrefs(){
 			$.ajax({
 				type: "GET",
 				dataType: "json",
 				url: "GETallPreferences.php",
-				//data: {'username': $_session['username']},
+				data: {'username': passedUsername},
 				success: function(JSON){
 					userPrefHeader1 = JSON[0].header1;
 					userPrefHeader2 = JSON[0].header2;
@@ -51,22 +59,23 @@
 			});
 		}
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
-		function wrRequestsTable(type){
-            //writes and populates Requests table. needs preferences input
+		function wrRequestsTable(){
+		
+			//writes and populates Requests table. needs preferences input
 			var searchval = document.getElementById("search").value;
+			var searchtype = document.getElementById("colSelect").value;
 			var semsval = "0";
-			if(type==""){
-				search = " ";
-			}
+			
 			if(document.getElementById("semester1").checked){semsval = '1'};
 			if(document.getElementById("semester2").checked){semsval = '2'};
 			if(document.getElementById("semester0").checked){semsval = '0'};
+			
 			$("#tableBox").empty();
 			$.ajax({
                 type: "GET",
                 dataType: "json",
                 url: "GETallRequests.php",
-				data: {'type':type, 'searchval': searchval, 'semsval': semsval},
+				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername},
 				//data: {'username': $_session['username']},
                 success: function(JSON){
                     var codeStr = "";
@@ -152,27 +161,36 @@
 								else if(viewHeaders[h] == "21")
 									codeStr += '    	<td>' + JSON[i].chalkboard + '</td>';
 							}
-							codeStr += '    	<td><input type="button" class="detailsButton" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
-							codeStr += '    	<td><input type="button" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td><input type="button" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td><input type="button" value="+" onclick="addSimilarRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td>' + JSON[i].requeststatus + '</td>';
+							codeStr += '    	<td ><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
+							codeStr += '    	<td ><input type="button" class="requestButtons" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td ><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td ><input type="button" class="requestButtons" value="+" onclick="addSimilarRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td >' + JSON[i].requeststatus + '</td>';
 							codeStr += '	</tr>';
 						}
 					}
                     codeStr += "</table>";
                     //Writes table into div tag
                     $("#tableBox").append(codeStr);
+					document.getElementById("cTR").innerHTML ="No of Requests: " + JSON.length;
                 }
             });
-        }
+			
+			 
+		}
 		
+	
 		function showDetails(requestID,button){
+			var timeFormat;
+			$.get("GETallPreferences.php", {username: passedUsername}, function(JSON){
+				timeFormat = JSON[0].hr24format;
+			}, 'json');
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
 				$("#detailsBox").empty();
+				
 
 				var codeStl = "<table id='detailsTable'>";
-
+				
 				codeStl += "<tr>";
 				codeStl += "<td>" + "Request ID: " + JSON[0].requestid + "</br></td>";
 				codeStl += "<td>" + "Year: " + JSON[0].year + "</br></td>";
@@ -185,16 +203,13 @@
 				codeStl += "<td colspan = 2>" + JSON[0].moduletitle + "</br></td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				var starttime = parseInt(JSON[0].period) + 8;
-				if (starttime == 9)
-					starttime = "0" + starttime;
-				starttime = starttime + ":00";
-				var endtime = parseInt(JSON[0].period) + parseInt(JSON[0].duration) + 7;
-				if (endtime == 9)
-					endtime = "0" + endtime;
-				endtime = endtime + ":50";
-				codeStl += "<td>" + "Start Time: " + starttime + "</br></td>";
-				codeStl += "<td>" + "End Time: " + endtime + "</br></td>";
+				if (timeFormat==1)
+				var time = timehour1.concat(timehour2);
+				else
+				var time = timehour1.concat(timehour3);
+				var time2 = time[JSON[0].period-1];
+				
+				codeStl += "<td>" + "Time: " + time2 + "</br></td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
 				codeStl += "<td>" + "No. Students: " + JSON[0].noofstudents + "</br></td>";
@@ -242,8 +257,6 @@
 				
 				
             }, 'json');
-
-			//beginning
 			if (lastRow!=""){
 				$("#"+lastRow).toggleClass('requestsRowClk');
 			}
@@ -271,13 +284,29 @@
 		}
 		
 		function deleteRequest(requestID){
-			$.get("GETdeleterequest.php", {'id': requestID});
+			var status = 0;
+			$.ajax({
+				type: "GET",
+				url: "GETrequeststatus.php", 
+				data: {'id':requestID},
+				dataType: "json",
+				async: false,
+				success: function(JSON){
+					alert(JSON[0].requeststatus);
+					var statuses = JSON[0].requeststatus;
+					alert(statuses == "accepted");
+					if (statuses == "accepted"){
+						status = 1;
+					}
+				}
+			});
+			$.get("GETdeleterequest.php", {'id': requestID, 'status': status});
 			$(document).ready(function(){wrRequestsTable();});
 			$("#detailsBox").empty();
 		}
 
 		//Sort functions. Asc, Desc alternating. Bubble sort.
-		function sortTable(colnumber,JsonObj){
+		function sortTable(colnumber,heads){
 			//Fill 2D array with each row of table.
 			var value=new Array();
 			var rows = RequestsTable.getElementsByTagName('tr');
@@ -329,7 +358,7 @@
 			codeStr += '<tr>';
 			var countersort = 0;
 			for (var z=0;z<viewHeaders.length;z++){
-				codeStr += '	<th onclick="sortTable(' + countersort + ')",this)"id="h'+countersort+'" class="tableH">' + headersArray[viewHeaders[z]] + '</th>';
+				codeStr += '	<th onclick="sortTable(' + countersort +',this)"id="h'+countersort+'" class="tableH">' + headersArray[viewHeaders[z]] + '</th>';
 				countersort += 1;
 			}
 			codeStr += '    <th onclick="sortTable(6,this)"id="h6" class="tableH">Details</th>';
@@ -339,7 +368,7 @@
 			codeStr += '    <th onclick="sortTable(10,this)"id="h10" class="tableH">Status</th>';
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
-				codeStr += '	<tr class="requestsRow">';
+				codeStr += '	<tr class="requestsRow" id=r'+i+'>';
 				codeStr += '    	<td>' + value[l][0] + '</td>';
 				codeStr += '    	<td>' + value[l][1] + '</td>';
 				codeStr += '    	<td>' + value[l][2] + '</td>';
@@ -361,8 +390,10 @@
 				// $('#'+lastHead).toggleClass('tableH');
 			// }
 			// lastHead=$(JsonObj).parent().parent().attr('id');
-			// alert($(JsonObj).parent().parent().attr('id'));
-			$(JsonObj).parent().parent().toggleClass('tableHClick');
+			//alert($(column).attr('id'));
+			$(heads).toggleClass("tableHClick");
+
+			
 		}
 		
 		function wrRoundsTable(){
@@ -388,6 +419,8 @@
 				$("#roundsBox").append(codeStp);
 			},'json');	
 		}
+	
+		
 		
         </script>
     </head>
@@ -405,9 +438,9 @@
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
-				<input type="text" name="search" id="search" onkeyup="wrRequestsTable(colSelect.value)" /></br>
+				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" /></br>
 				<label id="wkLabel" class="wkInput">Search by</label>
-				<select id="colSelect" name="colSelect" onclick="search.value=''" onchange="">
+				<select id="colSelect" name="colSelect" onclick="search.value=''">
 					<option value="20">All</option>
 					<option value="0">Module Code</option>
 					<option value="1">Module Title</option>
@@ -431,9 +464,11 @@
 				</select>
 				</br>
 				<label id="wkLabel" class="wkInput">Semester</label>
-				<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable('')" value="1" class="wkInput" /><label for="semester1">1</label>
-				<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable('')" value="2" class="wkInput"/><label for="semester2">2</label>
-				<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable('')" value="0" class="wkInput"/><label for="semester0">Both</label>
+				<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
+				<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
+				<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
+				<label id="cTR"></label>
+				
 
 
 			</div>

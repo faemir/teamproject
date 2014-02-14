@@ -49,7 +49,6 @@
 		$sql .= "$computer,$whiteboard,$chalkboard,$nearestroom,'$other');";
 	}
 	include "DBquery.php";
-	//echo $sql;
 
 
 ?>
