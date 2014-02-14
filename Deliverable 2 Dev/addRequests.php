@@ -57,6 +57,7 @@
 
         //ONLOAD FUNCTIONS -----------------------------------------//
 
+		$(document).ready(function(){validateUser()});
 		$(document).ready(function(){getUser()});
 		$(document).ready(function(){GetPrefData()});
         $(document).ready(function(){wrInputTable()});
@@ -96,11 +97,18 @@
 				}
 			});
 
-		} 
-
+		}
 		
+		function validateUser(){
+				var user= "<?php echo $_SESSION['username'] ?>";
+				var sessionid= "<?php echo session_id(); ?>";
+				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+					if (JSON.length==0)
+					window.location.replace("login.php");
+				}, 'json');
+			}	
 		
-        function wrInputTable(){
+		function wrInputTable(){
 
 			var codeStr = "";
 

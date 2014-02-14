@@ -13,6 +13,7 @@
         <title>Account Preferences</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script type='text/javascript'>
+			$(document).ready(function(){validateUser();});
 			$(document).ready(function(){getUser();});
 			$(document).ready(function(){wrPreferencesTable();});
 			$(document).ready(function(){clearAddBoxes();});
@@ -30,6 +31,16 @@
 				document.getElementById("entercode").value="";
 				document.getElementById("entertitle").value="";
 			}
+			
+			function validateUser(){
+				var user= "<?php echo $_SESSION['username'] ?>";
+				var sessionid= "<?php echo session_id(); ?>";
+				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+					if (JSON.length==0)
+					window.location.replace("login.php");
+				}, 'json');
+			}	
+			
 			//Read and write the preferences from database into the preferences table.
 			function wrPreferencesTable(){
 				$.ajax({
