@@ -34,9 +34,16 @@
 		var userPrefHeader6 = "";
 		var lastHead ="";
 		var lastRow = "";
+		var timeFormat;
+		var startTimeList1 = ["09:00","10:00","11:00","12:00"];
+		var startTimeList2 = ["13:00","14:00","15:00","16:00","17:00"];
+		var startTimeList3 = ["01:00","02:00","03:00","04:00","05:00"];
+		var endTimeList1 = ["09:50","10:50","11:50","12:50"];
+		var endTimeList2 = ["13:50","14:50","15:50","16:50","17:50"];
+		var endTimeList3 = ["01:50","02:50","03:50","04:50","05:50"];
 		var timehour1 = ["09:00-09:50","10:00-10:50","11:00-11:50","12:00-12:50"];
 		var timehour2 = ["13:00-13:50","14:00-14:50","15:00-15:50","16:00-16:50","17:00-17:50"];
-		var timehour3 = ["01:00-1:50","02:00-2:50","03:00-3:50","04:00-4:50","05:00-5:50"];
+		var timehour3 = ["01:00-01:50","02:00-02:50","03:00-03:50","04:00-04:50","05:00-05:50"];
 		var passedUsername = "";
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
@@ -57,6 +64,7 @@
 					userPrefHeader4 = JSON[0].header4;
 					userPrefHeader5 = JSON[0].header5;
 					userPrefHeader6 = JSON[0].header6;
+					timeFormat = JSON[0].hr24format
 				}
 			});
 		}
@@ -107,14 +115,17 @@
 						for(var i=0;i<JSON.length;i++){
 							codeStr += '<tr class="requestsRow" id=r'+i+'>';
 							for (var h=0;h<6;h++){
-								var starttime = parseInt(JSON[i].period) + 8;
-								if (starttime == 9)
-									starttime = "0" + starttime;
-								starttime = starttime + ":00";
-								var endtime = parseInt(JSON[i].period) + parseInt(JSON[i].duration) + 7;
-								if (endtime == 9)
-									endtime = "0" + endtime;
-								endtime = endtime + ":50";
+								if (timeFormat==1){
+									var Starttime = startTimeList1.concat(startTimeList2);
+									var Endtime = endTimeList1.concat(endTimeList2)
+								}
+								else{
+									var Starttime = startTimeList1.concat(startTimeList3);
+									var Endtime = endTimeList1.concat(endTimeList3);
+								}
+								var starttime = Starttime[JSON[i].period-1];
+								var endtime = Endtime[(parseInt(JSON[i].period) + parseInt(JSON[i].duration)-2)];								
+								
 								if(viewHeaders[h] == "0")
 									codeStr += '    	<td>' + JSON[i].modulecode + '</td>';
 								else if(viewHeaders[h] == "1")
@@ -180,14 +191,9 @@
 		
 	
 		function showDetails(requestID,button){
-			var timeFormat;
-			$.get("GETallPreferences.php", {username: passedUsername}, function(JSON){
-				timeFormat = JSON[0].hr24format;
-			}, 'json');
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
 				$("#detailsBox").empty();
 				
-
 				var codeStl = "<table id='detailsTable'>";
 				
 				codeStl += "<tr>";
@@ -195,20 +201,35 @@
 				codeStl += "<td>" + "Year: " + JSON[0].year + "</br></td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				codeStl += "<td>" + JSON[0].modulecode + "</br></td>";
+				codeStl += "<td>" + "Period: " + JSON[0].period + "</br></td>";
 				codeStl += "<td>" + "Duration: " + JSON[0].duration + "</br></td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				codeStl += "<td colspan = 2>" + JSON[0].moduletitle + "</br></td>";
+				codeStl += "<td>" + "Module Code: " + JSON[0].modulecode + "</br></td>";
+				codeStl += "<td>" + JSON[0].moduletitle + "</br></td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				if (timeFormat==1)
-				var time = timehour1.concat(timehour2);
-				else
-				var time = timehour1.concat(timehour3);
-				var time2 = time[JSON[0].period-1];
 				
-				codeStl += "<td>" + "Time: " + time2 + "</br></td>";
+				if (timeFormat==1){
+					var Starttime = startTimeList1.concat(startTimeList2);
+					var Endtime = endTimeList1.concat(endTimeList2)
+				}
+				else{
+					var Starttime = startTimeList1.concat(startTimeList3);
+					var Endtime = endTimeList1.concat(endTimeList3);
+				}
+				var starttime = Starttime[JSON[i].period-1];
+				var endtime = Endtime[(parseInt(JSON[i].period) + parseInt(JSON[i].duration)-2)];
+				
+				
+				//if (timeFormat==1)
+				//var time = timehour1.concat(timehour2);
+				//else
+				//var time = timehour1.concat(timehour3);
+				//var time2 = time[JSON[0].period-1];
+				
+				codeStl += "<td>" + "Start Time: " + starttime + "</br></td>";
+				codeStl += "<td>" + "End Time: " + endtime + "</br></td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
 				codeStl += "<td>" + "No. Students: " + JSON[0].noofstudents + "</br></td>";
