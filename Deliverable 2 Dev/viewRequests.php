@@ -13,6 +13,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
         //onload ----------------------------------------------------------------//
+		$(document).ready(function(){validateUser();});
 		$(document).ready(function(){getUser();});
 		$(document).ready(function(){getUserPrefs();});
         $(document).ready(function(){wrRequestsTable();});
@@ -38,6 +39,7 @@
 		var timehour2 = ["13:00-13:50","14:00-14:50","15:00-15:50","16:00-16:50","17:00-17:50"];
 		var timehour3 = ["01:00-1:50","02:00-2:50","03:00-3:50","04:00-4:50","05:00-5:50"];
 		var passedUsername = "";
+		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username'] ?>";
@@ -47,6 +49,7 @@
 				type: "GET",
 				dataType: "json",
 				url: "GETallPreferences.php",
+				async: false,
 				data: {'username': passedUsername},
 				success: function(JSON){
 					userPrefHeader1 = JSON[0].header1;
@@ -58,18 +61,24 @@
 				}
 			});
 		}
+		function validateUser(){
+				var user= "<?php echo $_SESSION['username'] ?>";
+				var sessionid= "<?php echo session_id(); ?>";
+				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+					if (JSON.length==0)
+					window.location.replace("login.php");
+				}, 'json');
+			}	
+			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){
-		
 			//writes and populates Requests table. needs preferences input
 			var searchval = document.getElementById("search").value;
 			var searchtype = document.getElementById("colSelect").value;
 			var semsval = "0";
-			
 			if(document.getElementById("semester1").checked){semsval = '1'};
 			if(document.getElementById("semester2").checked){semsval = '2'};
 			if(document.getElementById("semester0").checked){semsval = '0'};
-			
 			$("#tableBox").empty();
 			$.ajax({
                 type: "GET",
@@ -292,9 +301,7 @@
 				dataType: "json",
 				async: false,
 				success: function(JSON){
-					alert(JSON[0].requeststatus);
 					var statuses = JSON[0].requeststatus;
-					alert(statuses == "accepted");
 					if (statuses == "accepted"){
 						status = 1;
 					}
