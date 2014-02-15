@@ -5,6 +5,7 @@
     session_start();
 	$_SESSION["editreqid"] = $_POST["reqid"];
 	$_SESSION["editBool"] = $_POST["bool"];
+	$_SESSION["addSim"] = $_POST["similar"];
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -27,7 +28,7 @@
 		var redirectBool = false;
 		var editBool = false;
 		var editrequestid = "";
-		
+		var addSim = "";
 		//pOrT stands for 'Period or Time' - to reflect user preferences
         var pOrTHeader1 = "Period";
 		var pOrTHeader2 = "Times"
@@ -63,8 +64,8 @@
 		$(document).ready(function(){GetPrefData()});
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
-        $(document).ready(function(){wrRoomsList()});
 		$(document).ready(function(){popModulesList(userDepartmentID)});
+        $(document).ready(function(){wrRoomsList()});
 		$(document).ready(function(){isEditreq()});
 		
 		
@@ -106,7 +107,8 @@
 			editBool = "<?php echo $_SESSION['editBool']; ?>";
 			if(editBool == "true"){
 				editrequestid = "<?php echo $_SESSION["editreqid"]; ?>";
-				
+				addSim = "<?php echo $_SESSION["addSim"]; ?>";
+				var editwkid = 0;
 				$.ajax({
 					type: "GET",
 					url: "GETeditRequest.php",
@@ -114,7 +116,7 @@
 					data:{'id': editrequestid},
 					async: false,
 					success: function(JSON){
-						alert("JSON found");
+						//alert("JSON found");
 						//module
 						$("#modCodeSelect").val(String(JSON[0].modulecode));
 						ModuleSelector(document.getElementById("modCodeSelect"));
@@ -142,31 +144,75 @@
 						//park
 						$("#PRK").val("ANY");
 						GetRoom(false);
-						
-						//DPT
-						var pdcnt = parseInt(JSON[0].period);
-						var dycnt = "";
-						if(JSON[0].day=="Monday"){dycnt=1;}
-						if(JSON[0].day=="Tuesday"){dycnt=2;}
-						if(JSON[0].day=="Wednesday"){dycnt=3;}
-						if(JSON[0].day=="Thursday"){dycnt=4;}
-						if(JSON[0].day=="Friday"){dycnt=5;}
-						for(var i=0;i<(parseInt(JSON[0].duration));i++){
-							var ref = "t" + String(dycnt) + String(pdcnt);
-							tableSelect(ref);
-							pdcnt++;
-						}
-						
-						for(var j =0; j<JSON.length;j++){
-
-							for(var k =0; k<roomlen;k++){
-								
-								alert(JSON[j].roomid +" against: " + ($("#r"+k).val()));
-								if(($("#r"+k).val()) == JSON[j].roomid){
-									roomClick(document.getElementById("r"+k));
+						editwkid = JSON[0].weekid;
+						alert(addSim);
+						if(addSim != "true"){
+							alert("if");
+							//DPT
+							var pdcnt = parseInt(JSON[0].period);
+							var dycnt = "";
+							if(JSON[0].day=="Monday"){dycnt=1;}
+							if(JSON[0].day=="Tuesday"){dycnt=2;}
+							if(JSON[0].day=="Wednesday"){dycnt=3;}
+							if(JSON[0].day=="Thursday"){dycnt=4;}
+							if(JSON[0].day=="Friday"){dycnt=5;}
+							for(var i=0;i<(parseInt(JSON[0].duration));i++){
+								var ref = "t" + String(dycnt) + String(pdcnt);
+								tableSelect(ref);
+								pdcnt++;
+							}
+							for(var j =0; j<JSON.length;j++){
+								for(var k =0; k<roomlen;k++){
+									if(($("#r"+k).val()) == JSON[j].roomid){
+										document.getElementById("r"+k).checked = true;
+										roomClick(document.getElementById("r"+k));
+									}
 								}
 							}
 						}
+						else{
+							alert("else");
+							editBool = false;
+						}
+					}
+				});
+				$.ajax({
+					type: "GET",
+					url: "GETweek.php",
+					dataType: "JSON",
+					data:{'id': editwkid},
+					async: false,
+					success: function(JSON){
+						$("#wk1").prop('checked',false);
+						$("#wk2").prop('checked',false);
+						$("#wk3").prop('checked',false);
+						$("#wk4").prop('checked',false);
+						$("#wk5").prop('checked',false);
+						$("#wk6").prop('checked',false);
+						$("#wk7").prop('checked',false);
+						$("#wk8").prop('checked',false);
+						$("#wk9").prop('checked',false);
+						$("#wk10").prop('checked',false);
+						$("#wk11").prop('checked',false);
+						$("#wk12").prop('checked',false);
+						$("#wk13").prop('checked',false);
+						$("#wk14").prop('checked',false);
+						$("#wk15").prop('checked',false);
+						if(JSON[0].week1==1){$("#wk1").prop('checked',true);}
+						if(JSON[0].week2==1){$("#wk2").prop('checked',true);}
+						if(JSON[0].week3==1){$("#wk3").prop('checked',true);}
+						if(JSON[0].week4==1){$("#wk4").prop('checked',true);}
+						if(JSON[0].week5==1){$("#wk5").prop('checked',true);}
+						if(JSON[0].week6==1){$("#wk6").prop('checked',true);}
+						if(JSON[0].week7==1){$("#wk7").prop('checked',true);}
+						if(JSON[0].week8==1){$("#wk8").prop('checked',true);}
+						if(JSON[0].week9==1){$("#wk9").prop('checked',true);}
+						if(JSON[0].week10==1){$("#wk10").prop('checked',true);}
+						if(JSON[0].week11==1){$("#wk11").prop('checked',true);}
+						if(JSON[0].week12==1){$("#wk12").prop('checked',true);}
+						if(JSON[0].week13==1){$("#wk13").prop('checked',true);}
+						if(JSON[0].week14==1){$("#wk14").prop('checked',true);}
+						if(JSON[0].week15==1){$("#wk15").prop('checked',true);}	
 					}
 				});
 			}
@@ -450,6 +496,7 @@
             });
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
         }
+		
 		function SortCap(){
 			if (sort==false){
 				sort=true;}
@@ -458,6 +505,7 @@
 			
 			GetRoom(true);
 		}
+		
 		function roomamount(valuess){
 			if(valuess < ARooms){
 				for(i=valuess; i <ARooms;i++){
@@ -471,8 +519,9 @@
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 			
 		}
+		
 		function roomClick(currentBox){
-			//alert(currentBox);
+			
 			if(currentBox.checked){
 				if (ARooms <5){
 					ARooms++;
@@ -522,7 +571,7 @@
 				roomsNamesQueue = [];
 			}
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
-			AlreadyBooked()
+			
 		}
 
 		//-------------Change Room list accordingly
@@ -530,7 +579,7 @@
 		function GetRoom(type){
 
 			specBoolArray = [0,0,0,0,0,0,0,0,0,0,0,0];
-
+			//alert(document.getElementById("QUR").checked);
 			if (document.getElementById("QUR").checked == true){specBoolArray[0] = 1;}
 			if (document.getElementById("WHC").checked == true){specBoolArray[1] = 1;}
 			if (document.getElementById("DP1").checked == true){
@@ -870,7 +919,8 @@
 								lReq = JSON[0].requestid;
 							}
 						});
-						alert(preferredRoom==1);
+						//alert(preferredRoom==1);
+						alert(editBool);
 						if(editBool){
 							$.get("POSTdeleteBooking.php", {'editrequestid': editrequestid});
 							lReq = editrequestid;
@@ -898,7 +948,7 @@
 							}
 						}
 					}while(i<DPTArray.length);
-					
+					alert("stop");
 					if(redirectBool){
 						window.location.replace("viewRequests.php?PHPSESSID=" + seshId);
 					}else{
