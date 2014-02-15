@@ -295,6 +295,7 @@
 			
 			//Checks input of new module and adds to database if valid
 			function addModule(){
+
 				if (confirm("Are you sure you want to submit this?")){
 					//Gather data for add
 					var newModuleCode = document.getElementById("entercode").value;

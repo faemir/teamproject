@@ -25,8 +25,6 @@
 		var redirectBool = false;
 		var editBool = false;
 		var editrequestid = 134;
-		var roundsNumber = 0
-		var semesterNumber = 0
 		
 		//pOrT stands for 'Period or Time' - to reflect user preferences
         var pOrTHeader1 = "Period";
@@ -62,12 +60,10 @@
 		$(document).ready(function(){validateUser()});
 		$(document).ready(function(){getUser()});
 		$(document).ready(function(){GetPrefData()});
-		$(document).ready(function(){rdRoundData()});
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrRoomsList()});
 		$(document).ready(function(){popModulesList(userDepartmentID)});
-		$(document).ready(function(){roundChanges()});
 		
         //FUNCTIONS --------------------------------------------------//
 		function getUser(){
@@ -110,28 +106,7 @@
 					if (JSON.length==0)
 					window.location.replace("login.php");
 				}, 'json');
-			}
-		
-		function rdRoundData(){
-			$.get("GETroundData.php",function(JSON){
-			semesterNumber=JSON[0].semester;
-			roundsNumber=JSON[0].roundsnum;
-			},'json');
-		}
-		
-		function roundChanges(){
-			
-			if (roundsNumber==1 && semesterNumber==1){
-				document.getElementById('PRN').disabled=true;
-				document.getElementById('sem2').disabled=true;
-			}
-			else if (roundsNumber==2 && semesterNumber==1){
-				document.getElementById('sem2').disabled=true;
-			}
-			else if (roundsNumber==1 && semesterNumber==2){
-				document.getElementById('PRN').disabled=true;
-			}
-		}
+			}	
 		
 		function wrInputTable(){
 
@@ -720,7 +695,6 @@
 					codeStr +="<tr><td>Priority:</td><td>";
 					codeStr +="<input type='radio' class='specReqP' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
 					codeStr +="<input type='radio' class='specReqP' id='PRN' name='Priority' ><label for='PRN'>No</label></td></tr></table>";
-					
                     $("#basicBox").append(codeStr);
 
                 }, 'json');

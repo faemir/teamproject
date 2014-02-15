@@ -46,6 +46,7 @@
 		var passedUsername = "";
 		var noofaccepted = 0;
 		var noofrejected = 0;
+
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUser(){
