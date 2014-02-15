@@ -3,6 +3,7 @@
     ini_set("session.use_only_cookies",0);
     ini_set("session.use_trans_sid",1);
     session_start();
+	$_SESSION["editBool"] = "false";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -163,7 +164,7 @@
 									codeStr += '    	<td>' + JSON[i].chalkboard + '</td>';
 							}
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
-							codeStr += '    	<td ><input type="button" class="requestButtons" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="submit" class="requestButtons" value="Edit"></form></td>';
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="+" onclick="addSimilarRequest(' + JSON[i].requestid + ')"></td>';
 							codeStr += '    	<td >' + JSON[i].requeststatus + '</td>';
@@ -266,21 +267,8 @@
 		}
 		
 		function editRequest(requestID){
-			//Post into AddRequestTable.php the requestID's data.
-			// $.ajax({
-				// type: "GET", 
-				// url: "POSTeditRequest.php",
-				// data: {'id': requestID},
-				// async: false,
-			// });
-			
-			<?php $_SESSION["editBoolean"] = true; ?>
-			$.ajax({
-				type: "POST",
-				url: "addRequests.php",
-				data:{'id': requestID},
-			});
-			window.location.replace("addRequests.php?PHPSESSID=" +seshId);
+
+
 		}
 		
 		function addSimilarRequest(requestID){

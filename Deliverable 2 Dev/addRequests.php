@@ -3,7 +3,8 @@
     ini_set("session.use_only_cookies",0);
     ini_set("session.use_trans_sid",1);
     session_start();
-	$_SESSION["editreqid"] = $_POST["id"];
+	$_SESSION["editreqid"] = $_POST["reqid"];
+	$_SESSION["editBool"] = $_POST["bool"];
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -44,7 +45,7 @@
 		var sort = false; // for sorting my capacity
 		var ARooms = 0;
 		var AClick = 0;
-
+		var roomlen = 0;
 
 		//Selected periods from table - false = not selected.
 		//............................input table
@@ -65,6 +66,7 @@
         $(document).ready(function(){wrRoomsList()});
 		$(document).ready(function(){popModulesList(userDepartmentID)});
 		$(document).ready(function(){isEditreq()});
+		
 		
         //FUNCTIONS --------------------------------------------------//
 		function getUser(){
@@ -101,20 +103,75 @@
 		} 
 
 		function isEditreq(){
-			
-			editBool = <?php echo $_SESSION['editBoolean']; ?>;
-			editrequestid = "<?php echo $_SESSION["editreqid"]; ?>";
-			alert(editBool);
-			alert(editrequestid);
-			
-			if(editBool == true){
-				alert("yes");
-				//wrEditrequest();
+			editBool = "<?php echo $_SESSION['editBool']; ?>";
+			if(editBool == "true"){
+				editrequestid = "<?php echo $_SESSION["editreqid"]; ?>";
+				
+				$.ajax({
+					type: "GET",
+					url: "GETeditRequest.php",
+					dataType: "JSON",
+					data:{'id': editrequestid},
+					async: false,
+					success: function(JSON){
+						alert("JSON found");
+						//module
+						$("#modCodeSelect").val(String(JSON[0].modulecode));
+						ModuleSelector(document.getElementById("modCodeSelect"));
+						//capacity
+						$("#CAP").val(JSON[0].noofstudents);
+						//semester
+						if(JSON[0].semester==1){$("#sem1").prop("checked",true);}
+						else if(JSON[0].semester==2){$("#sem2").prop("checked",true);}
+						//priority
+						if(JSON[0].priority==1){$("#PRY").prop("checked",true);}
+						else{$("#PRN").prop("checked",true);}
+						//other
+						if(JSON[0].other != "null"){$("#ORE").val(JSON[0].other);}
+						//spec reqs
+						if(JSON[0].qualityroom==1){$("#QUR").prop("checked",true);}
+						if(JSON[0].wheelchairaccess==1){$("#WHC").prop("checked",true);}
+						if(JSON[0].dataprojector==1){$("#DP1").prop("checked",true);}
+						if(JSON[0].doubleprojector==1){$("#DP2").prop("checked",true);}
+						if(JSON[0].visualiser==1){$("#VIS").prop("checked",true);}
+						if(JSON[0].videodvdbluray==1){$("#VDB").prop("checked",true);}
+						if(JSON[0].computer==1){$("#CMP").prop("checked",true);}
+						if(JSON[0].whiteboard==1){$("#WHB").prop("checked",true);}
+						if(JSON[0].chalkboard==1){$("#CHB").prop("checked",true);}
+						if(JSON[0].nearestroom==1){$("#NER").prop("checked",true);}
+						//park
+						$("#PRK").val("ANY");
+						GetRoom(false);
+						
+						//DPT
+						var pdcnt = parseInt(JSON[0].period);
+						var dycnt = "";
+						if(JSON[0].day=="Monday"){dycnt=1;}
+						if(JSON[0].day=="Tuesday"){dycnt=2;}
+						if(JSON[0].day=="Wednesday"){dycnt=3;}
+						if(JSON[0].day=="Thursday"){dycnt=4;}
+						if(JSON[0].day=="Friday"){dycnt=5;}
+						for(var i=0;i<(parseInt(JSON[0].duration));i++){
+							var ref = "t" + String(dycnt) + String(pdcnt);
+							tableSelect(ref);
+							pdcnt++;
+						}
+						
+						for(var j =0; j<JSON.length;j++){
+
+							for(var k =0; k<roomlen;k++){
+								
+								alert(JSON[j].roomid +" against: " + ($("#r"+k).val()));
+								if(($("#r"+k).val()) == JSON[j].roomid){
+									roomClick(document.getElementById("r"+k));
+								}
+							}
+						}
+					}
+				});
 			}
 		}
-		
 
-		
 		
         function wrInputTable(){
 
@@ -239,18 +296,10 @@
 		//---------------------------------------------------------------------------------------------//
         //onclick for table buttons
         function tableSelect(gridRef){
-            //2-D array to hold boolean value for any field currently pressed.         
-            //checker searches 2-d array to see if a previous gridref has been clicked.
-            //if new grid ref is to right of previous, allow connection of two (i.e. 2hr slot) - (2 true values in array)
-            //Else erase previous grid ref boolean and write new gridref boolean (so only one true value in array
-
-
             $("#"+ gridRef).toggleClass("gridClicked");
 			TFTable(gridRef.substring(1,gridRef.length));
         }	
         
-		
-
         //toggles boolean value of each square in input table for other functions to use
 		function TFTable(gridRef){
 			var daySele = parseInt(gridRef.substring(0,1));
@@ -292,8 +341,8 @@
 				}
 				break;
 			}
-		}
 
+		}
         //collect day time and period information for all days
 		function timetableGetter(){
 			timetableCollector(mondaySele,"Monday");
@@ -301,9 +350,6 @@
 			timetableCollector(wednesdaySele,"Wednesday");
 			timetableCollector(thursdaySele,"Thursday");
 			timetableCollector(fridaySele,"Friday");
-
-			//alert(DPTArray.join("//"));
-
 		}
 
         //collects all day time and period information from input table by day
@@ -370,9 +416,11 @@
                     codeStr +="<div id='roomsList'>";
 					if (JSON.length != 0){
 						roomsJSONchecker=true;
+						roomlen = JSON.length;
 						for(var i =0;i<JSON.length;i++){
-							codeStr += "<span title= 'Building: " + JSON[i].building+"'><input type='checkbox' id='r"+i+"' class='roomSele' onclick='roomClick(this)'><label for='r"+i+"'>" + JSON[i].roomid +" : "+ JSON[i].capacity+  "</label></span></br>";
+							codeStr += "<span title= 'Building: " + JSON[i].building+"'><input type='checkbox' id='r"+i+"' class='roomSele' onclick='roomClick(this)' value='"+JSON[i].roomid+"'><label for='r"+i+"'>" + JSON[i].roomid +" : "+ JSON[i].capacity+  "</label></span></br>";
 							roomsNames[i] = JSON[i].roomid;
+							
 						}
 					}else{
 						roomsJSONchecker=false;
@@ -424,6 +472,7 @@
 			
 		}
 		function roomClick(currentBox){
+			//alert(currentBox);
 			if(currentBox.checked){
 				if (ARooms <5){
 					ARooms++;
@@ -475,12 +524,7 @@
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 			AlreadyBooked()
 		}
-		function AlreadyBooked(){
-		
-		}
-		
-		
-		
+
 		//-------------Change Room list accordingly
 		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails ORDER BY roomid";// declares SQL for room
 		function GetRoom(type){
@@ -884,11 +928,7 @@
                 <select id="modTitleSelect" name="modTitleSelect" class="modChooser" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected></option></select></br>
                 <select id="modCodeSelect" name="modCodeSelect" class="modChooser" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected></option></select></br>
             </div>
-
-            
-            <!--<div class="contentBox" id="roomActionsBox"></div>-->
-
-
+			
             <div class="contentBox" id="roomSelectorBox"></div>
 
             <div class="contentBox" id="inputWeeksBox">
