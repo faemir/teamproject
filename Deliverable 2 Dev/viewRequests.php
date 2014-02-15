@@ -43,6 +43,8 @@
 		var endTimeList2 = ["13:50","14:50","15:50","16:50","17:50"];
 		var endTimeList3 = ["01:50","02:50","03:50","04:50","05:50"];
 		var passedUsername = "";
+		var noofaccepted = 0;
+		var noofrejected = 0;
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUser(){
@@ -78,6 +80,7 @@
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){
 			//writes and populates Requests table. needs preferences input
+			noofaccepted=0;
 			var searchval = document.getElementById("search").value;
 			var searchtype = document.getElementById("colSelect").value;
 			var semsval = "0";
@@ -120,6 +123,7 @@
 					}
 					else{
 						for(var i=0;i<JSON.length;i++){
+							
 							codeStr += '<tr class="requestsRow" id=r'+i+'>';
 							for (var h=0;h<6;h++){
 								if (timeFormat==1){
@@ -221,7 +225,14 @@
 									else
 										codeStr += '    	<td>No</td>';
 								}
+
 							}
+							if (JSON[i].requeststatus=="accepted"){
+									noofaccepted=noofaccepted+1
+								}
+							if (JSON[i].requeststatus=="rejected"){
+									noofrejected=noofrejected+1
+								}
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
@@ -234,6 +245,8 @@
                     //Writes table into div tag
                     $("#tableBox").append(codeStr);
 					document.getElementById("cTR").innerHTML ="No of Requests: " + JSON.length;
+					document.getElementById("acceptedreq").innerHTML="No of Accepted: " + noofaccepted;
+					document.getElementById("rejectedreq").innerHTML="No of Rejected: " + noofrejected;
                 }
             });
 			
@@ -349,23 +362,25 @@
 		}
 		
 		function deleteRequest(requestID){
-			var status = 0;
-			$.ajax({
-				type: "GET",
-				url: "GETrequeststatus.php", 
-				data: {'id':requestID},
-				dataType: "json",
-				async: false,
-				success: function(JSON){
-					var statuses = JSON[0].requeststatus;
-					if (statuses == "accepted"){
-						status = 1;
+			if (confirm("Are you sure you want to delete this entry?")){
+				var status = 0;
+				$.ajax({
+					type: "GET",
+					url: "GETrequeststatus.php", 
+					data: {'id':requestID},
+					dataType: "json",
+					async: false,
+					success: function(JSON){
+						var statuses = JSON[0].requeststatus;
+						if (statuses == "accepted"){
+							status = 1;
+						}
 					}
-				}
-			});
-			$.get("GETdeleterequest.php", {'id': requestID, 'status': status});
-			$(document).ready(function(){wrRequestsTable();});
-			$("#detailsBox").empty();
+				});
+				$.get("GETdeleterequest.php", {'id': requestID, 'status': status});
+				$(document).ready(function(){wrRequestsTable();});
+				$("#detailsBox").empty();
+			}
 		}
 
 		//Sort functions. Asc, Desc alternating. Bubble sort.
@@ -496,7 +511,7 @@
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
                 <li><a href="accountPage.php">Username(pref)</a></li>
-                <li><a href="login.php">Logout</a></li>
+                <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">
@@ -530,8 +545,9 @@
 				<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
 				<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
 				<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
-				<label id="cTR"></label>
-				
+				<label id="cTR"></label></br>
+				<label id="acceptedreq"></label></br>
+				<label id="rejectedreq"></label>
 
 
 			</div>
