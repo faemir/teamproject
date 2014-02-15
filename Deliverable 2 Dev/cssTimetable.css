@@ -138,11 +138,7 @@
 		color: #B32561;
 		cursor: pointer;
 	}
-	.change
-	{
-		background-color: #B32561;
-		border: 3px;
-	}
+	
 	.requestButtons
 	{
 		width:100%;
@@ -228,7 +224,7 @@
         height:700px;
     }
     
-    #timetableActionsBox {
+    #actiontimeBox {
         width: 657px; /* Account for margins + border values */
         float: left;
         padding: 5px 15px;
@@ -341,7 +337,7 @@
 
     /*** Input Table ***/
     
-     #inputTable,.table
+    #inputTable,.tableVT
         {
         border: 1px solid black;
         width: 100%;
@@ -350,16 +346,40 @@
         
     }
 
-    #inputTable *,.table *
+    #inputTable *,.tableVT *
     {
         border: 1px solid black;
         
     }
-	.tabledays
+	.tabledaysVT
 	{
-		width: 130px;
+		width: 19%;
 	}
- 
+	.tabletdVT
+	{
+		width: 9%;
+	}
+	.tabletdVT:hover
+	{
+		
+		background-color:#f5f5f5;
+		width: 9%;
+	}
+	.changeVT
+	{
+		cursor: pointer;
+		color:#fff;
+		background-color: #B32561;
+		border-width: 2px;
+		width:  9%;
+	}
+	.changeVT:hover
+	{
+		cursor: pointer;
+		background-color: #431367;
+		border-width: 2px;
+		width:  9%;
+	}
  
  
  
