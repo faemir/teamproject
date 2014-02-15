@@ -3,6 +3,7 @@
     ini_set("session.use_only_cookies",0);
     ini_set("session.use_trans_sid",1);
     session_start();
+	$_SESSION["editBool"] = "false";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -46,11 +47,12 @@
 		var passedUsername = "";
 		var noofaccepted = 0;
 		var noofrejected = 0;
-
+		var seshId = "";
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username'] ?>";
+			seshId = "<?php echo session_id();?>";
 		}
 		function getUserPrefs(){
 			$.ajax({
@@ -247,9 +249,9 @@
 									noofrejected=noofrejected+1
 								}
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
-							codeStr += '    	<td ><input type="button" class="requestButtons" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td ><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td ><input type="button" class="requestButtons" value="+" onclick="addSimilarRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
+							codeStr += '    	<td><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="true"></input><input type="submit" class="requestButtons" value="+"></input></form></td>';
 							codeStr += '    	<td >' + JSON[i].requeststatus + '</td>';
 							codeStr += '	</tr>';
 						}
@@ -358,13 +360,8 @@
 		}
 		
 		function editRequest(requestID){
-			//Post into AddRequestTable.php the requestID's data.
-			alert("hi:" + requestID);
-			$.ajax({
-				type: "GET", 
-				url: "POSTeditRequest.php",
-				data: {'id': requestID},
-			});
+
+
 		}
 		
 		function addSimilarRequest(requestID){

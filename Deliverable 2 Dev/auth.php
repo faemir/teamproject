@@ -28,6 +28,7 @@ $(document).ready ( function(){
 		var passes = [];
 		
 		var userPass = "<?php echo md5($_SESSION['password'] + '4509ns;epkgjs3u'); ?>";
+
 		<?php
 			require_once 'MDB2.php';
 			include "LTF.php"; //to provide $username,$password
@@ -52,7 +53,7 @@ $(document).ready ( function(){
 			} 
 			
 		?>
-		
+
 		for(var i=0;i<JSON.length;i++){
 			users[i] = JSON[i].username;
 			passes[i] = JSON[i].password;
