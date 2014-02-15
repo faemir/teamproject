@@ -1,6 +1,6 @@
 <?php
 
-	$username = 'admin';
+	$username = $_GET['username'];
 	$h1= $_GET["h1"];
 	$h2= $_GET["h2"];
 	$h3= $_GET["h3"];

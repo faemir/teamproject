@@ -151,7 +151,7 @@
     
     #basicBox, #roomSelectorBox 
 	{
-        min-width: 445px;
+        min-width: 445px;	
         float: left;
         padding: 5px 15px;
         background: #f8f8f8;
@@ -305,10 +305,7 @@
 
 	  
 		}
-			
-			
-			
-		
+					
     }
 
     /* for 700px or less */
@@ -475,6 +472,7 @@
 	.modChooser
 	{
 		width:100%;
+		max-width: 445px;
 		color: #431367;
 	}
 	.modTable

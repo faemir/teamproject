@@ -1,3 +1,9 @@
+<?php
+  ini_set("session.use_cookies",0);
+    ini_set("session.use_only_cookies",0);
+    ini_set("session.use_trans_sid",1);
+    session_start();
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <html>
@@ -8,9 +14,14 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
 			var days = ["Monday", "Tuesday", "Wednesday", "Thurday", "Friday"];
-		
+			var passedUsername = "";
+			$(document).ready(function(){validateUser();});
+			$(document).ready(function(){getUser();});
 			$(document).ready(function(){MkTable()});
 			$(document).ready(function(){getTable("")});
+			function getUser(){
+				passedUsername = "<?php echo $_SESSION['username'] ?>";
+			}
 			function SelectWeek(week){
 				clearTbl();
 				getTable(week);
@@ -23,6 +34,16 @@
 					}
 				}
 			}
+			
+			function validateUser(){
+				var user= "<?php echo $_SESSION['username'] ?>";
+				var sessionid= "<?php echo session_id(); ?>";
+				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+					if (JSON.length==0)
+					window.location.replace("login.php");
+				}, 'json');
+			}	
+		
 			function MkTable(){
 				var tbl="";
 				tbl +="<select id='weeksele' onchange='SelectWeek(this.value)' onclick='SelectWeek(this.value)' onkeypress='SelectWeek(this.value)' onkeyup='SelectWeek(this.value)'>";
