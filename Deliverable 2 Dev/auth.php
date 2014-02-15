@@ -21,7 +21,6 @@ $(document).ready ( function(){
 		}
 	},'json');*/
 		
-
 	$.get("GETauth.php",function(JSON){
 		var sessid = "<?php echo SID ?>";
 		var users = [];
