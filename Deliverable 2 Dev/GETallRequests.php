@@ -1,8 +1,20 @@
 <?php
+	require_once 'MDB2.php';
+	include "LTF.php"; //to provide $username,$password
+	
+	$host='co-project.lboro.ac.uk'; //accesses database
+	$dbName='team04';//login
+	$dsn = "mysql://$username:$password@$host/$dbName"; 
+	
+	$db =& MDB2::connect($dsn); 
+	if(PEAR::isError($db)){ 
+	   die($db->getMessage());
+	}
+
 
 	$semsval = $_GET['semsval'];
 	$type = $_GET['type'];
-	$searchval = $_GET['searchval'];
+	$searchval = mysql_real_escape_string($_GET['searchval']);
 	$typearray = array("EntryRequestTable.modulecode","moduletitle","day","requeststatus","period", "duration", "priority", "noofstudents","qualityroom","preferredrooms","semester", "noofrooms", "wheelchairaccess", "dataprojector", "doubleprojector", "visualiser", "videodvdbluray", "computer", "whiteboard", "chalkboard");
 	$username = $_GET['username'];
 	
@@ -21,8 +33,13 @@
 		$sql .= "AND semester = $semsval ";
 		
 	}
-   include "DBquery.php";
-   $JSON = json_encode($res->fetchAll());
+	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+	
+	$res =& $db->query($sql);
+	if(PEAR::isError($res)){
+		die($res->getMessage());
+	} 
+	$JSON = json_encode($res->fetchAll());
+   
    echo $JSON;
-
 ?>

@@ -56,6 +56,7 @@
 		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 
         //ONLOAD FUNCTIONS -----------------------------------------//
+
 		$(document).ready(function(){validateUser()});
 		$(document).ready(function(){getUser()});
 		$(document).ready(function(){GetPrefData()});
@@ -96,7 +97,7 @@
 				}
 			});
 
-		} 
+		}
 		
 		function validateUser(){
 				var user= "<?php echo $_SESSION['username'] ?>";
@@ -222,9 +223,11 @@
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 		}
 		function ClrAll(){
-			ClrRoom();
-			ClrTab();
-			ClrSpec();
+			if (confirm("Are you sure you are want to clear this?")){
+				ClrRoom();
+				ClrTab();
+				ClrSpec();
+			}
 		}
 //****************************************CLEAR COMPLETE
 		//---------------------------------------------------------------------------------------------//
@@ -717,7 +720,7 @@
 		}
 
 		function Submit(redirectBool,eBool){
-			
+			if (confirm("Are you sure you are ready to submit this?")){
 			var checkRoom=1;
 			for(var i = 1; i <= 5; i++){
 				if (document.getElementById("room"+i).checked == true)
@@ -853,6 +856,7 @@
 					}	
 				}
 			}
+			}
 		}
 		
 		
@@ -867,7 +871,7 @@
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
                 <li><a href="accountPage.php">Username(pref)</a></li>
-                <li><a href="login.php">Logout</a></li>
+                <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">
