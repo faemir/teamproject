@@ -18,6 +18,7 @@
 		$(document).ready(function(){getUserPrefs();});
         $(document).ready(function(){wrRequestsTable();});
 		$(document).ready(function(){wrRoundsTable();});
+		$(document).ready(function(){wrdetailsTitle();});
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -76,6 +77,17 @@
 					window.location.replace("login.php");
 				}, 'json');
 			}	
+			
+			function wrdetailsTitle(){
+				$("#detailsBox").empty();
+				
+				var codeStd = "<table id='detailsTable'>";
+				codeStd += "<tr>";
+				codeStd += 'Click details for more info';
+				codeStd += "</tr>";
+				codeStd += "<tr>";
+				$("#detailsBox").append(codeStd);
+				}
 			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){
@@ -225,7 +237,7 @@
 									else
 										codeStr += '    	<td>No</td>';
 								}
-								
+
 							}
 							if (JSON[i].requeststatus=="accepted"){
 									noofaccepted=noofaccepted+1
@@ -259,7 +271,9 @@
 				$("#detailsBox").empty();
 				
 				var codeStl = "<table id='detailsTable'>";
-				
+				codeStl += "<tr>";
+				codeStl += "<h4>Selected room details</h4>";
+				codeStl += "</tr>";
 				codeStl += "<tr>";
 				codeStl += "<td>Request ID: " + JSON[0].requestid + "</td>";
 				codeStl += "<td>Year: " + JSON[0].year + "</td>";
@@ -271,8 +285,8 @@
 				codeStl += "<td colspan='2'>" + JSON[0].moduletitle + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
+				codeStl += "<td>Day: " + JSON[0].day + "</td>";
 				codeStl += "<td>Period: " + JSON[0].period + "</td>";
-				codeStl += "<td>Duration: " + JSON[0].duration + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
 				
@@ -479,6 +493,9 @@
 			$.get("GETRoundsDetails.php", function(JSON){
 				var codeStp = "<table id='roundsInfoTable'>";
 				codeStp += "<tr>";
+				codeStp += "Rounds Table";
+				codeStp += "</tr>";
+				codeStp += "<tr>";
 				codeStp += "<td>" + "Semester" + "</td>";
 				codeStp += "<td>" + "Rounds Num" + "</td>";
 				codeStp += "<td>" + "Start Date" + "</td>";
@@ -516,7 +533,7 @@
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
-				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" /></br>
+				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></br>
 				<label id="wkLabel" class="wkInput">Search by</label>
 				<select id="colSelect" name="colSelect" onclick="search.value=''">
 					<option value="20">All</option>
