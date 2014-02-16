@@ -23,7 +23,7 @@ $(document).ready ( function(){
 
 
 	$.get("GETauth.php",function(JSON){
-		var sessid = "PHPSESSID=" + "<?php echo session_id(); ?>";
+		var sessid = "<?php echo SID ?>";
 		var users = [];
 		var passes = [];
 
