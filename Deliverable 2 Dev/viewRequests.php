@@ -79,7 +79,7 @@
 					if (JSON.length==0)
 					window.location.replace("login.php");
 				}, 'json');
-			}	
+			}
 			
 			function wrdetailsTitle(){
 				$("#detailsBox").empty();
@@ -90,7 +90,7 @@
 				codeStd += "</tr>";
 				codeStd += "<tr>";
 				$("#detailsBox").append(codeStd);
-				}
+			}
 			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){

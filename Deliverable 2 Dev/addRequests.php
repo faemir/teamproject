@@ -135,9 +135,7 @@
 				document.getElementById('PRN').disabled=true;
 			}
 		}
-
-		 
-
+		
 		function isEditreq(){
 			editBool = "<?php echo $_SESSION['editBool']; ?>";
 			if(editBool == "true"){

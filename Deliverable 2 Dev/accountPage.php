@@ -16,6 +16,7 @@
 			$(document).ready(function(){validateUser();});
 			$(document).ready(function(){getUser();});
 			$(document).ready(function(){wrPreferencesTable();});
+			$(document).ready(function(){addModuleSection();});
 			$(document).ready(function(){clearAddBoxes();});
 			var periodValue = "";
 			var timeValue = "";
@@ -52,7 +53,7 @@
 						var codeStr = '';
 						codeStr += '<table id="PreferencesTable">';
 						codeStr += '<tr>';
-						codeStr += '<th colspan=4>Preferences for Viewing Requests</th>';
+						codeStr += '<th colspan=4>Preferences for Adding Requests</th>';
 						codeStr += '</tr>';
 						codeStr += '<tr>';
 						codeStr += '	<td><input type="Radio" name="park" value="ANY" id="ANY">Default Location: Any</td>';
@@ -295,13 +296,10 @@
 			
 			//Checks input of new module and adds to database if valid
 			function addModule(){
-
 				if (confirm("Are you sure you want to submit this?")){
 					//Gather data for add
 					var newModuleCode = document.getElementById("entercode").value;
 					var newModuleTitle = document.getElementById("entertitle").value;
-					//var newUsername = $_session['username'];
-					var newUsername = 'admin';
 					var newDepartmentID = "";
 					$.ajax({
 						type: "GET",
@@ -312,11 +310,9 @@
 							newDepartmentID = JSON[0].departmentid;
 						}
 					});
-				
 					//Validation of input
 					var patt1 = /(A|B|C|D|F)$/;
 					var patt2 = /[0-9]{3}$/;
-					
 					if (newModuleCode.substr(0,2) == newDepartmentID){
 						if (patt1.test(newModuleCode.substr(2,1))){
 							if (patt2.test(newModuleCode.substr(3,3))){
@@ -340,12 +336,45 @@
 					}
 					else{
 						alert("1Please enter a valid module code.");}
-				}		
+				}
+			}
+			
+			function addModuleSection(){
+				var Person = "";
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: "GETdepartmentID.php",
+					data: {'username': passedUsername},
+					success: function(JSON){
+						Person = JSON[0].name;
+					}
+				});				
+				codeStr = '';
+				codeStr += '<table>';
+				codeStr += '	<tr>';
+				codeStr += '		<th>' + Person + '\'s Preferences</th>';
+				codeStr += '	</tr>';
+				codeStr += '	<tr></tr>';
+				codeStr += '	<tr>';
+				codeStr += '		<th>Add New Module</th>';
+				codeStr += '	</tr>';
+				codeStr += '	<tr>';
+				codeStr += '		<td>Module Code: </td>';
+				codeStr += '		<td><input type="text" placeholder="Module code" name="entercode" id="entercode"></td>';
+				codeStr += '	</tr>';
+				codeStr += '	<tr>';
+				codeStr += '		<td>Module Title: </td>';
+				codeStr += '		<td><input type="text" placeholder="Module title" name="entertitle" id="entertitle"></td>';
+				codeStr += '	</tr>';
+				codeStr += '	<tr>';
+				codeStr += '		<td><input type="button" value="Submit" onclick="addModule()"></td>';
+				codeStr += '	</tr>';
+				codeStr += '</table>';
+				$("#userPrefBox").append(codeStr);
 			}
 		</script>
     </head>
-     
-
     <body>
         <div id="navwrap">
             <ul id="topnav">
@@ -359,24 +388,7 @@
         </div>
         <div id="pagewrap">
 			
-			<div class="contentBox" id="userPrefBox">
-			<table>
-				<tr>
-					<td>Add New Module</td>
-				</tr>
-				<tr>
-					<td>Module Code: </td>
-					<td><input type="text" name="entercode" id="entercode"></td>
-				</tr>
-				<tr>
-					<td>Module Title: </td>
-					<td><input type="text" name="entertitle" id="entertitle"></td>
-				</tr>
-				<tr>
-					<td><input type="button" value="Submit" onclick="addModule()"></td>
-				</tr>
-			</table>
-			</div>
+			<div class="contentBox" id="userPrefBox"></div>
 			
             <div class="contentBox" id="prefDemoBox"></div>
 			

@@ -45,7 +45,8 @@
 					if (JSON.length==0)
 					window.location.replace("login.php");
 				}, 'json');
-			}	
+			}
+			
 			function MkActions(){
 				var tbl="";
 				tbl +="<select id='weeksele' onchange='SelectWeek(this.value)' onclick='SelectWeek(this.value)' onkeypress='SelectWeek(this.value)' onkeyup='SelectWeek(this.value)'>";
