@@ -133,7 +133,7 @@
                     codeStr += '</tr>';
 					if(JSON.length == 0){
 						codeStr += '<tr class="requestsRow">';
-						codeStr += '<td colspan="10"> No Results Found </td>';
+						codeStr += '<td colspan="11">No Results Found</td>';
 						codeStr += '</tr>';
 					}
 					else{
@@ -359,19 +359,6 @@
 			$(button).parent().parent().toggleClass('requestsRowClk');
 		}
 		
-		function editRequest(requestID){
-
-
-		}
-		
-		function addSimilarRequest(requestID){
-			//Post into AddRequestTable.php the requestID's data.
-			$.ajax({
-				type: "GET", 
-				url: "POSTaddSimilar.php",
-				data: {'id': requestID}
-			});
-		}
 		
 		function deleteRequest(requestID){
 			if (confirm("Are you sure you want to delete this entry?")){
