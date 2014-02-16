@@ -373,6 +373,7 @@
 				codeStr += '	</tr>';
 				codeStr += '</table>';
 				$("#userPrefBox").append(codeStr);
+
 			}
 		</script>
     </head>

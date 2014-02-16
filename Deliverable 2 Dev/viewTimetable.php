@@ -46,7 +46,6 @@
 					window.location.replace("login.php");
 				}, 'json');
 			}
-			
 
 			function MkActions(){
 				var tbl="";
@@ -101,6 +100,7 @@
 			function clickedtable(value){
 				if($(value).attr('class')=='changeVT'){
 					if(reqID.length != 0){
+
 
 						var seleID =[];
 						var RoomArr=[];
@@ -171,6 +171,7 @@
 										}
 									}
 									wrTables(RoomArr);
+
 								}
 							});
 						}
@@ -257,6 +258,7 @@
 				}
 				document.getElementById("roomSelectorBox2").innerHTML = (codeStl);
 			}
+
 
 			function getTable(week){
 				reqID= [];

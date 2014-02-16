@@ -83,6 +83,7 @@
 					window.location.replace("login.php");
 				}, 'json');
 			}
+
 			
 			function wrdetailsTitle(){
 				$("#detailsBox").empty();
@@ -93,7 +94,9 @@
 				codeStd += "</tr>";
 				codeStd += "<tr>";
 				$("#detailsBox").append(codeStd);
+
 			}
+
 			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){
@@ -101,6 +104,26 @@
 			noofaccepted=0;
 			var searchval = document.getElementById("search").value;
 			var searchtype = document.getElementById("colSelect").value;
+			
+			if(searchtype == 6 || searchtype == 8 || (searchtype > 11 && searchtype !=20)){
+				searchval = searchval.toLowerCase();
+				if(searchval == "y" || searchval == "ye" || searchval == "yes"){
+					searchval = 1;
+				}
+				if(searchval == "n" || searchval == "no"){
+					searchval = 0;
+				}
+			}
+			if(searchtype == 20){
+				searchval = searchval.toLowerCase();
+				if(searchval == "yes"){
+					searchval = 1;
+				}
+				if(searchval == "no"){
+					searchval = 0;
+				}
+			}
+			
 			var semsval = "0";
 			if(document.getElementById("semester1").checked){semsval = '1'};
 			if(document.getElementById("semester2").checked){semsval = '2'};
@@ -306,7 +329,6 @@
 				}
 				var starttime = Starttime[JSON[0].period-1];
 				var endtime = Endtime[(parseInt(JSON[0].period) + parseInt(JSON[0].duration)-2)];
-				
 				codeStl += "<td colspan='2'>Requested Time: " + starttime + "-" + endtime + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
