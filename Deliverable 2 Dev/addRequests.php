@@ -618,7 +618,7 @@
 				data: {'sqlrooms': SQLRoom},
                 success: function(JSON){
                     var codeStr = "";
-                    codeStr +="<div id='roomsList'>";
+                    codeStr +="<div id='roomsListReq'>";
 					if (JSON.length != 0){
 						roomsJSONchecker=true;
 						roomlen = JSON.length;

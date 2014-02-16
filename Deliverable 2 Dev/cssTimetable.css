@@ -130,7 +130,7 @@ GENERAL LAYOUT STRUCTURE
     float: left;
     padding: 5px 15px;
     background: #f8f8f8;
-    min-height: 350px;
+    min-height: 380px;
 }
 
 #roomActionsBox {
@@ -212,7 +212,7 @@ GENERAL LAYOUT STRUCTURE
     float: left;
     padding: 5px 15px;
     margin: 0px 0px 5px 5px;
-    min-height: 150px;
+    min-height: 30px;
 }
 
 #timetableViewerBox {
@@ -221,7 +221,7 @@ GENERAL LAYOUT STRUCTURE
     float: left;
     background: #f0efef;
     margin-left: 5px;
-    height: 533px;
+    height: 645px;
 }
 
 /************************************************************************************
@@ -620,7 +620,12 @@ MEDIA QUERIES - currently incomplete
     border: 1px solid #AAA;
     overflow-y: auto;
 }
-
+#roomsListReq{
+	height: 345px;
+    width: 100%;
+    border: 1px solid #AAA;
+    overflow-y: auto
+}
 #roomsList li {
     display: block;
     border: 1px solid #ddd;
@@ -653,15 +658,14 @@ border:1.5px solid#333;
 	{
 		background-color:#f8f8f8;
 	}
-    #roomsList, #details{
-        height:300px;
+    #details{
+        height:100%;
         width:100%;
         border:1px solid #AAA;
         overflow-y:auto;
+		border:0px;
+		
     }
-    #details{
-		height:100%;
-	}
     #roomsList li{
         display:block;
         border:1px solid #ddd;
