@@ -28,8 +28,8 @@ NAV BAR
 
 #topnav li {
     border-right: 1px solid #ddd;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     display: table-cell;
     text-align: center;
 }
@@ -43,7 +43,7 @@ NAV BAR
     color: #431367;
 }
 
-#topnav li a:hover {
+#topnav li:hover {
     background: #fff;
 }
 
@@ -123,20 +123,6 @@ GENERAL LAYOUT STRUCTURE
     min-height: 0px;
 }
 
-.tableH {
-    color: #431367;
-    cursor: pointer;
-}
-
-.tableHClick {
-    color: #B32561;
-    cursor: pointer;
-}
-
-.requestButtons {
-    width: 100%;
-}
-
 /********************* add requests page ********************/
 
 #basicBox, #roomSelectorBox {
@@ -184,23 +170,30 @@ GENERAL LAYOUT STRUCTURE
 /***************************** account/prefrences pages *******************/
 
 #userPrefBox {
+	height: 157px;
     width: 441px;
     float: left;
     padding: 5px 15px;
     background: #f8f8f8;
-    margin: 0px 5px 5px 0px;
+    margin: 0px 0px 5px 0px;
+	border: solid 1px #ccc;
 }
 
 #prefDemoBox {
     width: 450px;
     padding: 5px 15px;
-    float: left;
+    float: right;
     background: #f0efef;
+	height:518px;
+
 }
 
 #prefBox {
-    clear: both;
-    background: #fff;
+    float:left;
+    background: #f8f8f8;
+	padding:5px;
+	margin:0px;
+	width:461px;
 }
 
 /*** Timetable viewer page ***/
@@ -237,6 +230,10 @@ MEDIA QUERIES - currently incomplete
     /* for 980px or less */
 @media screen and (max-width: 980px) {
 
+	#topnav{
+	
+		width: 84%;
+	}
     #pagewrap {
         width: 94%;
     }
@@ -358,7 +355,9 @@ MEDIA QUERIES - currently incomplete
     width: 9%;
 }
 
-
+#inputTable *,.tableVT * {
+    border: 1px solid black;
+}
 
 /***************************************************************
 GENERAL CSS
@@ -393,11 +392,11 @@ GENERAL CSS
 
     /** weeks input **/
 
-.wkInput,.specReqR {
+.wkInput,.specReqR, .prefInput{
     display: none;
 }
 
-.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.requestButtons,.specReqR + label {
+.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.requestButtons,.specReqR + label, .prefInput  + label {
     display: inline-block;
     min-height: 25px;
     min-width: 100%;
@@ -425,7 +424,7 @@ GENERAL CSS
     border-bottom-color: #b3b3b3;
 }
 
-.wkInput + label, #wkLabel {
+.wkInput + label, .prefInput + label, #wkLabel {
     display: inline-block;
     min-height: 25px;
     min-width: 8px;
@@ -435,11 +434,15 @@ GENERAL CSS
     margin-left: -6px;
 }
 
-.wkInput + label {
+.wkInput + label, .prefInput + label{
     cursor: pointer;
 }
 
-.wkInput:checked + label,.specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label,.specReqR:checked + label {
+.prefInput + label
+{
+	width:90%;
+}
+.wkInput:checked + label, .prefInput:checked + label, .specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label,.specReqR:checked + label {
     background-color: #dcdcdc;
     color: #B32561;
     background-image: none;
@@ -473,6 +476,7 @@ GENERAL CSS
 
 .specReq, .specReqP, .roomSele {
     display: none;
+	cursor:pointer;
 }
 
 .roomSele +label {
@@ -483,7 +487,7 @@ GENERAL CSS
     min-width: 110px;
 }
 
-.specReq + label,.specReqR + label {
+.specReq + label,.specReqR + label, .roomSele + label {
     cursor: pointer;
 }
 
@@ -513,22 +517,48 @@ GENERAL CSS
 }
 
 #RequestsTable * {
-    border: 1px solid black;
+    
     text-align: center;
-    padding: 2px;
+
 }
 
 #RequestsTable th {
     background-color: #f0efef;
+	border: 1px solid black;
     cursor: pointer;
+	padding: 3px;
 }
 
 #RequestsTable th:hover {
     background-color: #fff;
 }
 
+.tableH {
+    color: #431367;
+    cursor: pointer;
+}
+
+.tableHClick {
+    color: #B32561;
+    cursor: pointer;
+}
+
+.requestButtons {
+    width: 100%;
+	height:100%;
+}
+.requestButtons:hover {
+	background: #fff;
+}
+
+.requestButtonsClk
+{
+	color:#B32561;
+}
+
 .requestsRow {
     background-color: #fff;
+	border: 1px solid black;
 }
 
 .requestsRowClk {
@@ -538,6 +568,27 @@ GENERAL CSS
 
 .requestsRow:hover {
     background-color: #f8f8f8;
+}
+
+.requestCells
+{
+	border: 1px solid black;
+}
+
+#celltrue
+{
+	color: green;
+}
+
+#cellrej
+{
+	color: red;
+}
+
+.butCells
+{
+	padding:0px;
+	border:0px solid white;
 }
 
 #roomsList {
@@ -572,9 +623,15 @@ height: 30px;
 #roundsInfoTable tr{
 border:1.5px solid#333;
 }
+
 #roundInfoTable td {
 	border:1px solid #333;
 	}
 	
-
-
+#formButs
+{
+	padding:0px;
+	margin:0px;
+	border-collapse: collapse;
+	border: 0px solid white;
+}
