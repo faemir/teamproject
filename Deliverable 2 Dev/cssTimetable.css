@@ -170,23 +170,30 @@ GENERAL LAYOUT STRUCTURE
 /***************************** account/prefrences pages *******************/
 
 #userPrefBox {
+	height: 157px;
     width: 441px;
     float: left;
     padding: 5px 15px;
     background: #f8f8f8;
-    margin: 0px 5px 5px 0px;
+    margin: 0px 0px 5px 0px;
+	border: solid 1px #ccc;
 }
 
 #prefDemoBox {
     width: 450px;
     padding: 5px 15px;
-    float: left;
+    float: right;
     background: #f0efef;
+	height:518px;
+
 }
 
 #prefBox {
-    clear: both;
-    background: #fff;
+    float:left;
+    background: #f8f8f8;
+	padding:5px;
+	margin:0px;
+	width:461px;
 }
 
 /*** Timetable viewer page ***/
@@ -227,7 +234,6 @@ MEDIA QUERIES - currently incomplete
 	
 		width: 84%;
 	}
-		
     #pagewrap {
         width: 94%;
     }
@@ -349,7 +355,9 @@ MEDIA QUERIES - currently incomplete
     width: 9%;
 }
 
-
+#inputTable *,.tableVT * {
+    border: 1px solid black;
+}
 
 /***************************************************************
 GENERAL CSS
@@ -384,11 +392,11 @@ GENERAL CSS
 
     /** weeks input **/
 
-.wkInput,.specReqR {
+.wkInput,.specReqR, .prefInput{
     display: none;
 }
 
-.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.requestButtons,.specReqR + label {
+.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.requestButtons,.specReqR + label, .prefInput  + label {
     display: inline-block;
     min-height: 25px;
     min-width: 100%;
@@ -416,8 +424,7 @@ GENERAL CSS
     border-bottom-color: #b3b3b3;
 }
 
-
-.wkInput + label, #wkLabel {
+.wkInput + label, .prefInput + label, #wkLabel {
     display: inline-block;
     min-height: 25px;
     min-width: 8px;
@@ -427,11 +434,15 @@ GENERAL CSS
     margin-left: -6px;
 }
 
-.wkInput + label {
+.wkInput + label, .prefInput + label{
     cursor: pointer;
 }
 
-.wkInput:checked + label,.specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label,.specReqR:checked + label {
+.prefInput + label
+{
+	width:90%;
+}
+.wkInput:checked + label, .prefInput:checked + label, .specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label,.specReqR:checked + label {
     background-color: #dcdcdc;
     color: #B32561;
     background-image: none;
@@ -491,9 +502,6 @@ GENERAL CSS
     min-width: 98%;
     color: #431367;
 }
-
-
-
 
 #charToGo, #cCR {
     width: 100%;
@@ -627,5 +635,3 @@ border:1.5px solid#333;
 	border-collapse: collapse;
 	border: 0px solid white;
 }
-
-

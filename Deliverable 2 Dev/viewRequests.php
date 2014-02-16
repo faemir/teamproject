@@ -21,6 +21,7 @@
         $(document).ready(function(){wrRequestsTable();});
 		$(document).ready(function(){wrdetailsTitle();});
 		$(document).ready(function(){wrRoundsTable();});
+		$(document).ready(function(){wrdetailsTitle();});
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -134,8 +135,14 @@
                 dataType: "json",
                 url: "GETallRequests.php",
 				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername},
-				//data: {'username': $_session['username']},
                 success: function(JSON){
+					var deptname = JSON[0].departmentname;
+					alert(deptname);
+					var codeStb = "";
+					codeStb += "<table><tr><th>" + deptname + " Requests</th></tr></table>";
+					alert(codeStb);
+					$("#search").before(codeStb);
+					
                     var codeStr = "";
                     codeStr += '<table id="RequestsTable">';
                     codeStr += '<tr id='+i+'>';

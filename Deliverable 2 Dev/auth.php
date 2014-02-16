@@ -25,7 +25,6 @@ $(document).ready ( function(){
 		var sessid = "<?php echo SID ?>";
 		var users = [];
 		var passes = [];
-
 		var userPass = "<?php echo md5($_SESSION['password'] . '4509ns;epkgjs3u'); ?>";
 
 		<?php
