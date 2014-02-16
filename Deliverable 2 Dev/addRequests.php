@@ -61,11 +61,10 @@
 		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 
         //ONLOAD FUNCTIONS -----------------------------------------//
-
+		$(document).ready(function(){rdRoundData()});
 		$(document).ready(function(){validateUser()});
 		$(document).ready(function(){getUser()});
 		$(document).ready(function(){GetPrefData()});
-		$(document).ready(function(){rdRoundData()});
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
 		$(document).ready(function(){popModulesList(userDepartmentID)});
@@ -125,18 +124,26 @@
 		function roundChanges(){
 			
 			if (roundsNumber==1 && semesterNumber==1){
+				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
+				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
 			}
 			else if (roundsNumber==2 && semesterNumber==1){
+				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
 			}
 			else if (roundsNumber==1 && semesterNumber==2){
+				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
 			}
-		}
-
-		 
+			//else if (roundsNumber==2 && semesterNumber==2){
+			//}
+			else {
+				document.getElementById('sem1').checked=true;
+				document.getElementById('sem2').disabled=true;
+			}
+		}		 
 
 		function isEditreq(){
 			editBool = "<?php echo $_SESSION['editBool']; ?>";
