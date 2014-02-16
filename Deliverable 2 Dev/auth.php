@@ -14,44 +14,44 @@ $(document).ready ( function(){
     var auth=false;
 	var userUser = "<?php echo $_SESSION['username']; ?>";
 	var newUser = false;
-	
+
 	/*$.get("GETseshid.php",{'username': userUser},function(JSON){
 		if (JSON[0].sessid==""){
 			newUser=true;
 		}
 	},'json');*/
-		
+
 
 	$.get("GETauth.php",function(JSON){
-		var sessid = "<?php echo SID ?>";
+		var sessid = "PHPSESSID=" + "<?php echo md5(session_id()) ?>";
 		var users = [];
 		var passes = [];
-		
+
 		var userPass = "<?php echo md5($_SESSION['password'] + '4509ns;epkgjs3u'); ?>";
 
 		<?php
 			require_once 'MDB2.php';
 			include "LTF.php"; //to provide $username,$password
-		
+
 			$host='co-project.lboro.ac.uk'; //accesses database
 			$dbName='team04';//login
-			$dsn = "mysql://$username:$password@$host/$dbName"; 
-		
-			$db =& MDB2::connect($dsn); 
-			if(PEAR::isError($db)){ 
+			$dsn = "mysql://$username:$password@$host/$dbName";
+
+			$db =& MDB2::connect($dsn);
+			if(PEAR::isError($db)){
 				die($db->getMessage());
 			}
-			
-			$sessid = session_id();
-			$username = mysql_real_escape_string($_SESSION['username']); 
+
+			$sessid = md5(session_id());
+			$username = mysql_real_escape_string($_SESSION['username']);
 			$sql="UPDATE UserTable SET sessid='$sessid' WHERE username = '$username'";
 			$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
-		
+
 			$res =& $db->query($sql);
 			if(PEAR::isError($res)){
 				die($res->getMessage());
-			} 
-			
+			}
+
 		?>
 
 		for(var i=0;i<JSON.length;i++){
