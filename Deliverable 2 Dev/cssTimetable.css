@@ -28,8 +28,8 @@ NAV BAR
 
 #topnav li {
     border-right: 1px solid #ddd;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     display: table-cell;
     text-align: center;
 }
@@ -43,7 +43,7 @@ NAV BAR
     color: #431367;
 }
 
-#topnav li a:hover {
+#topnav li:hover {
     background: #fff;
 }
 
@@ -121,20 +121,6 @@ GENERAL LAYOUT STRUCTURE
     margin-bottom: 0px;
     background: #f0efef;
     min-height: 0px;
-}
-
-.tableH {
-    color: #431367;
-    cursor: pointer;
-}
-
-.tableHClick {
-    color: #B32561;
-    cursor: pointer;
-}
-
-.requestButtons {
-    width: 100%;
 }
 
 /********************* add requests page ********************/
@@ -237,6 +223,11 @@ MEDIA QUERIES - currently incomplete
     /* for 980px or less */
 @media screen and (max-width: 980px) {
 
+	#topnav{
+	
+		width: 84%;
+	}
+		
     #pagewrap {
         width: 94%;
     }
@@ -425,6 +416,7 @@ GENERAL CSS
     border-bottom-color: #b3b3b3;
 }
 
+
 .wkInput + label, #wkLabel {
     display: inline-block;
     min-height: 25px;
@@ -473,6 +465,7 @@ GENERAL CSS
 
 .specReq, .specReqP, .roomSele {
     display: none;
+	cursor:pointer;
 }
 
 .roomSele +label {
@@ -483,7 +476,7 @@ GENERAL CSS
     min-width: 110px;
 }
 
-.specReq + label,.specReqR + label {
+.specReq + label,.specReqR + label, .roomSele + label {
     cursor: pointer;
 }
 
@@ -499,6 +492,9 @@ GENERAL CSS
     color: #431367;
 }
 
+
+
+
 #charToGo, #cCR {
     width: 100%;
     font-size: 12px;
@@ -513,22 +509,48 @@ GENERAL CSS
 }
 
 #RequestsTable * {
-    border: 1px solid black;
+    
     text-align: center;
-    padding: 2px;
+
 }
 
 #RequestsTable th {
     background-color: #f0efef;
+	border: 1px solid black;
     cursor: pointer;
+	padding: 3px;
 }
 
 #RequestsTable th:hover {
     background-color: #fff;
 }
 
+.tableH {
+    color: #431367;
+    cursor: pointer;
+}
+
+.tableHClick {
+    color: #B32561;
+    cursor: pointer;
+}
+
+.requestButtons {
+    width: 100%;
+	height:100%;
+}
+.requestButtons:hover {
+	background: #fff;
+}
+
+.requestButtonsClk
+{
+	color:#B32561;
+}
+
 .requestsRow {
     background-color: #fff;
+	border: 1px solid black;
 }
 
 .requestsRowClk {
@@ -538,6 +560,27 @@ GENERAL CSS
 
 .requestsRow:hover {
     background-color: #f8f8f8;
+}
+
+.requestCells
+{
+	border: 1px solid black;
+}
+
+#celltrue
+{
+	color: green;
+}
+
+#cellrej
+{
+	color: red;
+}
+
+.butCells
+{
+	padding:0px;
+	border:0px solid white;
 }
 
 #roomsList {
@@ -572,9 +615,17 @@ height: 30px;
 #roundsInfoTable tr{
 border:1.5px solid#333;
 }
+
 #roundInfoTable td {
 	border:1px solid #333;
 	}
 	
+#formButs
+{
+	padding:0px;
+	margin:0px;
+	border-collapse: collapse;
+	border: 0px solid white;
+}
 
 

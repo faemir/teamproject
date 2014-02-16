@@ -65,9 +65,9 @@
 		$(document).ready(function(){validateUser()});
 		$(document).ready(function(){getUser()});
 		$(document).ready(function(){GetPrefData()});
-		$(document).ready(function(){wrInputTable()});
-        $(document).ready(function(){loadDefaultWeeks()});
-		$(document).ready(function(){popModulesList(userDepartmentID)});
+		$(document).ready(function(){popModulesList(userDepartmentID)});    
+		$(document).ready(function(){loadDefaultWeeks()});
+        $(document).ready(function(){wrInputTable()});
 		$(document).ready(function(){wrRoomsList()});
 		$(document).ready(function(){isEditreq()});
 		$(document).ready(function(){roundChanges()});

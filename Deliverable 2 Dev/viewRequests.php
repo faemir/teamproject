@@ -179,106 +179,121 @@
 								var endtime = Endtime[(parseInt(JSON[i].period) + parseInt(JSON[i].duration)-2)];								
 								
 								if(viewHeaders[h] == "0")
-									codeStr += '    	<td>' + JSON[i].modulecode + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].modulecode + '</td>';
 								else if(viewHeaders[h] == "1")
-									codeStr += '    	<td>' + JSON[i].moduletitle + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].moduletitle + '</td>';
 								else if(viewHeaders[h] == "2"){
 									if (JSON[i].priority == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "3")
-									codeStr += '    	<td>' + JSON[i].year + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].year + '</td>';
 								else if(viewHeaders[h] == "4")
-									codeStr += '    	<td>' + JSON[i].semester + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].semester + '</td>';
 								else if(viewHeaders[h] == "5")
-									codeStr += '    	<td>' + JSON[i].day + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].day + '</td>';
 								else if(viewHeaders[h] == "6")
-									codeStr += '    	<td>' + starttime + '</td>';
+									codeStr += '    	<td class="requestCells">' + starttime + '</td>';
 								else if(viewHeaders[h] == "7")
-									codeStr += '    	<td>' + endtime + '</td>';
+									codeStr += '    	<td class="requestCells">' + endtime + '</td>';
 								else if(viewHeaders[h] == "8")
-									codeStr += '    	<td>' + JSON[i].period + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].period + '</td>';
 								else if(viewHeaders[h] == "9")
-									codeStr += '    	<td>' + JSON[i].duration + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].duration + '</td>';
 								else if(viewHeaders[h] == "10")
-									codeStr += '    	<td>' + JSON[i].noofstudents + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].noofstudents + '</td>';
 								else if(viewHeaders[h] == "11")
-									codeStr += '    	<td>' + JSON[i].noofrooms + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].noofrooms + '</td>';
 								else if(viewHeaders[h] == "12"){
 									if (JSON[i].preferredrooms == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "13"){
 									if (JSON[i].qualityroom == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "14"){
 									if (JSON[i].wheelchairaccess == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "15"){
 									if (JSON[i].dataprojector == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "16"){
 									if (JSON[i].doubleprojector == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "17"){
 									if (JSON[i].visualiser == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "18"){
 									if (JSON[i].videodvdbluray == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "19"){
 									if (JSON[i].computer == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "20"){
 									if (JSON[i].whiteboard == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "21"){
 									if (JSON[i].chalkboard == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 
 							}
+							codeStr += '    	<td class="butCells"><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
 							if (JSON[i].requeststatus=="accepted"){
-									noofaccepted=noofaccepted+1
+									noofaccepted=noofaccepted+1;
+									codeStr += '    	<td class="butCells"><input type="button" class="requestButtons" value="Edit" onclick=" alert(\'Cannot edit accepted Request\'); "></td>';
+	
 								}
-							if (JSON[i].requeststatus=="rejected"){
-									noofrejected=noofrejected+1
+							else if (JSON[i].requeststatus=="rejected"){
+									noofrejected=noofrejected+1;
+									codeStr += '    	<td class="butCells"><form id="formButs"  method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
 								}
-							codeStr += '    	<td ><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
-							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
-							codeStr += '    	<td><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="true"></input><input type="submit" class="requestButtons" value="+"></input></form></td>';
-							codeStr += '    	<td >' + JSON[i].requeststatus + '</td>';
+							else{
+								codeStr += '    	<td class="butCells"><form id="formButs"  method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
+							}
+							
+							codeStr += '    	<td class="butCells"><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td class="butCells"><form id="formButs"  method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="true"></input><input type="submit" class="requestButtons" value="+"></input></form></td>';
+							
+							if(JSON[i].requeststatus == "accepted"){
+								codeStr += '    	<td  class="requestCells" id="celltrue">Accepted</td>';
+							}
+							else if(JSON[i].requeststatus == "rejected"){
+								codeStr += '    	<td  class="requestCells" id="cellrej">Rejected</td>';
+							}
+							else{
+								codeStr += '    	<td  class="requestCells" id="cellpend">Pending</td>';
+							}
 							codeStr += '	</tr>';
 						}
 					}
@@ -379,9 +394,13 @@
             }, 'json');
 			if (lastRow!=""){
 				$("#"+lastRow).toggleClass('requestsRowClk');
+				$("#"+lastRow +" > .butCells > .requestButtons").toggleClass('requestButtonsClk');
+				$("#"+lastRow +" > .butCells > #formButs > .requestButtons").toggleClass('requestButtonsClk');
 			}
 			lastRow = $(button).parent().parent().attr('id');
 			$(button).parent().parent().toggleClass('requestsRowClk');
+			$(button).parent().parent().find(".butCells > .requestButtons").toggleClass('requestButtonsClk');
+			$(button).parent().parent().find(".butCells > #formButs > .requestButtons").toggleClass('requestButtonsClk');
 		}
 		
 		
@@ -471,17 +490,17 @@
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
 				codeStr += '	<tr class="requestsRow" id=r'+i+'>';
-				codeStr += '    	<td>' + value[l][0] + '</td>';
-				codeStr += '    	<td>' + value[l][1] + '</td>';
-				codeStr += '    	<td>' + value[l][2] + '</td>';
-				codeStr += '    	<td>' + value[l][3] + '</td>';
-				codeStr += '    	<td>' + value[l][4] + '</td>';
-				codeStr += '    	<td>' + value[l][5] + '</td>';
-				codeStr += '    	<td>' + value[l][6] + '</td>';
-				codeStr += '    	<td>' + value[l][7] + '</td>';
-				codeStr += '    	<td>' + value[l][8] + '</td>';
-				codeStr += '    	<td>' + value[l][9] + '</td>';
-				codeStr += '    	<td>' + value[l][10] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][0] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][1] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][2] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][3] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][4] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][5] + '</td>';
+				codeStr += '    	<td class="butCells">' + value[l][6] + '</td>';
+				codeStr += '    	<td class="butCells">' + value[l][7] + '</td>';
+				codeStr += '    	<td class="butCells">' + value[l][8] + '</td>';
+				codeStr += '    	<td class="butCells">' + value[l][9] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][10] + '</td>';
 				codeStr += '	</tr>';
 			}
 			codeStr += '</table>';
@@ -500,9 +519,9 @@
 		
 		function rdRoundData(){
 			$.get("GETroundData.php",function(JSON){
-			if(JSON.length!=0){
-				roundsNumber=JSON[0].roundsnum;
-			}
+				if(JSON.length!=0){
+					roundsNumber=JSON[0].roundsnum;
+				}
 			},'json');
 		}
 		
@@ -528,15 +547,16 @@
 					codeStp += "<td>" + JSON[i].enddate + "</td>";
 					codeStp += "</tr>";
 				}
+
 				if (roundsNumber==0){
-				codeStp += "<tr>" ;
-				codeStp += "<td colspan='4'>You are in adhoc round</td>";
-				codeStp += "</tr>";
+					codeStp += "<tr>" ;
+					codeStp += "<td colspan='4'>You are in adhoc round</td>";
+					codeStp += "</tr>";
 				}
 				else{
-				codeStp += "<tr>" ;
-				codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
-				codeStp += "</tr>";
+					codeStp += "<tr>" ;
+					codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
+					codeStp += "</tr>";
 				}
 				codeStp +="</table>";
 				$("#roundsBox").append(codeStp);
@@ -561,40 +581,42 @@
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
-				<label id="departmentid"></label>
-				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></br>
-				<label id="wkLabel" class="wkInput">Search by</label>
-				<select id="colSelect" name="colSelect" onclick="search.value=''">
-					<option value="20">All</option>
-					<option value="0">Module Code</option>
-					<option value="1">Module Title</option>
-					<option value="2">Day</option>
-					<option value="3">Status</option>
-					<option value="4">Period</option>
-					<option value="5">Duration</option>
-					<option value="6">Priority</option>
-					<option value="7">No of Students</option>
-					<option value="8">Quality Room</option>
-					<option value="9">Preferred Room</option>
-					<option value="11">No of Rooms</option>
-					<option value="12">Wheelchair Access</option>
-					<option value="13">Data Projector</option>
-					<option value="14">Double Projector</option>
-					<option value="15">Visualiser</option>
-					<option value="16">Video/DVD/Bluray</option>
-					<option value="17">Computer</option>
-					<option value="18">White Board</option>
-					<option value="19">Chalk Board</option>
-				</select>
-				</br>
-				<label id="wkLabel" class="wkInput">Semester</label>
-				<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
-				<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
-				<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
-				<label id="cTR"></label></br>
-				<label id="acceptedreq"></label></br>
-				<label id="rejectedreq"></label>
-
+				<table>
+					<tr><td><input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></td></tr>
+					<tr><td>
+					<label>Search by: </label>
+					<select id="colSelect" name="colSelect" onclick="search.value=''">
+						<option value="20">All</option>
+						<option value="0">Module Code</option>
+						<option value="1">Module Title</option>
+						<option value="2">Day</option>
+						<option value="3">Status</option>
+						<option value="4">Period</option>
+						<option value="5">Duration</option>
+						<option value="6">Priority</option>
+						<option value="7">No of Students</option>
+						<option value="8">Quality Room</option>
+						<option value="9">Preferred Room</option>
+						<option value="11">No of Rooms</option>
+						<option value="12">Wheelchair Access</option>
+						<option value="13">Data Projector</option>
+						<option value="14">Double Projector</option>
+						<option value="15">Visualiser</option>
+						<option value="16">Video/DVD/Bluray</option>
+						<option value="17">Computer</option>
+						<option value="18">White Board</option>
+						<option value="19">Chalk Board</option>
+					</select>
+					</td></tr>
+					<tr><td><label id="wkLabel" class="wkInput">Semester</label>
+					<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
+					<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
+					<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
+					</td></tr>
+					<tr><td><label id="cTR"></label></td></tr>
+					<tr><td><label id="acceptedreq"></label></td></tr>
+					<tr><td><label id="rejectedreq"></label></td></tr>
+				</table>
 
 			</div>
 			
