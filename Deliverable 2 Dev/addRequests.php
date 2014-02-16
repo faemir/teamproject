@@ -3,6 +3,9 @@
     ini_set("session.use_only_cookies",0);
     ini_set("session.use_trans_sid",1);
     session_start();
+	$_SESSION["editreqid"] = $_POST["reqid"];
+	$_SESSION["editBool"] = $_POST["bool"];
+	$_SESSION["addSim"] = $_POST["similar"];
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -24,10 +27,10 @@
 		var prefLoc = "ANY";
 		var redirectBool = false;
 		var editBool = false;
-		var editrequestid = 134;
 		var roundsNumber = 0
 		var semesterNumber = 0
-		
+		var editrequestid = "";
+		var addSim = "";
 		//pOrT stands for 'Period or Time' - to reflect user preferences
         var pOrTHeader1 = "Period";
 		var pOrTHeader2 = "Times"
@@ -45,7 +48,7 @@
 		var sort = false; // for sorting my capacity
 		var ARooms = 0;
 		var AClick = 0;
-
+		var roomlen = 0;
 
 		//Selected periods from table - false = not selected.
 		//............................input table
@@ -65,13 +68,14 @@
 		$(document).ready(function(){rdRoundData()});
         $(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
-        $(document).ready(function(){wrRoomsList()});
 		$(document).ready(function(){popModulesList(userDepartmentID)});
+		$(document).ready(function(){wrRoomsList()});
+		$(document).ready(function(){isEditreq()});
 		$(document).ready(function(){roundChanges()});
 		
         //FUNCTIONS --------------------------------------------------//
 		function getUser(){
-			passedUsername = "<?php echo $_SESSION['username'] ?>";
+			passedUsername = "<?php echo $_SESSION['username']; ?>";
 			seshId = "<?php echo session_id();?>";
 			$.ajax({
 				type: "GET",
@@ -100,17 +104,16 @@
 					
 				}
 			});
-
 		}
 		
 		function validateUser(){
-				var user= "<?php echo $_SESSION['username'] ?>";
-				var sessionid= "<?php echo session_id(); ?>";
-				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
-					if (JSON.length==0)
-					window.location.replace("login.php");
-				}, 'json');
-			}
+			var user= "<?php echo $_SESSION['username'] ?>";
+			var sessionid= "<?php echo session_id(); ?>";
+			$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+				if (JSON.length==0)
+				window.location.replace("login.php");
+			}, 'json');
+		}
 		
 		function rdRoundData(){
 			$.get("GETroundData.php",function(JSON){
@@ -130,6 +133,121 @@
 			}
 			else if (roundsNumber==1 && semesterNumber==2){
 				document.getElementById('PRN').disabled=true;
+			}
+		}
+
+		 
+
+		function isEditreq(){
+			editBool = "<?php echo $_SESSION['editBool']; ?>";
+			if(editBool == "true"){
+				editrequestid = "<?php echo $_SESSION["editreqid"]; ?>";
+				addSim = "<?php echo $_SESSION["addSim"]; ?>";
+				var editwkid = 0;
+				$.ajax({
+					type: "GET",
+					url: "GETeditRequest.php",
+					dataType: "JSON",
+					data:{'id': editrequestid},
+					async: false,
+					success: function(JSON){
+						
+						//module
+						$("#modCodeSelect").val(String(JSON[0].modulecode));
+						ModuleSelector(document.getElementById("modCodeSelect"));
+						//capacity
+						$("#CAP").val(JSON[0].noofstudents);
+						//semester
+						if(JSON[0].semester==1){$("#sem1").prop("checked",true);}
+						else if(JSON[0].semester==2){$("#sem2").prop("checked",true);}
+						//priority
+						if(JSON[0].priority==1){$("#PRY").prop("checked",true);}
+						else{$("#PRN").prop("checked",true);}
+						//other
+						if(JSON[0].other != "null"){$("#ORE").val(JSON[0].other);}
+						//spec reqs
+						if(JSON[0].qualityroom==1){$("#QUR").prop("checked",true);}
+						if(JSON[0].wheelchairaccess==1){$("#WHC").prop("checked",true);}
+						if(JSON[0].dataprojector==1){$("#DP1").prop("checked",true);}
+						if(JSON[0].doubleprojector==1){$("#DP2").prop("checked",true);}
+						if(JSON[0].visualiser==1){$("#VIS").prop("checked",true);}
+						if(JSON[0].videodvdbluray==1){$("#VDB").prop("checked",true);}
+						if(JSON[0].computer==1){$("#CMP").prop("checked",true);}
+						if(JSON[0].whiteboard==1){$("#WHB").prop("checked",true);}
+						if(JSON[0].chalkboard==1){$("#CHB").prop("checked",true);}
+						if(JSON[0].nearestroom==1){$("#NER").prop("checked",true);}
+						//park
+						$("#PRK").val("ANY");
+						GetRoom(false);
+						editwkid = JSON[0].weekid;
+						
+						if(addSim != "true"){	
+							//DPT
+							var pdcnt = parseInt(JSON[0].period);
+							var dycnt = "";
+							if(JSON[0].day=="Monday"){dycnt=1;}
+							if(JSON[0].day=="Tuesday"){dycnt=2;}
+							if(JSON[0].day=="Wednesday"){dycnt=3;}
+							if(JSON[0].day=="Thursday"){dycnt=4;}
+							if(JSON[0].day=="Friday"){dycnt=5;}
+							for(var i=0;i<(parseInt(JSON[0].duration));i++){
+								var ref = "t" + String(dycnt) + String(pdcnt);
+								tableSelect(ref);
+								pdcnt++;
+							}
+							for(var j =0; j<JSON.length;j++){
+								for(var k =0; k<roomlen;k++){
+									if(($("#r"+k).val()) == JSON[j].roomid){
+										document.getElementById("r"+k).checked = true;
+										roomClick(document.getElementById("r"+k));
+									}
+								}
+							}
+						}
+						else{
+							editBool = false;
+						}
+					}
+				});
+				$.ajax({
+					type: "GET",
+					url: "GETweek.php",
+					dataType: "JSON",
+					data:{'id': editwkid},
+					async: false,
+					success: function(JSON){
+						$("#wk1").prop('checked',false);
+						$("#wk2").prop('checked',false);
+						$("#wk3").prop('checked',false);
+						$("#wk4").prop('checked',false);
+						$("#wk5").prop('checked',false);
+						$("#wk6").prop('checked',false);
+						$("#wk7").prop('checked',false);
+						$("#wk8").prop('checked',false);
+						$("#wk9").prop('checked',false);
+						$("#wk10").prop('checked',false);
+						$("#wk11").prop('checked',false);
+						$("#wk12").prop('checked',false);
+						$("#wk13").prop('checked',false);
+						$("#wk14").prop('checked',false);
+						$("#wk15").prop('checked',false);
+						if(JSON[0].week1==1){$("#wk1").prop('checked',true);}
+						if(JSON[0].week2==1){$("#wk2").prop('checked',true);}
+						if(JSON[0].week3==1){$("#wk3").prop('checked',true);}
+						if(JSON[0].week4==1){$("#wk4").prop('checked',true);}
+						if(JSON[0].week5==1){$("#wk5").prop('checked',true);}
+						if(JSON[0].week6==1){$("#wk6").prop('checked',true);}
+						if(JSON[0].week7==1){$("#wk7").prop('checked',true);}
+						if(JSON[0].week8==1){$("#wk8").prop('checked',true);}
+						if(JSON[0].week9==1){$("#wk9").prop('checked',true);}
+						if(JSON[0].week10==1){$("#wk10").prop('checked',true);}
+						if(JSON[0].week11==1){$("#wk11").prop('checked',true);}
+						if(JSON[0].week12==1){$("#wk12").prop('checked',true);}
+						if(JSON[0].week13==1){$("#wk13").prop('checked',true);}
+						if(JSON[0].week14==1){$("#wk14").prop('checked',true);}
+						if(JSON[0].week15==1){$("#wk15").prop('checked',true);}	
+					}
+				});
 			}
 		}
 		
@@ -212,6 +330,7 @@
 			thursdaySele = [false,false,false,false,false,false,false,false,false];
 			fridaySele = [false,false,false,false,false,false,false,false,false];
 		}
+		
 		function ClrSpec(){
 			document.getElementById("QUR").checked=false;
 			document.getElementById("WHC").checked=false;
@@ -230,6 +349,7 @@
 			document.getElementById("modCodeSelect").selectedIndex=0;
 			//defaults?
 		}
+		
 		function ClrRoom(){
 			if (roomsJSONchecker){
 				for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
@@ -240,13 +360,14 @@
 			ARooms=0;
 			document.getElementById("room1").checked = true;
 		}
+		
 		function EmptyRoom(){
-			
 			ClrRoom();
 			roomsQueue = [];
 			roomsNamesQueue = [];
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 		}
+		
 		function ClrAll(){
 			if (confirm("Are you sure you are want to clear this?")){
 				ClrRoom();
@@ -258,18 +379,10 @@
 		//---------------------------------------------------------------------------------------------//
         //onclick for table buttons
         function tableSelect(gridRef){
-            //2-D array to hold boolean value for any field currently pressed.         
-            //checker searches 2-d array to see if a previous gridref has been clicked.
-            //if new grid ref is to right of previous, allow connection of two (i.e. 2hr slot) - (2 true values in array)
-            //Else erase previous grid ref boolean and write new gridref boolean (so only one true value in array
-
-
             $("#"+ gridRef).toggleClass("gridClicked");
 			TFTable(gridRef.substring(1,gridRef.length));
         }	
         
-		
-
         //toggles boolean value of each square in input table for other functions to use
 		function TFTable(gridRef){
 			var daySele = parseInt(gridRef.substring(0,1));
@@ -311,8 +424,8 @@
 				}
 				break;
 			}
-		}
 
+		}
         //collect day time and period information for all days
 		function timetableGetter(){
 			timetableCollector(mondaySele,"Monday");
@@ -320,9 +433,6 @@
 			timetableCollector(wednesdaySele,"Wednesday");
 			timetableCollector(thursdaySele,"Thursday");
 			timetableCollector(fridaySele,"Friday");
-
-			//alert(DPTArray.join("//"));
-
 		}
 
         //collects all day time and period information from input table by day
@@ -389,9 +499,11 @@
                     codeStr +="<div id='roomsList'>";
 					if (JSON.length != 0){
 						roomsJSONchecker=true;
+						roomlen = JSON.length;
 						for(var i =0;i<JSON.length;i++){
-							codeStr += "<span title= 'Building: " + JSON[i].building+"'><input type='checkbox' id='r"+i+"' class='roomSele' onclick='roomClick(this)'><label for='r"+i+"'>" + JSON[i].roomid +" : "+ JSON[i].capacity+  "</label></span></br>";
+							codeStr += "<span title= 'Building: " + JSON[i].building+"'><input type='checkbox' id='r"+i+"' class='roomSele' onclick='roomClick(this)' value='"+JSON[i].roomid+"'><label for='r"+i+"'>" + JSON[i].roomid +" : "+ JSON[i].capacity+  "</label></span></br>";
 							roomsNames[i] = JSON[i].roomid;
+							
 						}
 					}else{
 						roomsJSONchecker=false;
@@ -421,6 +533,7 @@
             });
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
         }
+		
 		function SortCap(){
 			if (sort==false){
 				sort=true;}
@@ -429,6 +542,7 @@
 			
 			GetRoom(true);
 		}
+		
 		function roomamount(valuess){
 			if(valuess < ARooms){
 				for(i=valuess; i <ARooms;i++){
@@ -443,7 +557,9 @@
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 			
 		}
+		
 		function roomClick(currentBox){
+			
 			if(currentBox.checked){
 				if (ARooms <5){
 					ARooms++;
@@ -493,20 +609,14 @@
 				roomsNamesQueue = [];
 			}
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
-			AlreadyBooked()
+			
 		}
-		function AlreadyBooked(){
-		
-		}
-		
-		
-		
+
 		//-------------Change Room list accordingly
 		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails ORDER BY roomid";// declares SQL for room
 		function GetRoom(type){
 
 			specBoolArray = [0,0,0,0,0,0,0,0,0,0,0,0];
-
 			if (document.getElementById("QUR").checked == true){specBoolArray[0] = 1;}
 			if (document.getElementById("WHC").checked == true){specBoolArray[1] = 1;}
 			if (document.getElementById("DP1").checked == true){
@@ -695,7 +805,7 @@
                     codeStr += "<td><input type='checkbox' class='specReq' id='CHB' onchange='GetRoom(false)'><label for='CHB'>Chalkboard</label></td>";
 					codeStr += "<td><input type='checkbox' class='specReq' id='NER' onchange='GetRoom(false)'><label for='NER'>Near Previous Room</label></td>";
 					codeStr += "</tr>";
-					codeStr +="<tr><td>Capacity:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onclick='CapacityChange()' onchange='CapacityChange()' onkeypress='CapacityChange()' onkeyup='CapacityChange()'></td></tr>";
+					codeStr +="<tr><td>No of Students:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onclick='CapacityChange()' onchange='CapacityChange()' onkeypress='CapacityChange()' onkeyup='CapacityChange()'></td></tr>";
 					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom(false)' class='modChooser'>";
 					if(prefLoc == "ANY"){
 						codeStr +="<option value='ANY' selected>Any</option><option value='E'>East</option><option value='C'>Central</option><option value='W'>West</option>"
@@ -746,14 +856,17 @@
 					var num = checkRoom-roomsQueue.length;
 					if(num==1){
 						alert("Please enter " + num + " more room OR no rooms");
-					}else{
+					}
+					else{
 						alert("Please enter " + num + " more rooms OR no rooms");
 					}
-				}else{
+				}
+				else{
 					timetableGetter();
 					if(DPTArray.length==0){
 						alert("Please enter a time slot");
-					}else{
+					}
+					else{
 						var weekArr = [];
 						//change all data to variables of correct type.
 						var yearID = 13;
@@ -771,8 +884,7 @@
 							var sem = 2;
 						}
 						for(var i = 0; i < 15; i++){
-							if(document.getElementById("wk" +(i+1)).checked){
-								weekArr[i] = 1;}
+							if(document.getElementById("wk" +(i+1)).checked){weekArr[i] = 1;}
 							else{weekArr[i] = 0;}
 						}
 						if (roomsQueue.length ==0){
@@ -819,10 +931,10 @@
 						do{
 							//post new request
 							$.ajax({
-							type: "GET",
-							url: "POSTnewRequest.php",
-							async: false,
-							data: {'editrequestid': editrequestid,'editBool': eBool,'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':checkRoom , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value)},
+								type: "GET",
+								url: "POSTnewRequest.php",
+								async: false,
+								data: {'editrequestid': editrequestid,'editBool': eBool,'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':checkRoom , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value)},
 							});
 							i++;
 							// //get latest request id
@@ -836,13 +948,12 @@
 									lReq = JSON[0].requestid;
 								}
 							});
-							alert(preferredRoom==1);
+							
 							if(editBool){
 								$.get("POSTdeleteBooking.php", {'editrequestid': editrequestid});
 								lReq = editrequestid;
 							}
 							if (preferredRoom ==1){
-							
 								for(var j =0; j < checkRoom;j++){
 									$.ajax({
 										type: "GET",
@@ -853,7 +964,6 @@
 								}
 							}
 							else{
-							
 								for(var j =0; j < checkRoom;j++){
 									$.ajax({
 										type: "GET",
@@ -863,18 +973,19 @@
 									});
 								}
 							}
+							
 						}while(i<DPTArray.length);
-						
+					
 						if(redirectBool){
 							window.location.replace("viewRequests.php?PHPSESSID=" + seshId);
 						}else{
 							window.location.replace("addRequests.php?PHPSESSID=" +seshId);
 						}	
+
 					}
 				}
 			}
 		}
-		
 		
         </script>
     </head>
@@ -895,11 +1006,7 @@
                 <select id="modTitleSelect" name="modTitleSelect" class="modChooser" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected></option></select></br>
                 <select id="modCodeSelect" name="modCodeSelect" class="modChooser" onclick="popModulesList(userDepartmentID)" onchange="ModuleSelector(this)"><option selected></option></select></br>
             </div>
-
-            
-            <!--<div class="contentBox" id="roomActionsBox"></div>-->
-
-
+			
             <div class="contentBox" id="roomSelectorBox"></div>
 
             <div class="contentBox" id="inputWeeksBox">

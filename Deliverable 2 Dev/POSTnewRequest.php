@@ -60,12 +60,13 @@
 		$sql .= "$preferredroom,'$requeststatus',$qualityroom,$wheelchair,$dataprojector,$doubleprojector,$visualiser,$videodvdbluray,";
 		$sql .= "$computer,$whiteboard,$chalkboard,$nearestroom,'$other');";
 	}
+
 	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
 	
 	$res =& $db->query($sql);
 	if(PEAR::isError($res)){
 		die($res->getMessage());
 	} 
-	
+
 
 ?>
