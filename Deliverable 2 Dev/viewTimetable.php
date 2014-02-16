@@ -47,6 +47,7 @@
 				}, 'json');
 			}
 			
+
 			function MkActions(){
 				var tbl="";
 				tbl +="<select id='weeksele' onchange='SelectWeek(this.value)' onclick='SelectWeek(this.value)' onkeypress='SelectWeek(this.value)' onkeyup='SelectWeek(this.value)'>";
@@ -100,6 +101,7 @@
 			function clickedtable(value){
 				if($(value).attr('class')=='changeVT'){
 					if(reqID.length != 0){
+
 						var seleID =[];
 						var RoomArr=[];
 						var RoomIdArr = [];
@@ -110,6 +112,7 @@
 						}
 						codeStl = "";
 						for(var i = 0; i < seleID.length; i++){
+
 							$.ajax({
 								type: "GET",
 								dataType: "json",
@@ -254,6 +257,7 @@
 				}
 				document.getElementById("roomSelectorBox2").innerHTML = (codeStl);
 			}
+
 			function getTable(week){
 				reqID= [];
 				var user = "CO";
@@ -305,11 +309,13 @@
 								}								
 								reqID[reqID.length] = subarray;
 								//alert(reqID);
+
 								count++;
 							}while(count<JSON[i].duration)
 						}
 					}
 				});
+				
 			}
 		</script>
         <title>View Timetable</title>

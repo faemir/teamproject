@@ -17,6 +17,7 @@
 		$(document).ready(function(){validateUser();});
 		$(document).ready(function(){getUser();});
 		$(document).ready(function(){getUserPrefs();});
+		$(document).ready(function(){rdRoundData();});
         $(document).ready(function(){wrRequestsTable();});
 		$(document).ready(function(){wrRoundsTable();});
 		$(document).ready(function(){wrdetailsTitle();});
@@ -48,6 +49,8 @@
 		var noofaccepted = 0;
 		var noofrejected = 0;
 		var seshId = "";
+		var roundsNumber=0
+
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUser(){
@@ -473,6 +476,12 @@
 			
 		}
 		
+		function rdRoundData(){
+			$.get("GETroundData.php",function(JSON){
+			roundsNumber=JSON[0].roundsnum;
+			},'json');
+		}
+		
 		function wrRoundsTable(){
 		
 			$.get("GETRoundsDetails.php", function(JSON){
@@ -495,6 +504,10 @@
 					codeStp += "<td>" + JSON[i].enddate + "</td>";
 					codeStp += "</tr>";
 				}
+				codeStp += "<tr>" 
+				codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
+				codeStp += "</tr>";
+				
 				codeStp +="</table>";
 				$("#roundsBox").append(codeStp);
 			},'json');	
