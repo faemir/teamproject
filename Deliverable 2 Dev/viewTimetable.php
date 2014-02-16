@@ -116,21 +116,7 @@
 								async: false,
 								data: {'id':seleID[i]},
 								success: function(JSON){
-									for(var j = 0; j < JSON.length; j++){
-										if(RoomIdArr[j]==0){
-											RoomIdArr[RoomIdArr.length]=JSON[j].roomid;
-										}else{
-											var boolcheck = true;
-											for (var i = 0; i < RoomIdArr.length; i++){
-												if(RoomIdArr[i]==JSON[j].roomid){
-													boolcheck = false;
-												}
-											}
-											if(boolcheck){
-												RoomIdArr[RoomIdArr.length] = JSON[j].roomid;
-											}
-										}
-									}
+									RoomIdArr = [];
 									for(var j = 0; j < JSON.length; j++){
 										var subRoomArr =[];
 										subRoomArr[0] = JSON[j].requestid;
@@ -151,6 +137,19 @@
 										subRoomArr[15] = JSON[j].whiteboard;
 										subRoomArr[16] = JSON[j].chalkboard;
 										subRoomArr[17] = JSON[j].nearestroom;
+										if(RoomIdArr[j]==0){
+											RoomIdArr[RoomIdArr.length]=JSON[j].roomid;
+										}else{
+											var boolcheck = true;
+											for (var i = 0; i < RoomIdArr.length; i++){
+												if(RoomIdArr[i]==JSON[j].roomid){
+													boolcheck = false;
+												}
+											}
+											if(boolcheck){
+												RoomIdArr[RoomIdArr.length] = JSON[j].roomid;
+											}
+										}
 										if(RoomArr.length==0){
 											subRoomArr[18] = RoomIdArr;
 											RoomArr[RoomArr.length] = subRoomArr;
@@ -166,7 +165,6 @@
 												RoomArr[RoomArr.length] = subRoomArr;
 											}
 										}
-										
 									}
 									wrTables(RoomArr);
 								}
