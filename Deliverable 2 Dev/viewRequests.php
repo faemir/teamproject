@@ -137,10 +137,8 @@
 				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername},
                 success: function(JSON){
 					var deptname = JSON[0].departmentname;
-					alert(deptname);
 					var codeStb = "";
 					codeStb += "<table><tr><th>" + deptname + " Requests</th></tr></table>";
-					alert(codeStb);
 					$("#search").before(codeStb);
 					
                     var codeStr = "";
