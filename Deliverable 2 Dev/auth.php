@@ -26,7 +26,7 @@ $(document).ready ( function(){
 		var users = [];
 		var passes = [];
 
-		var userPass = "<?php echo md5($_SESSION['password'] + '4509ns;epkgjs3u'); ?>";
+		var userPass = "<?php echo md5($_SESSION['password'] . '4509ns;epkgjs3u'); ?>";
 
 		<?php
 			require_once 'MDB2.php';
