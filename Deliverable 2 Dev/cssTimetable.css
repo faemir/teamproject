@@ -315,79 +315,102 @@ MEDIA QUERIES - currently incomplete
 
 
     /*** Input Table ***/
+    
+    #inputTable,.tableVT
+        {
+        border: 1px solid black;
+        min-width: 100%;
+		max-width: 100%;
+        height:350px;
+        border-collapse: collapse;
+        
+    }
 
-#inputTable,.tableVT {
-    border: 1px solid black;
-    width: 100%;
-    height: 350px;
-    border-collapse: collapse;
-}
-
-#inputTable *,.tableVT * {
-    border: 1px solid black;
-}
-
-.tabledaysVT {
-    width: 19%;
-}
-
-.tabletdVT {
-    width: 9%;
-}
-
-.tabletdVT:hover {
-    background-color: #f5f5f5;
-    width: 9%;
-}
-
-.changeVT {
-    cursor: pointer;
-    color: #fff;
-    background-color: #B32561;
-    border-width: 2px;
-    width: 9%;
-}
-
-.changeVT:hover {
-    cursor: pointer;
-    background-color: #431367;
-    border-width: 2px;
-    width: 9%;
-}
-
-#inputTable *,.tableVT * {
-    border: 1px solid black;
-}
-
-/***************************************************************
-GENERAL CSS
-****************************************************************/
-
-.daysHeader, .daysChildren {
-    width: 100px;
-    background-color: #f0efef;
-}
-
-.pOrTHeader, .pOrTChildren {
-    background-color: #f0efef;
-}
-
-.grid {
-    cursor: pointer;
-}
-
-.grid:hover {
-    background-color: #f0efef;
-}
-
-.gridClicked {
-    background-color: #431367;
-    border: 2px solid black;
-}
-
-.gridClicked:hover {
-    background-color: #B32561;
-}
+    #inputTable *,.tableVT *
+    {
+        border: 1px solid black;
+        
+    }
+	#detailsTable,#detailsTable *{
+		border: 1px solid black;
+		border-collapse: collapse;
+	}
+	.tableVT
+	{
+		height:100%;
+	}
+	#detailsth
+	{
+		background-color:#e9e9e9
+	}
+	.tabledaysVT
+	{
+		width: 19%;
+	}
+	.tabletdVT,.tabletdVT
+	{
+		width: 9%;
+		max-width: 50px;
+	}
+	.tabletdVT:hover
+	{
+		
+		background-color:#f5f5f5;
+		width: 9%;
+	}
+	.changeVT
+	{
+		cursor: pointer;
+		color:#fff;
+		background-color: #B32561;
+		border-width: 2px;
+		width:  9%;
+	}
+	.changeVT:hover
+	{
+		cursor: pointer;
+		background-color: #431367;
+		border-width: 2px;
+		width:  9%;
+	}
+ 
+ 
+ 
+	/***************************************************************
+	GENERAL CSS 
+	****************************************************************/
+ 
+	.daysHeader, .daysChildren
+        {
+		width:100px;
+		background-color: #f0efef;
+	} 
+	.pOrTHeader, .pOrTChildren
+	{
+		background-color: #f0efef;
+	}
+    .grid
+        {
+        cursor: pointer;
+    }
+    .grid:hover
+        {
+        background-color:#f0efef;
+    }
+    
+    .gridClicked
+        {
+        background-color:#431367;
+        border: 2px solid black;
+    }
+    
+    .gridClicked:hover
+        {
+        background-color:#B32561;
+    }
+    
+            
+    /** weeks input **/
 
 
     /** weeks input **/
@@ -620,9 +643,37 @@ height: 30px;
 	background-color: #ddd;
 }
 
+
 #roundsInfoTable tr{
 border:1.5px solid#333;
 }
+
+	}
+	.requestsRow:hover
+	{
+		background-color:#f8f8f8;
+	}
+    #roomsList, #details{
+        height:300px;
+        width:100%;
+        border:1px solid #AAA;
+        overflow-y:auto;
+    }
+    #details{
+		height:100%;
+	}
+    #roomsList li{
+        display:block;
+        border:1px solid #ddd;
+    }
+	#roundsInfoTable *
+	{ 
+		border-collapse: collapse;
+		text-align:center;
+		border: 1px solid #333;
+		
+	}
+
 
 #roundInfoTable td {
 	border:1px solid #333;
