@@ -42,8 +42,8 @@ $(document).ready ( function(){
 			}
 
 			$sessid = md5(session_id());
-			$username = mysql_real_escape_string($_SESSION['username']);
-			$sql="UPDATE UserTable SET sessid='$sessid' WHERE username = '$username'";
+			$usernameSesh = mysql_real_escape_string($_SESSION['username']);
+			$sql="UPDATE UserTable SET sessid='$sessid' WHERE username = '$usernameSesh'";
 			$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
 
 			$res =& $db->query($sql);
