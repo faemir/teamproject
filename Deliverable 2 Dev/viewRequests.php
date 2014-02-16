@@ -19,8 +19,8 @@
 		$(document).ready(function(){getUserPrefs();});
 		$(document).ready(function(){rdRoundData();});
         $(document).ready(function(){wrRequestsTable();});
-		$(document).ready(function(){wrRoundsTable();});
 		$(document).ready(function(){wrdetailsTitle();});
+		$(document).ready(function(){wrRoundsTable();});
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -49,7 +49,7 @@
 		var noofaccepted = 0;
 		var noofrejected = 0;
 		var seshId = "";
-		var roundsNumber=0
+		var roundsNumber=0;
 
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
@@ -88,7 +88,7 @@
 			function wrdetailsTitle(){
 				$("#detailsBox").empty();
 				
-				var codeStd = "<table id='detailsTable'>";
+				var codeStd = "<table>";
 				codeStd += "<tr>";
 				codeStd += 'Click details for more info';
 				codeStd += "</tr>";
@@ -134,8 +134,11 @@
                 dataType: "json",
                 url: "GETallRequests.php",
 				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername},
-				//data: {'username': $_session['username']},
                 success: function(JSON){
+					var codeStb = "";
+					$('#deptLabel').text(JSON[0].departmentname + " Requests");
+					$("#search").before(codeStb);
+					
                     var codeStr = "";
                     codeStr += '<table id="RequestsTable">';
                     codeStr += '<tr id='+i+'>';
@@ -314,7 +317,7 @@
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
 				$("#detailsBox").empty();
 				
-				var codeStl = "<table id='detailsTable'>";
+				var codeStl = "<table>";
 				codeStl += "<tr>";
 				codeStl += "<h4>Selected room details</h4>";
 				codeStl += "</tr>";
@@ -519,7 +522,9 @@
 		
 		function rdRoundData(){
 			$.get("GETroundData.php",function(JSON){
-			roundsNumber=JSON[0].roundsnum;
+				if(JSON.length!=0){
+					roundsNumber=JSON[0].roundsnum;
+				}
 			},'json');
 		}
 		
@@ -528,13 +533,13 @@
 			$.get("GETRoundsDetails.php", function(JSON){
 				var codeStp = "<table id='roundsInfoTable'>";
 				codeStp += "<tr>";
-				codeStp += "Rounds Table";
+				codeStp += "<th colspan=4>Rounds Table</th>";
 				codeStp += "</tr>";
 				codeStp += "<tr>";
-				codeStp += "<td>" + "Semester" + "</td>";
-				codeStp += "<td>" + "Rounds Num" + "</td>";
-				codeStp += "<td>" + "Start Date" + "</td>";
-				codeStp += "<td>" + "End Date" + "</td>";
+				codeStp += "<th>" + "Semester" + "</th>";
+				codeStp += "<th>" + "Rounds Num" + "</th>";
+				codeStp += "<th>" + "Start Date" + "</th>";
+				codeStp += "<th>" + "End Date" + "</th>";
 				codeStp += "</tr>";
 				
 				for(var i=0;i<JSON.length;i++){
@@ -545,10 +550,17 @@
 					codeStp += "<td>" + JSON[i].enddate + "</td>";
 					codeStp += "</tr>";
 				}
-				codeStp += "<tr>" 
-				codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
-				codeStp += "</tr>";
-				
+
+				if (roundsNumber==0){
+					codeStp += "<tr>" ;
+					codeStp += "<td colspan='4'>You are in adhoc round</td>";
+					codeStp += "</tr>";
+				}
+				else{
+					codeStp += "<tr>" ;
+					codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
+					codeStp += "</tr>";
+				}
 				codeStp +="</table>";
 				$("#roundsBox").append(codeStp);
 			},'json');	
@@ -566,48 +578,48 @@
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
-                <li><a href="accountPage.php">Username(pref)</a></li>
+                <li><a href="accountPage.php">My Account</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
 				<table>
-				<tr><td><input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></td></tr>
-				
-				<tr><td>
-				<label>Search by: </label>
-				<select id="colSelect" name="colSelect" onclick="search.value=''">
-					<option value="20">All</option>
-					<option value="0">Module Code</option>
-					<option value="1">Module Title</option>
-					<option value="2">Day</option>
-					<option value="3">Status</option>
-					<option value="4">Period</option>
-					<option value="5">Duration</option>
-					<option value="6">Priority</option>
-					<option value="7">No of Students</option>
-					<option value="8">Quality Room</option>
-					<option value="9">Preferred Room</option>
-					<option value="11">No of Rooms</option>
-					<option value="12">Wheelchair Access</option>
-					<option value="13">Data Projector</option>
-					<option value="14">Double Projector</option>
-					<option value="15">Visualiser</option>
-					<option value="16">Video/DVD/Bluray</option>
-					<option value="17">Computer</option>
-					<option value="18">White Board</option>
-					<option value="19">Chalk Board</option>
-				</select>
-				</td></tr>
-				<tr><td><label id="wkLabel" class="wkInput">Semester</label>
-				<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
-				<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
-				<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
-				</td></tr>
-				<tr><td><label id="cTR"></label></td></tr>
-				<tr><td><label id="acceptedreq"></label></td></tr>
-				<tr><td><label id="rejectedreq"></label></td></tr>
+					<tr><td><label id="deptLabel" class="deptLabel"></label></td></tr>
+					<tr><td><input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></td></tr>
+					<tr><td>
+					<label>Search by: </label>
+					<select id="colSelect" name="colSelect" onclick="search.value=''">
+						<option value="20">All</option>
+						<option value="0">Module Code</option>
+						<option value="1">Module Title</option>
+						<option value="2">Day</option>
+						<option value="3">Status</option>
+						<option value="4">Period</option>
+						<option value="5">Duration</option>
+						<option value="6">Priority</option>
+						<option value="7">No of Students</option>
+						<option value="8">Quality Room</option>
+						<option value="9">Preferred Room</option>
+						<option value="11">No of Rooms</option>
+						<option value="12">Wheelchair Access</option>
+						<option value="13">Data Projector</option>
+						<option value="14">Double Projector</option>
+						<option value="15">Visualiser</option>
+						<option value="16">Video/DVD/Bluray</option>
+						<option value="17">Computer</option>
+						<option value="18">White Board</option>
+						<option value="19">Chalk Board</option>
+					</select>
+					</td></tr>
+					<tr><td><label id="wkLabel" class="wkInput">Semester</label>
+					<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
+					<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
+					<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
+					</td></tr>
+					<tr><td><label id="cTR"></label></td></tr>
+					<tr><td><label id="acceptedreq"></label></td></tr>
+					<tr><td><label id="rejectedreq"></label></td></tr>
 				</table>
 
 			</div>

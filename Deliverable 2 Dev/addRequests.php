@@ -61,14 +61,13 @@
 		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 
         //ONLOAD FUNCTIONS -----------------------------------------//
-
+		$(document).ready(function(){rdRoundData()});
 		$(document).ready(function(){validateUser()});
 		$(document).ready(function(){getUser()});
 		$(document).ready(function(){GetPrefData()});
-		$(document).ready(function(){rdRoundData()});
-		$(document).ready(function(){popModulesList(userDepartmentID)});    
-		$(document).ready(function(){loadDefaultWeeks()});
         $(document).ready(function(){wrInputTable()});
+        $(document).ready(function(){loadDefaultWeeks()});
+		$(document).ready(function(){popModulesList(userDepartmentID)});
 		$(document).ready(function(){wrRoomsList()});
 		$(document).ready(function(){isEditreq()});
 		$(document).ready(function(){roundChanges()});
@@ -117,26 +116,36 @@
 		
 		function rdRoundData(){
 			$.get("GETroundData.php",function(JSON){
-			semesterNumber=JSON[0].semester;
-			roundsNumber=JSON[0].roundsnum;
+				if(JSON.length!=0){
+				semesterNumber=JSON[0].semester;
+				roundsNumber=JSON[0].roundsnum;
+				}
 			},'json');
 		}
 		
 		function roundChanges(){
 			
 			if (roundsNumber==1 && semesterNumber==1){
+				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
+				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
 			}
 			else if (roundsNumber==2 && semesterNumber==1){
+				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
 			}
 			else if (roundsNumber==1 && semesterNumber==2){
+				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
 			}
-		}
-
-		 
+			//else if (roundsNumber==2 && semesterNumber==2){
+			//}
+			else {
+				document.getElementById('sem1').checked=true;
+				document.getElementById('sem2').disabled=true;
+			}
+		}		 
 
 		function isEditreq(){
 			editBool = "<?php echo $_SESSION['editBool']; ?>";
@@ -609,7 +618,7 @@
 				data: {'sqlrooms': SQLRoom},
                 success: function(JSON){
                     var codeStr = "";
-                    codeStr +="<div id='roomsList'>";
+                    codeStr +="<div id='roomsListReq'>";
 					if (JSON.length != 0){
 						roomsJSONchecker=true;
 						roomlen = JSON.length;
@@ -753,7 +762,7 @@
 			
 			$("roomsList").empty();// empties current rooms list
 			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";
-			if (specBoolArray[0]==0 && specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 && specBoolArray[11]=="ANY"){
+			if (specBoolArray[0]==0 && specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 && specBoolArray[11]=="ANY"){
 			
 			}
 			else{
@@ -1110,7 +1119,7 @@
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
-                <li><a href="accountPage.php">Username(pref)</a></li>
+                <li><a href="accountPage.php">My Account</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
