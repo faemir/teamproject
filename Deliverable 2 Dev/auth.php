@@ -14,19 +14,16 @@ $(document).ready ( function(){
     var auth=false;
 	var userUser = "<?php echo $_SESSION['username']; ?>";
 	var newUser = false;
-
 	/*$.get("GETseshid.php",{'username': userUser},function(JSON){
 		if (JSON[0].sessid==""){
 			newUser=true;
 		}
 	},'json');*/
-
-
+	
 	$.get("GETauth.php",function(JSON){
 		var sessid = "<?php echo SID ?>";
 		var users = [];
 		var passes = [];
-
 		var userPass = "<?php echo md5($_SESSION['password'] + '4509ns;epkgjs3u'); ?>";
 
 		<?php
@@ -53,7 +50,6 @@ $(document).ready ( function(){
 			}
 
 		?>
-
 		for(var i=0;i<JSON.length;i++){
 			users[i] = JSON[i].username;
 			passes[i] = JSON[i].password;
