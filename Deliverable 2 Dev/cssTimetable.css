@@ -223,6 +223,11 @@ MEDIA QUERIES - currently incomplete
     /* for 980px or less */
 @media screen and (max-width: 980px) {
 
+	#topnav{
+	
+		width: 84%;
+	}
+		
     #pagewrap {
         width: 94%;
     }
@@ -486,6 +491,9 @@ GENERAL CSS
     min-width: 98%;
     color: #431367;
 }
+
+
+
 
 #charToGo, #cCR {
     width: 100%;

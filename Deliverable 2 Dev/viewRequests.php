@@ -572,8 +572,11 @@
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
-				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></br>
-				<label id="wkLabel" class="wkInput">Search by</label>
+				<table>
+				<tr><td><input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></td></tr>
+				
+				<tr><td>
+				<label>Search by: </label>
 				<select id="colSelect" name="colSelect" onclick="search.value=''">
 					<option value="20">All</option>
 					<option value="0">Module Code</option>
@@ -596,15 +599,16 @@
 					<option value="18">White Board</option>
 					<option value="19">Chalk Board</option>
 				</select>
-				</br>
-				<label id="wkLabel" class="wkInput">Semester</label>
+				</td></tr>
+				<tr><td><label id="wkLabel" class="wkInput">Semester</label>
 				<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
 				<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
 				<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
-				<label id="cTR"></label></br>
-				<label id="acceptedreq"></label></br>
-				<label id="rejectedreq"></label>
-
+				</td></tr>
+				<tr><td><label id="cTR"></label></td></tr>
+				<tr><td><label id="acceptedreq"></label></td></tr>
+				<tr><td><label id="rejectedreq"></label></td></tr>
+				</table>
 
 			</div>
 			
