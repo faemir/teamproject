@@ -17,6 +17,7 @@
 		$(document).ready(function(){validateUser();});
 		$(document).ready(function(){getUser();});
 		$(document).ready(function(){getUserPrefs();});
+		$(document).ready(function(){rdRoundData();});
         $(document).ready(function(){wrRequestsTable();});
 		$(document).ready(function(){wrRoundsTable();});
 		$(document).ready(function(){wrdetailsTitle();});
@@ -48,6 +49,8 @@
 		var noofaccepted = 0;
 		var noofrejected = 0;
 		var seshId = "";
+		var roundsNumber=0
+
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUser(){
@@ -79,7 +82,8 @@
 					if (JSON.length==0)
 					window.location.replace("login.php");
 				}, 'json');
-			}	
+			}
+
 			
 			function wrdetailsTitle(){
 				$("#detailsBox").empty();
@@ -90,7 +94,9 @@
 				codeStd += "</tr>";
 				codeStd += "<tr>";
 				$("#detailsBox").append(codeStd);
-				}
+
+			}
+
 			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){
@@ -173,106 +179,121 @@
 								var endtime = Endtime[(parseInt(JSON[i].period) + parseInt(JSON[i].duration)-2)];								
 								
 								if(viewHeaders[h] == "0")
-									codeStr += '    	<td>' + JSON[i].modulecode + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].modulecode + '</td>';
 								else if(viewHeaders[h] == "1")
-									codeStr += '    	<td>' + JSON[i].moduletitle + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].moduletitle + '</td>';
 								else if(viewHeaders[h] == "2"){
 									if (JSON[i].priority == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "3")
-									codeStr += '    	<td>' + JSON[i].year + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].year + '</td>';
 								else if(viewHeaders[h] == "4")
-									codeStr += '    	<td>' + JSON[i].semester + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].semester + '</td>';
 								else if(viewHeaders[h] == "5")
-									codeStr += '    	<td>' + JSON[i].day + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].day + '</td>';
 								else if(viewHeaders[h] == "6")
-									codeStr += '    	<td>' + starttime + '</td>';
+									codeStr += '    	<td class="requestCells">' + starttime + '</td>';
 								else if(viewHeaders[h] == "7")
-									codeStr += '    	<td>' + endtime + '</td>';
+									codeStr += '    	<td class="requestCells">' + endtime + '</td>';
 								else if(viewHeaders[h] == "8")
-									codeStr += '    	<td>' + JSON[i].period + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].period + '</td>';
 								else if(viewHeaders[h] == "9")
-									codeStr += '    	<td>' + JSON[i].duration + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].duration + '</td>';
 								else if(viewHeaders[h] == "10")
-									codeStr += '    	<td>' + JSON[i].noofstudents + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].noofstudents + '</td>';
 								else if(viewHeaders[h] == "11")
-									codeStr += '    	<td>' + JSON[i].noofrooms + '</td>';
+									codeStr += '    	<td class="requestCells">' + JSON[i].noofrooms + '</td>';
 								else if(viewHeaders[h] == "12"){
 									if (JSON[i].preferredrooms == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "13"){
 									if (JSON[i].qualityroom == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "14"){
 									if (JSON[i].wheelchairaccess == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "15"){
 									if (JSON[i].dataprojector == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "16"){
 									if (JSON[i].doubleprojector == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "17"){
 									if (JSON[i].visualiser == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "18"){
 									if (JSON[i].videodvdbluray == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "19"){
 									if (JSON[i].computer == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "20"){
 									if (JSON[i].whiteboard == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 								else if(viewHeaders[h] == "21"){
 									if (JSON[i].chalkboard == '1')
-										codeStr += '    	<td>Yes</td>';
+										codeStr += '    	<td class="requestCells">Yes</td>';
 									else
-										codeStr += '    	<td>No</td>';
+										codeStr += '    	<td class="requestCells">No</td>';
 								}
 
 							}
+							codeStr += '    	<td class="butCells"><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
 							if (JSON[i].requeststatus=="accepted"){
-									noofaccepted=noofaccepted+1
+									noofaccepted=noofaccepted+1;
+									codeStr += '    	<td class="butCells"><input type="button" class="requestButtons" value="Edit" onclick=" alert(\'Cannot edit accepted Request\'); "></td>';
+	
 								}
-							if (JSON[i].requeststatus=="rejected"){
-									noofrejected=noofrejected+1
+							else if (JSON[i].requeststatus=="rejected"){
+									noofrejected=noofrejected+1;
+									codeStr += '    	<td class="butCells"><form id="formButs"  method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
 								}
-							codeStr += '    	<td ><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
-							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
-							codeStr += '    	<td><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="true"></input><input type="submit" class="requestButtons" value="+"></input></form></td>';
-							codeStr += '    	<td >' + JSON[i].requeststatus + '</td>';
+							else{
+								codeStr += '    	<td class="butCells"><form id="formButs"  method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
+							}
+							
+							codeStr += '    	<td class="butCells"><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td class="butCells"><form id="formButs"  method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="true"></input><input type="submit" class="requestButtons" value="+"></input></form></td>';
+							
+							if(JSON[i].requeststatus == "accepted"){
+								codeStr += '    	<td  class="requestCells" id="celltrue">Accepted</td>';
+							}
+							else if(JSON[i].requeststatus == "rejected"){
+								codeStr += '    	<td  class="requestCells" id="cellrej">Rejected</td>';
+							}
+							else{
+								codeStr += '    	<td  class="requestCells" id="cellpend">Pending</td>';
+							}
 							codeStr += '	</tr>';
 						}
 					}
@@ -323,7 +344,6 @@
 				}
 				var starttime = Starttime[JSON[0].period-1];
 				var endtime = Endtime[(parseInt(JSON[0].period) + parseInt(JSON[0].duration)-2)];
-				
 				codeStl += "<td colspan='2'>Requested Time: " + starttime + "-" + endtime + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
@@ -374,9 +394,13 @@
             }, 'json');
 			if (lastRow!=""){
 				$("#"+lastRow).toggleClass('requestsRowClk');
+				$("#"+lastRow +" > .butCells > .requestButtons").toggleClass('requestButtonsClk');
+				$("#"+lastRow +" > .butCells > #formButs > .requestButtons").toggleClass('requestButtonsClk');
 			}
 			lastRow = $(button).parent().parent().attr('id');
 			$(button).parent().parent().toggleClass('requestsRowClk');
+			$(button).parent().parent().find(".butCells > .requestButtons").toggleClass('requestButtonsClk');
+			$(button).parent().parent().find(".butCells > #formButs > .requestButtons").toggleClass('requestButtonsClk');
 		}
 		
 		
@@ -466,17 +490,17 @@
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
 				codeStr += '	<tr class="requestsRow" id=r'+i+'>';
-				codeStr += '    	<td>' + value[l][0] + '</td>';
-				codeStr += '    	<td>' + value[l][1] + '</td>';
-				codeStr += '    	<td>' + value[l][2] + '</td>';
-				codeStr += '    	<td>' + value[l][3] + '</td>';
-				codeStr += '    	<td>' + value[l][4] + '</td>';
-				codeStr += '    	<td>' + value[l][5] + '</td>';
-				codeStr += '    	<td>' + value[l][6] + '</td>';
-				codeStr += '    	<td>' + value[l][7] + '</td>';
-				codeStr += '    	<td>' + value[l][8] + '</td>';
-				codeStr += '    	<td>' + value[l][9] + '</td>';
-				codeStr += '    	<td>' + value[l][10] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][0] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][1] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][2] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][3] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][4] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][5] + '</td>';
+				codeStr += '    	<td class="butCells">' + value[l][6] + '</td>';
+				codeStr += '    	<td class="butCells">' + value[l][7] + '</td>';
+				codeStr += '    	<td class="butCells">' + value[l][8] + '</td>';
+				codeStr += '    	<td class="butCells">' + value[l][9] + '</td>';
+				codeStr += '    	<td class="requestCells">' + value[l][10] + '</td>';
 				codeStr += '	</tr>';
 			}
 			codeStr += '</table>';
@@ -491,6 +515,12 @@
 			$(heads).toggleClass("tableHClick");
 
 			
+		}
+		
+		function rdRoundData(){
+			$.get("GETroundData.php",function(JSON){
+			roundsNumber=JSON[0].roundsnum;
+			},'json');
 		}
 		
 		function wrRoundsTable(){
@@ -515,6 +545,10 @@
 					codeStp += "<td>" + JSON[i].enddate + "</td>";
 					codeStp += "</tr>";
 				}
+				codeStp += "<tr>" 
+				codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
+				codeStp += "</tr>";
+				
 				codeStp +="</table>";
 				$("#roundsBox").append(codeStp);
 			},'json');	
