@@ -24,6 +24,7 @@
 			var endTimeList1 = ["09:50","10:50","11:50","12:50"];
 			var endTimeList2 = ["13:50","14:50","15:50","16:50","17:50"];
 			var endTimeList3 = ["01:50","02:50","03:50","04:50","05:50"];
+			var clickedID ="";
 			$(document).ready(function(){validateUser();});
 			$(document).ready(function(){getUser();});
 			$(document).ready(function(){getUserPrefs()});
@@ -42,6 +43,7 @@
 				for(var i =1;i<=9;i++){
 					for(var j =1; j<=5;j++){
 						$('#t'+i+''+j).removeClass("changeVT");
+						$('#t'+i+''+j).removeClass("changeVTstored");
 						$('#t'+i+''+j).addClass("tabletdVT");
 						document.getElementById("t"+i+''+j).innerHTML="";
 					}
@@ -211,6 +213,16 @@
 											}
 										}
 									}
+									
+									if(clickedID!=""){
+										$("#"+clickedID).removeClass('changeVTstored');
+										$("#"+clickedID).addClass('changeVT');
+									}
+									$("#"+value.id).removeClass('changeVT');
+									$("#"+value.id).addClass('changeVTstored');
+									
+									clickedID = value.id;
+									
 									wrTables(RoomArr);
 
 								}
