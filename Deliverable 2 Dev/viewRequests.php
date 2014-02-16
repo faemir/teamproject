@@ -80,7 +80,7 @@
 				var sessionid= "<?php echo session_id(); ?>";
 				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
 					if (JSON.length==0)
-					window.location.replace("login.php");
+						window.location.replace("login.php");
 				}, 'json');
 			}
 
@@ -136,7 +136,9 @@
 				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername},
                 success: function(JSON){
 					var codeStb = "";
-					$('#deptLabel').text(JSON[0].departmentname + " Requests");
+					if(JSON.length!=0){
+						$('#deptLabel').text(JSON[0].departmentname + " Requests");
+					}
 					$("#search").before(codeStb);
 					
                     var codeStr = "";
@@ -528,8 +530,7 @@
 			},'json');
 		}
 		
-		function wrRoundsTable(){
-		
+		function wrRoundsTable(){	
 			$.get("GETRoundsDetails.php", function(JSON){
 				var codeStp = "<table id='roundsInfoTable'>";
 				codeStp += "<tr>";
