@@ -21,7 +21,6 @@
         $(document).ready(function(){wrRequestsTable();});
 		$(document).ready(function(){wrdetailsTitle();});
 		$(document).ready(function(){wrRoundsTable();});
-		$(document).ready(function(){wrdetailsTitle();});
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -50,7 +49,7 @@
 		var noofaccepted = 0;
 		var noofrejected = 0;
 		var seshId = "";
-		var roundsNumber=0
+		var roundsNumber=0;
 
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
@@ -89,7 +88,7 @@
 			function wrdetailsTitle(){
 				$("#detailsBox").empty();
 				
-				var codeStd = "<table id='detailsTable'>";
+				var codeStd = "<table>";
 				codeStd += "<tr>";
 				codeStd += 'Click details for more info';
 				codeStd += "</tr>";
@@ -136,11 +135,8 @@
                 url: "GETallRequests.php",
 				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername},
                 success: function(JSON){
-					var deptname = JSON[0].departmentname;
-					alert(deptname);
 					var codeStb = "";
-					codeStb += "<table><tr><th>" + deptname + " Requests</th></tr></table>";
-					alert(codeStb);
+					$('#deptLabel').text(JSON[0].departmentname + " Requests");
 					$("#search").before(codeStb);
 					
                     var codeStr = "";
@@ -321,7 +317,7 @@
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
 				$("#detailsBox").empty();
 				
-				var codeStl = "<table id='detailsTable'>";
+				var codeStl = "<table>";
 				codeStl += "<tr>";
 				codeStl += "<h4>Selected room details</h4>";
 				codeStl += "</tr>";
@@ -589,6 +585,7 @@
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
 				<table>
+					<tr><td><label id="deptLabel" class="deptLabel"></label></td></tr>
 					<tr><td><input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></td></tr>
 					<tr><td>
 					<label>Search by: </label>
