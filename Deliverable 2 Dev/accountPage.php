@@ -70,8 +70,8 @@
 						codeStr += '</tr>';
 						codeStr += '	<tr><td colspan=2>Choose whether you prefer periods or times being displayed</td></tr>';
 						codeStr += '<tr>';
-						codeStr += '	<td><input class="prefInput" type="Radio" name="period" value="0" id="period"></input><label for="period">Periods and Duration</label></td>';
-						codeStr += '	<td><input class="prefInput" type="Radio" name="period" value="1" id="time"></input><label for="time">Start Time and End Time</label></td>';
+						codeStr += '	<td><input class="prefInput" type="Radio" name="period" value="1" id="period"></input><label for="period">Periods and Duration</label></td>';
+						codeStr += '	<td><input class="prefInput" type="Radio" name="period" value="0" id="time"></input><label for="time">Start Time and End Time</label></td>';
 						codeStr += '</tr>';
 						codeStr += '	<tr><td> </td></tr>';
 						codeStr += '<tr>';
@@ -259,8 +259,14 @@
 							url: "POSTcolumnPrefs.php",
 							async: false,
 							data: {'username': passedUsername, 'h1': h1, 'h2': h2, 'h3': h3, 'h4': h4, 'h5': h5, 'h6': h6},
-							success: function(){alert("Preferences have been saved. \n Feel free to continue.");},
+							success: function(){
+								alert("Preferences have been saved. \n Feel free to continue.");
+
+							},
 						});
+						$("#prefBox").empty();
+						$("#prefDemoBox").empty();
+						wrPreferencesTable();
 					}
 					else{
 						alert("Please select 6 columns to be shown in the viewing page.");
@@ -272,33 +278,33 @@
 				if (confirm("Are you sure you want to save these preferences?")){
 			
 					for (var i=0;i<document.getElementsByName('period').length;i++){
-						if (document.getElementsByName('period')[i].checked=true)
+						if (document.getElementsByName('period')[i].checked==true)
 							periodValue = document.getElementsByName('period')[i].value;
 					}
 					for (var i=0;i<document.getElementsByName('time').length;i++){
-						if (document.getElementsByName('time')[i].checked=true)
+						if (document.getElementsByName('time')[i].checked==true)
 							timeValue = document.getElementsByName('time')[i].value;
 					}
-					for (var i=0;i<document.getElementsByName('weeks').length;i++){
-						if (document.getElementsByName('weeks')[i].checked=true)
-							weeksValue = document.getElementsByName('weeks')[i].value;
-					}
-					for (var i=0;i<document.getElementsByName('weeke').length;i++){
-						if (document.getElementsByName('weeke')[i].checked=true)
-							weekeValue = document.getElementsByName('weeke')[i].value;
-					}
+					weeksValue = document.getElementById('weeks').value;
+					weekeValue = document.getElementById('weeke').value;
 					for (var i=0;i<document.getElementsByName('park').length;i++){
-						if (document.getElementsByName('park')[i].checked=true)
+						if (document.getElementsByName('park')[i].checked==true)
 							parkValue = document.getElementsByName('park')[i].value;
 					}
 					//POST values in prefBox to Preferences table
+					alert(periodValue + ":" + timeValue + ":" + weeksValue + ":" + weekeValue + ":" + parkValue);
 					$.ajax({
 						type: "GET", 
 						url: "POSTviewingPrefs.php",
 						async: false,
 						data: {'username': passedUsername, 'per': periodValue, 'hour': timeValue, 'start': weeksValue, 'end': weekeValue, 'location': parkValue},
-						success: function(){alert("Preferences have been saved. \n Feel free to continue.");},
+						success: function(){
+							alert("Preferences have been saved. \n Feel free to continue.");
+						},
 					});
+					$("#prefBox").empty();
+					$("#prefDemoBox").empty();
+					wrPreferencesTable();
 				}	
 			}
 			

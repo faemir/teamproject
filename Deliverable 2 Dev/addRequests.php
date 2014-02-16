@@ -116,8 +116,10 @@
 		
 		function rdRoundData(){
 			$.get("GETroundData.php",function(JSON){
-			semesterNumber=JSON[0].semester;
-			roundsNumber=JSON[0].roundsnum;
+				if(JSON.length!=0){
+				semesterNumber=JSON[0].semester;
+				roundsNumber=JSON[0].roundsnum;
+				}
 			},'json');
 		}
 		
