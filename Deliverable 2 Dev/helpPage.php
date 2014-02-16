@@ -33,8 +33,8 @@
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
-                <li><a href="accountPage.php">Username(pref)</a></li>
-                <li><a href="login.php">Logout</a></li>
+                <li><a href="accountPage.php">My Account</a></li>
+                <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">

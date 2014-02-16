@@ -3,6 +3,7 @@
     ini_set("session.use_only_cookies",0);
     ini_set("session.use_trans_sid",1);
     session_start();
+	$_SESSION["editBool"] = "false";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -16,8 +17,10 @@
 		$(document).ready(function(){validateUser();});
 		$(document).ready(function(){getUser();});
 		$(document).ready(function(){getUserPrefs();});
+		$(document).ready(function(){rdRoundData();});
         $(document).ready(function(){wrRequestsTable();});
 		$(document).ready(function(){wrRoundsTable();});
+		$(document).ready(function(){wrdetailsTitle();});
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -43,10 +46,16 @@
 		var endTimeList2 = ["13:50","14:50","15:50","16:50","17:50"];
 		var endTimeList3 = ["01:50","02:50","03:50","04:50","05:50"];
 		var passedUsername = "";
+		var noofaccepted = 0;
+		var noofrejected = 0;
+		var seshId = "";
+		var roundsNumber=0
+
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username'] ?>";
+			seshId = "<?php echo session_id();?>";
 		}
 		function getUserPrefs(){
 			$.ajax({
@@ -73,13 +82,48 @@
 					if (JSON.length==0)
 					window.location.replace("login.php");
 				}, 'json');
-			}	
+			}
+
+			
+			function wrdetailsTitle(){
+				$("#detailsBox").empty();
+				
+				var codeStd = "<table id='detailsTable'>";
+				codeStd += "<tr>";
+				codeStd += 'Click details for more info';
+				codeStd += "</tr>";
+				codeStd += "<tr>";
+				$("#detailsBox").append(codeStd);
+
+			}
+
 			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){
 			//writes and populates Requests table. needs preferences input
+			noofaccepted=0;
 			var searchval = document.getElementById("search").value;
 			var searchtype = document.getElementById("colSelect").value;
+			
+			if(searchtype == 6 || searchtype == 8 || (searchtype > 11 && searchtype !=20)){
+				searchval = searchval.toLowerCase();
+				if(searchval == "y" || searchval == "ye" || searchval == "yes"){
+					searchval = 1;
+				}
+				if(searchval == "n" || searchval == "no"){
+					searchval = 0;
+				}
+			}
+			if(searchtype == 20){
+				searchval = searchval.toLowerCase();
+				if(searchval == "yes"){
+					searchval = 1;
+				}
+				if(searchval == "no"){
+					searchval = 0;
+				}
+			}
+			
 			var semsval = "0";
 			if(document.getElementById("semester1").checked){semsval = '1'};
 			if(document.getElementById("semester2").checked){semsval = '2'};
@@ -115,11 +159,12 @@
                     codeStr += '</tr>';
 					if(JSON.length == 0){
 						codeStr += '<tr class="requestsRow">';
-						codeStr += '<td colspan="10"> No Results Found </td>';
+						codeStr += '<td colspan="11">No Results Found</td>';
 						codeStr += '</tr>';
 					}
 					else{
 						for(var i=0;i<JSON.length;i++){
+							
 							codeStr += '<tr class="requestsRow" id=r'+i+'>';
 							for (var h=0;h<6;h++){
 								if (timeFormat==1){
@@ -221,11 +266,18 @@
 									else
 										codeStr += '    	<td>No</td>';
 								}
+
 							}
+							if (JSON[i].requeststatus=="accepted"){
+									noofaccepted=noofaccepted+1
+								}
+							if (JSON[i].requeststatus=="rejected"){
+									noofrejected=noofrejected+1
+								}
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
-							codeStr += '    	<td ><input type="button" class="requestButtons" value="Edit" onclick="editRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td ><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
-							codeStr += '    	<td ><input type="button" class="requestButtons" value="+" onclick="addSimilarRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
+							codeStr += '    	<td><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
+							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="true"></input><input type="submit" class="requestButtons" value="+"></input></form></td>';
 							codeStr += '    	<td >' + JSON[i].requeststatus + '</td>';
 							codeStr += '	</tr>';
 						}
@@ -234,6 +286,8 @@
                     //Writes table into div tag
                     $("#tableBox").append(codeStr);
 					document.getElementById("cTR").innerHTML ="No of Requests: " + JSON.length;
+					document.getElementById("acceptedreq").innerHTML="No of Accepted: " + noofaccepted;
+					document.getElementById("rejectedreq").innerHTML="No of Rejected: " + noofrejected;
                 }
             });
 			
@@ -246,7 +300,9 @@
 				$("#detailsBox").empty();
 				
 				var codeStl = "<table id='detailsTable'>";
-				
+				codeStl += "<tr>";
+				codeStl += "<h4>Selected room details</h4>";
+				codeStl += "</tr>";
 				codeStl += "<tr>";
 				codeStl += "<td>Request ID: " + JSON[0].requestid + "</td>";
 				codeStl += "<td>Year: " + JSON[0].year + "</td>";
@@ -258,8 +314,8 @@
 				codeStl += "<td colspan='2'>" + JSON[0].moduletitle + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
+				codeStl += "<td>Day: " + JSON[0].day + "</td>";
 				codeStl += "<td>Period: " + JSON[0].period + "</td>";
-				codeStl += "<td>Duration: " + JSON[0].duration + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
 				
@@ -273,7 +329,6 @@
 				}
 				var starttime = Starttime[JSON[0].period-1];
 				var endtime = Endtime[(parseInt(JSON[0].period) + parseInt(JSON[0].duration)-2)];
-				
 				codeStl += "<td colspan='2'>Requested Time: " + starttime + "-" + endtime + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
@@ -329,43 +384,27 @@
 			$(button).parent().parent().toggleClass('requestsRowClk');
 		}
 		
-		function editRequest(requestID){
-			//Post into AddRequestTable.php the requestID's data.
-			alert("hi:" + requestID);
-			$.ajax({
-				type: "GET", 
-				url: "POSTeditRequest.php",
-				data: {'id': requestID},
-			});
-		}
-		
-		function addSimilarRequest(requestID){
-			//Post into AddRequestTable.php the requestID's data.
-			$.ajax({
-				type: "GET", 
-				url: "POSTaddSimilar.php",
-				data: {'id': requestID}
-			});
-		}
 		
 		function deleteRequest(requestID){
-			var status = 0;
-			$.ajax({
-				type: "GET",
-				url: "GETrequeststatus.php", 
-				data: {'id':requestID},
-				dataType: "json",
-				async: false,
-				success: function(JSON){
-					var statuses = JSON[0].requeststatus;
-					if (statuses == "accepted"){
-						status = 1;
+			if (confirm("Are you sure you want to delete this entry?")){
+				var status = 0;
+				$.ajax({
+					type: "GET",
+					url: "GETrequeststatus.php", 
+					data: {'id':requestID},
+					dataType: "json",
+					async: false,
+					success: function(JSON){
+						var statuses = JSON[0].requeststatus;
+						if (statuses == "accepted"){
+							status = 1;
+						}
 					}
-				}
-			});
-			$.get("GETdeleterequest.php", {'id': requestID, 'status': status});
-			$(document).ready(function(){wrRequestsTable();});
-			$("#detailsBox").empty();
+				});
+				$.get("GETdeleterequest.php", {'id': requestID, 'status': status});
+				$(document).ready(function(){wrRequestsTable();});
+				$("#detailsBox").empty();
+			}
 		}
 
 		//Sort functions. Asc, Desc alternating. Bubble sort.
@@ -459,10 +498,19 @@
 			
 		}
 		
+		function rdRoundData(){
+			$.get("GETroundData.php",function(JSON){
+			roundsNumber=JSON[0].roundsnum;
+			},'json');
+		}
+		
 		function wrRoundsTable(){
 		
 			$.get("GETRoundsDetails.php", function(JSON){
 				var codeStp = "<table id='roundsInfoTable'>";
+				codeStp += "<tr>";
+				codeStp += "Rounds Table";
+				codeStp += "</tr>";
 				codeStp += "<tr>";
 				codeStp += "<td>" + "Semester" + "</td>";
 				codeStp += "<td>" + "Rounds Num" + "</td>";
@@ -478,6 +526,10 @@
 					codeStp += "<td>" + JSON[i].enddate + "</td>";
 					codeStp += "</tr>";
 				}
+				codeStp += "<tr>" 
+				codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
+				codeStp += "</tr>";
+				
 				codeStp +="</table>";
 				$("#roundsBox").append(codeStp);
 			},'json');	
@@ -495,13 +547,13 @@
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
-                <li><a href="accountPage.php">Username(pref)</a></li>
-                <li><a href="login.php">Logout</a></li>
+                <li><a href="accountPage.php">My Account</a></li>
+                <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
-				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" /></br>
+				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></br>
 				<label id="wkLabel" class="wkInput">Search by</label>
 				<select id="colSelect" name="colSelect" onclick="search.value=''">
 					<option value="20">All</option>
@@ -530,8 +582,9 @@
 				<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
 				<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
 				<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
-				<label id="cTR"></label>
-				
+				<label id="cTR"></label></br>
+				<label id="acceptedreq"></label></br>
+				<label id="rejectedreq"></label>
 
 
 			</div>
