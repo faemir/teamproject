@@ -17,11 +17,12 @@
 	$searchval = mysql_real_escape_string($_GET['searchval']);
 	$typearray = array("EntryRequestTable.modulecode","moduletitle","day","requeststatus","period", "duration", "priority", "noofstudents","qualityroom","preferredrooms","semester", "noofrooms", "wheelchairaccess", "dataprojector", "doubleprojector", "visualiser", "videodvdbluray", "computer", "whiteboard", "chalkboard");
 	$username = $_GET['username'];
+	$year = $_GET["year"];
 	
 	$sql="SELECT * FROM EntryRequestTable INNER JOIN ModuleTable ON EntryRequestTable.ModuleCode=ModuleTable.ModuleCode
 	INNER JOIN DepartmentTable ON ModuleTable.departmentid=DepartmentTable.departmentid
 	INNER JOIN UserTable ON DepartmentTable.departmentid=UserTable.departmentid
-	WHERE UserTable.username='$username' ";
+	WHERE UserTable.username='$username' AND year = $year ";
 
 	if($type != "" AND $type != "20"){
 		$sql .= "AND $typearray[$type] LIKE '%$searchval%' ";
@@ -33,6 +34,7 @@
 		$sql .= "AND semester = $semsval ";
 		
 	}
+	
 	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
 	
 	$res =& $db->query($sql);
@@ -40,6 +42,6 @@
 		die($res->getMessage());
 	} 
 	$JSON = json_encode($res->fetchAll());
-   
-   echo $JSON;
+	echo $JSON;
+
 ?>
