@@ -97,6 +97,8 @@ GENERAL LAYOUT STRUCTURE
     padding: 5px 15px;
     margin: 0px 5px 0px 0px;
     background: #f8f8f8;
+	max-height: 40px;
+	overflow-y:scroll;
 }
 
 #searchBox {
@@ -566,6 +568,7 @@ MEDIA QUERIES - currently incomplete
 .tableH {
     color: #431367;
     cursor: pointer;
+	
 }
 
 .tableHClick {
@@ -696,4 +699,10 @@ border:1.5px solid#333;
 	margin:0px;
 	border-collapse: collapse;
 	border: 0px solid white;
+}
+
+h4
+{
+	padding: 2px;
+	margin: 2px;
 }
