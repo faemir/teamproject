@@ -229,7 +229,7 @@
 					codeStl += "<td colspan='2'>Module Title: " + RoomArr[i][3] + "</td>";
 					codeStl += "</tr>";
 					codeStl += "<tr>";
-					codeStl += "<td>Period: " + RoomArr[i][4] + "</td>";
+					codeStl += "<td>Start period: " + RoomArr[i][4] + "</td>";
 					codeStl += "<td>Duration:"+RoomArr[i][5]+"</td>";
 					codeStl += "</tr>";
 					codeStl += "<tr>";
