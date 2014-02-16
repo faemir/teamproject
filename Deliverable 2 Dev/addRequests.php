@@ -618,7 +618,7 @@
 				data: {'sqlrooms': SQLRoom},
                 success: function(JSON){
                     var codeStr = "";
-                    codeStr +="<div id='roomsList'>";
+                    codeStr +="<div id='roomsListReq'>";
 					if (JSON.length != 0){
 						roomsJSONchecker=true;
 						roomlen = JSON.length;
@@ -762,7 +762,7 @@
 			
 			$("roomsList").empty();// empties current rooms list
 			SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails";
-			if (specBoolArray[0]==0 && specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 &&specBoolArray[9]==0 && specBoolArray[11]=="ANY"){
+			if (specBoolArray[0]==0 && specBoolArray[1]==0 && specBoolArray[2]==0 && specBoolArray[3]==0 &&specBoolArray[4]==0 &&specBoolArray[5]==0 &&specBoolArray[6]==0 &&specBoolArray[7]==0 &&specBoolArray[8]==0 && specBoolArray[11]=="ANY"){
 			
 			}
 			else{
