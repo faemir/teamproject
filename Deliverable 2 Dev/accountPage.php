@@ -346,6 +346,7 @@
 					type: "GET",
 					dataType: "json",
 					url: "GETdepartmentID.php",
+					async: false,
 					data: {'username': passedUsername},
 					success: function(JSON){
 						Person = JSON[0].name;
