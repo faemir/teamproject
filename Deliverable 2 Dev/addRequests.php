@@ -61,12 +61,11 @@
 		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 
         //ONLOAD FUNCTIONS -----------------------------------------//
-
+		$(document).ready(function(){rdRoundData()});
 		$(document).ready(function(){validateUser()});
 		$(document).ready(function(){getUser()});
 		$(document).ready(function(){GetPrefData()});
-		$(document).ready(function(){rdRoundData()});
-        $(document).ready(function(){wrInputTable()});
+		$(document).ready(function(){wrInputTable()});
         $(document).ready(function(){loadDefaultWeeks()});
 		$(document).ready(function(){popModulesList(userDepartmentID)});
 		$(document).ready(function(){wrRoomsList()});
@@ -125,16 +124,27 @@
 		function roundChanges(){
 			
 			if (roundsNumber==1 && semesterNumber==1){
+				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
+				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
 			}
 			else if (roundsNumber==2 && semesterNumber==1){
+				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
 			}
 			else if (roundsNumber==1 && semesterNumber==2){
+				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
 			}
+			//else if (roundsNumber==2 && semesterNumber==2){
+			//}
+			else {
+				document.getElementById('sem1').checked=true;
+				document.getElementById('sem2').disabled=true;
+			}
 		}
+		
 
 		 
 
@@ -1110,7 +1120,7 @@
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
-                <li><a href="accountPage.php">Username(pref)</a></li>
+                <li><a href="accountPage.php">My Account</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>

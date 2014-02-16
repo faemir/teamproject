@@ -19,8 +19,8 @@
 		$(document).ready(function(){getUserPrefs();});
 		$(document).ready(function(){rdRoundData();});
         $(document).ready(function(){wrRequestsTable();});
-		$(document).ready(function(){wrRoundsTable();});
 		$(document).ready(function(){wrdetailsTitle();});
+		$(document).ready(function(){wrRoundsTable();});
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -500,7 +500,9 @@
 		
 		function rdRoundData(){
 			$.get("GETroundData.php",function(JSON){
-			roundsNumber=JSON[0].roundsnum;
+			if(JSON.length!=0){
+				roundsNumber=JSON[0].roundsnum;
+			}
 			},'json');
 		}
 		
@@ -509,13 +511,13 @@
 			$.get("GETRoundsDetails.php", function(JSON){
 				var codeStp = "<table id='roundsInfoTable'>";
 				codeStp += "<tr>";
-				codeStp += "Rounds Table";
+				codeStp += "<th colspan=4>Rounds Table</th>";
 				codeStp += "</tr>";
 				codeStp += "<tr>";
-				codeStp += "<td>" + "Semester" + "</td>";
-				codeStp += "<td>" + "Rounds Num" + "</td>";
-				codeStp += "<td>" + "Start Date" + "</td>";
-				codeStp += "<td>" + "End Date" + "</td>";
+				codeStp += "<th>" + "Semester" + "</th>";
+				codeStp += "<th>" + "Rounds Num" + "</th>";
+				codeStp += "<th>" + "Start Date" + "</th>";
+				codeStp += "<th>" + "End Date" + "</th>";
 				codeStp += "</tr>";
 				
 				for(var i=0;i<JSON.length;i++){
@@ -526,10 +528,16 @@
 					codeStp += "<td>" + JSON[i].enddate + "</td>";
 					codeStp += "</tr>";
 				}
-				codeStp += "<tr>" 
+				if (roundsNumber==0){
+				codeStp += "<tr>" ;
+				codeStp += "<td colspan='4'>You are in adhoc round</td>";
+				codeStp += "</tr>";
+				}
+				else{
+				codeStp += "<tr>" ;
 				codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
 				codeStp += "</tr>";
-				
+				}
 				codeStp +="</table>";
 				$("#roundsBox").append(codeStp);
 			},'json');	
@@ -547,12 +555,13 @@
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
-                <li><a href="accountPage.php">Username(pref)</a></li>
+                <li><a href="accountPage.php">My Account</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
+				<label id="departmentid"></label>
 				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></br>
 				<label id="wkLabel" class="wkInput">Search by</label>
 				<select id="colSelect" name="colSelect" onclick="search.value=''">

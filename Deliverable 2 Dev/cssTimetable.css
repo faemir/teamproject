@@ -487,7 +487,7 @@ GENERAL CSS
     cursor: pointer;
 }
 
-.specReq:disabled + label {
+.specReq:disabled + label , .specReqP:disabled+label, .wkInput:disabled+label {
     color: #d9d9d9;
     background-image: none;
     outline: 0;
@@ -552,15 +552,29 @@ GENERAL CSS
     border: 1px solid #ddd;
 }
 
-#roundsInfoTable * {
+#roundsInfoTable *{
+border:0.5px solid #333;
+height: 30px;
+}
+
+#roundsInfoTable  {
     border-collapse: collapse;
     text-align: center;
-    border: 1px solid #333;
-}
+	border: 1px solid #333;
+	height: 30px;
+	}
 
-#roundsInfoTable td {
+#roundsInfoTable th {
     border-collapse: collapse;
+	background-color: #ddd;
 }
 
+#roundsInfoTable tr{
+border:1.5px solid#333;
+}
+#roundInfoTable td {
+	border:1px solid #333;
+	}
+	
 
 
