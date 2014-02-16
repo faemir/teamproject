@@ -38,12 +38,12 @@
 				passedUsername = "<?php echo $_SESSION['username'] ?>";
 			}
 			function rdRoundData(){
-			$.get("GETroundData.php",function(JSON){
-				if(JSON.length!=0){
-				semesterNumber=JSON[0].semester;
-				}
-			},'json');
-		}
+				$.get("GETroundData.php",function(JSON){
+					if(JSON.length!=0){
+						semesterNumber=JSON[0].semester;
+					}
+				},'json');
+			}
 			function SelectWeek(week){
 				clearTbl();
 				getTable(week);
