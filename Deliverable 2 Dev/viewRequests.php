@@ -134,8 +134,14 @@
                 dataType: "json",
                 url: "GETallRequests.php",
 				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername},
-				//data: {'username': $_session['username']},
                 success: function(JSON){
+					var deptname = JSON[0].departmentname;
+					alert(deptname);
+					var codeStb = "";
+					codeStb += "<table><tr><th>" + deptname + " Requests</th></tr></table>";
+					alert(codeStb);
+					$("#search").before(codeStb);
+					
                     var codeStr = "";
                     codeStr += '<table id="RequestsTable">';
                     codeStr += '<tr id='+i+'>';
@@ -500,7 +506,7 @@
 		
 		function rdRoundData(){
 			$.get("GETroundData.php",function(JSON){
-			roundsNumber=JSON[0].roundsnum;
+				roundsNumber=JSON[0].roundsnum;
 			},'json');
 		}
 		
