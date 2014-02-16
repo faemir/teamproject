@@ -14,10 +14,12 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
         //onload ----------------------------------------------------------------//
+		$(document).ready(function(){validateUser();});
 		$(document).ready(function(){getUser();});
 		$(document).ready(function(){getUserPrefs();});
         $(document).ready(function(){wrRequestsTable();});
 		$(document).ready(function(){wrRoundsTable();});
+		$(document).ready(function(){wrdetailsTitle();});
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -35,10 +37,16 @@
 		var userPrefHeader6 = "";
 		var lastHead ="";
 		var lastRow = "";
-		var timehour1 = ["09:00-09:50","10:00-10:50","11:00-11:50","12:00-12:50"];
-		var timehour2 = ["13:00-13:50","14:00-14:50","15:00-15:50","16:00-16:50","17:00-17:50"];
-		var timehour3 = ["01:00-1:50","02:00-2:50","03:00-3:50","04:00-4:50","05:00-5:50"];
+		var timeFormat;
+		var startTimeList1 = ["09:00","10:00","11:00","12:00"];
+		var startTimeList2 = ["13:00","14:00","15:00","16:00","17:00"];
+		var startTimeList3 = ["01:00","02:00","03:00","04:00","05:00"];
+		var endTimeList1 = ["09:50","10:50","11:50","12:50"];
+		var endTimeList2 = ["13:50","14:50","15:50","16:50","17:50"];
+		var endTimeList3 = ["01:50","02:50","03:50","04:50","05:50"];
 		var passedUsername = "";
+		var noofaccepted = 0;
+		var noofrejected = 0;
 		var seshId = "";
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
@@ -60,14 +68,56 @@
 					userPrefHeader4 = JSON[0].header4;
 					userPrefHeader5 = JSON[0].header5;
 					userPrefHeader6 = JSON[0].header6;
+					timeFormat = JSON[0].hr24format
 				}
 			});
 		}
+		function validateUser(){
+				var user= "<?php echo $_SESSION['username'] ?>";
+				var sessionid= "<?php echo session_id(); ?>";
+				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+					if (JSON.length==0)
+					window.location.replace("login.php");
+				}, 'json');
+			}	
+			
+			function wrdetailsTitle(){
+				$("#detailsBox").empty();
+				
+				var codeStd = "<table id='detailsTable'>";
+				codeStd += "<tr>";
+				codeStd += 'Click details for more info';
+				codeStd += "</tr>";
+				codeStd += "<tr>";
+				$("#detailsBox").append(codeStd);
+				}
+			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
 		function wrRequestsTable(){
 			//writes and populates Requests table. needs preferences input
+			noofaccepted=0;
 			var searchval = document.getElementById("search").value;
 			var searchtype = document.getElementById("colSelect").value;
+			
+			if(searchtype == 6 || searchtype == 8 || (searchtype > 11 && searchtype !=20)){
+				searchval = searchval.toLowerCase();
+				if(searchval == "y" || searchval == "ye" || searchval == "yes"){
+					searchval = 1;
+				}
+				if(searchval == "n" || searchval == "no"){
+					searchval = 0;
+				}
+			}
+			if(searchtype == 20){
+				searchval = searchval.toLowerCase();
+				if(searchval == "yes"){
+					searchval = 1;
+				}
+				if(searchval == "no"){
+					searchval = 0;
+				}
+			}
+			
 			var semsval = "0";
 			if(document.getElementById("semester1").checked){semsval = '1'};
 			if(document.getElementById("semester2").checked){semsval = '2'};
@@ -103,27 +153,35 @@
                     codeStr += '</tr>';
 					if(JSON.length == 0){
 						codeStr += '<tr class="requestsRow">';
-						codeStr += '<td colspan="10"> No Results Found </td>';
+						codeStr += '<td colspan="11">No Results Found</td>';
 						codeStr += '</tr>';
 					}
 					else{
 						for(var i=0;i<JSON.length;i++){
+							
 							codeStr += '<tr class="requestsRow" id=r'+i+'>';
 							for (var h=0;h<6;h++){
-								var starttime = parseInt(JSON[i].period) + 8;
-								if (starttime == 9)
-									starttime = "0" + starttime;
-								starttime = starttime + ":00";
-								var endtime = parseInt(JSON[i].period) + parseInt(JSON[i].duration) + 7;
-								if (endtime == 9)
-									endtime = "0" + endtime;
-								endtime = endtime + ":50";
+								if (timeFormat==1){
+									var Starttime = startTimeList1.concat(startTimeList2);
+									var Endtime = endTimeList1.concat(endTimeList2)
+								}
+								else{
+									var Starttime = startTimeList1.concat(startTimeList3);
+									var Endtime = endTimeList1.concat(endTimeList3);
+								}
+								var starttime = Starttime[JSON[i].period-1];
+								var endtime = Endtime[(parseInt(JSON[i].period) + parseInt(JSON[i].duration)-2)];								
+								
 								if(viewHeaders[h] == "0")
 									codeStr += '    	<td>' + JSON[i].modulecode + '</td>';
 								else if(viewHeaders[h] == "1")
 									codeStr += '    	<td>' + JSON[i].moduletitle + '</td>';
-								else if(viewHeaders[h] == "2")
-									codeStr += '    	<td>' + JSON[i].priority + '</td>';
+								else if(viewHeaders[h] == "2"){
+									if (JSON[i].priority == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
 								else if(viewHeaders[h] == "3")
 									codeStr += '    	<td>' + JSON[i].year + '</td>';
 								else if(viewHeaders[h] == "4")
@@ -142,27 +200,74 @@
 									codeStr += '    	<td>' + JSON[i].noofstudents + '</td>';
 								else if(viewHeaders[h] == "11")
 									codeStr += '    	<td>' + JSON[i].noofrooms + '</td>';
-								else if(viewHeaders[h] == "12")
-									codeStr += '    	<td>' + JSON[i].preferredrooms + '</td>';
-								else if(viewHeaders[h] == "13")
-									codeStr += '    	<td>' + JSON[i].qualityroom + '</td>';
-								else if(viewHeaders[h] == "14")
-									codeStr += '    	<td>' + JSON[i].wheelchairaccess + '</td>';
-								else if(viewHeaders[h] == "15")
-									codeStr += '    	<td>' + JSON[i].dataprojector + '</td>';
-								else if(viewHeaders[h] == "16")
-									codeStr += '    	<td>' + JSON[i].doubleprojector + '</td>';
-								else if(viewHeaders[h] == "17")
-									codeStr += '    	<td>' + JSON[i].visualiser + '</td>';
-								else if(viewHeaders[h] == "18")
-									codeStr += '    	<td>' + JSON[i].videodvdbluray + '</td>';
-								else if(viewHeaders[h] == "19")
-									codeStr += '    	<td>' + JSON[i].computer + '</td>';
-								else if(viewHeaders[h] == "20")
-									codeStr += '    	<td>' + JSON[i].whiteboard + '</td>';
-								else if(viewHeaders[h] == "21")
-									codeStr += '    	<td>' + JSON[i].chalkboard + '</td>';
+								else if(viewHeaders[h] == "12"){
+									if (JSON[i].preferredrooms == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "13"){
+									if (JSON[i].qualityroom == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "14"){
+									if (JSON[i].wheelchairaccess == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "15"){
+									if (JSON[i].dataprojector == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "16"){
+									if (JSON[i].doubleprojector == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "17"){
+									if (JSON[i].visualiser == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "18"){
+									if (JSON[i].videodvdbluray == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "19"){
+									if (JSON[i].computer == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "20"){
+									if (JSON[i].whiteboard == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+								else if(viewHeaders[h] == "21"){
+									if (JSON[i].chalkboard == '1')
+										codeStr += '    	<td>Yes</td>';
+									else
+										codeStr += '    	<td>No</td>';
+								}
+
 							}
+							if (JSON[i].requeststatus=="accepted"){
+									noofaccepted=noofaccepted+1
+								}
+							if (JSON[i].requeststatus=="rejected"){
+									noofrejected=noofrejected+1
+								}
 							codeStr += '    	<td ><input type="button" class="requestButtons" value="Details" onclick="showDetails(' + JSON[i].requestid + ',this)"></input></td>';
 							codeStr += '    	<td><form method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
 							codeStr += '    	<td><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
@@ -175,6 +280,8 @@
                     //Writes table into div tag
                     $("#tableBox").append(codeStr);
 					document.getElementById("cTR").innerHTML ="No of Requests: " + JSON.length;
+					document.getElementById("acceptedreq").innerHTML="No of Accepted: " + noofaccepted;
+					document.getElementById("rejectedreq").innerHTML="No of Rejected: " + noofrejected;
                 }
             });
 			
@@ -183,43 +290,49 @@
 		
 	
 		function showDetails(requestID,button){
-			var timeFormat;
-			$.get("GETallPreferences.php", {username: passedUsername}, function(JSON){
-				timeFormat = JSON[0].hr24format;
-			}, 'json');
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
 				$("#detailsBox").empty();
 				
-
 				var codeStl = "<table id='detailsTable'>";
+				codeStl += "<tr>";
+				codeStl += "<h4>Selected room details</h4>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
+				codeStl += "<td>Request ID: " + JSON[0].requestid + "</td>";
+				codeStl += "<td>Year: " + JSON[0].year + "</td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
+				codeStl += "<td>Module Code: " + JSON[0].modulecode + "</td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
+				codeStl += "<td colspan='2'>" + JSON[0].moduletitle + "</td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
+				codeStl += "<td>Day: " + JSON[0].day + "</td>";
+				codeStl += "<td>Period: " + JSON[0].period + "</td>";
+				codeStl += "</tr>";
+				codeStl += "<tr>";
 				
-				codeStl += "<tr>";
-				codeStl += "<td>" + "Request ID: " + JSON[0].requestid + "</br></td>";
-				codeStl += "<td>" + "Year: " + JSON[0].year + "</br></td>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				codeStl += "<td>" + JSON[0].modulecode + "</br></td>";
-				codeStl += "<td>" + "Duration: " + JSON[0].duration + "</br></td>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				codeStl += "<td colspan = 2>" + JSON[0].moduletitle + "</br></td>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				if (timeFormat==1)
-				var time = timehour1.concat(timehour2);
-				else
-				var time = timehour1.concat(timehour3);
-				var time2 = time[JSON[0].period-1];
+				if (timeFormat==1){
+					var Starttime = startTimeList1.concat(startTimeList2);
+					var Endtime = endTimeList1.concat(endTimeList2)
+				}
+				else{
+					var Starttime = startTimeList1.concat(startTimeList3);
+					var Endtime = endTimeList1.concat(endTimeList3);
+				}
+				var starttime = Starttime[JSON[0].period-1];
+				var endtime = Endtime[(parseInt(JSON[0].period) + parseInt(JSON[0].duration)-2)];
 				
-				codeStl += "<td>" + "Time: " + time2 + "</br></td>";
+				codeStl += "<td colspan='2'>Requested Time: " + starttime + "-" + endtime + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				codeStl += "<td>" + "No. Students: " + JSON[0].noofstudents + "</br></td>";
-				codeStl += "<td>" + "No. Rooms: " + JSON[0].noofrooms + "</br></td>";
+				codeStl += "<td>No. Students: " + JSON[0].noofstudents + "</td>";
+				codeStl += "<td>No. Rooms: " + JSON[0].noofrooms + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
 				if(JSON[0].preferredrooms==1){
-					codeStl += "<td>" + "Preferred room: "+ JSON[0].roomid +"</br></td>";
+					codeStl += "<td colspan='2'>Preferred room: "+ JSON[0].roomid +"</td>";
 				}
 				codeStl += "<tr><td colspan='2'>";
 				if(JSON[0].qualityroom==1){
@@ -266,40 +379,27 @@
 			$(button).parent().parent().toggleClass('requestsRowClk');
 		}
 		
-		function editRequest(requestID){
-
-
-		}
-		
-		function addSimilarRequest(requestID){
-			//Post into AddRequestTable.php the requestID's data.
-			$.ajax({
-				type: "GET", 
-				url: "POSTaddSimilar.php",
-				data: {'id': requestID}
-			});
-		}
 		
 		function deleteRequest(requestID){
-			var status = 0;
-			$.ajax({
-				type: "GET",
-				url: "GETrequeststatus.php", 
-				data: {'id':requestID},
-				dataType: "json",
-				async: false,
-				success: function(JSON){
-					alert(JSON[0].requeststatus);
-					var statuses = JSON[0].requeststatus;
-					alert(statuses == "accepted");
-					if (statuses == "accepted"){
-						status = 1;
+			if (confirm("Are you sure you want to delete this entry?")){
+				var status = 0;
+				$.ajax({
+					type: "GET",
+					url: "GETrequeststatus.php", 
+					data: {'id':requestID},
+					dataType: "json",
+					async: false,
+					success: function(JSON){
+						var statuses = JSON[0].requeststatus;
+						if (statuses == "accepted"){
+							status = 1;
+						}
 					}
-				}
-			});
-			$.get("GETdeleterequest.php", {'id': requestID, 'status': status});
-			$(document).ready(function(){wrRequestsTable();});
-			$("#detailsBox").empty();
+				});
+				$.get("GETdeleterequest.php", {'id': requestID, 'status': status});
+				$(document).ready(function(){wrRequestsTable();});
+				$("#detailsBox").empty();
+			}
 		}
 
 		//Sort functions. Asc, Desc alternating. Bubble sort.
@@ -398,6 +498,9 @@
 			$.get("GETRoundsDetails.php", function(JSON){
 				var codeStp = "<table id='roundsInfoTable'>";
 				codeStp += "<tr>";
+				codeStp += "Rounds Table";
+				codeStp += "</tr>";
+				codeStp += "<tr>";
 				codeStp += "<td>" + "Semester" + "</td>";
 				codeStp += "<td>" + "Rounds Num" + "</td>";
 				codeStp += "<td>" + "Start Date" + "</td>";
@@ -430,12 +533,12 @@
                 <li><a href="viewTimetable.php">View Timetable</a></li>
                 <li><a href="helpPage.php">Help</a></li>
                 <li><a href="accountPage.php">Username(pref)</a></li>
-                <li><a href="login.php">Logout</a></li>
+                <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">
             <div class="contentBox" id="searchBox">
-				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" /></br>
+				<input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></br>
 				<label id="wkLabel" class="wkInput">Search by</label>
 				<select id="colSelect" name="colSelect" onclick="search.value=''">
 					<option value="20">All</option>
@@ -464,8 +567,9 @@
 				<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
 				<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
 				<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
-				<label id="cTR"></label>
-				
+				<label id="cTR"></label></br>
+				<label id="acceptedreq"></label></br>
+				<label id="rejectedreq"></label>
 
 
 			</div>
