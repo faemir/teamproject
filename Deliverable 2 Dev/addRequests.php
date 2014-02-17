@@ -911,6 +911,7 @@
 		function countText(){
 			document.getElementById("charToGo").innerHTML = (280 - document.getElementById("ORE").value.length) + " Characters remaining"
 			if (document.getElementById("ORE").value.length >= 280){
+				document.getElementById("charToGo").innerHTML = 0 + " Characters remaining"
 				document.getElementById("ORE").value=document.getElementById("ORE").value.substring(0,280);
 			}
 		}
