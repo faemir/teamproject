@@ -1,0 +1,717 @@
+accountPage.php
+
+The accountsPage sorts preferences for the review and add request page,
+including adding new modules, sorting table headers and defaults.
+Nikk Williams
+
+<?php
+    ini_set("session.use_cookies",0);
+    ini_set("session.use_only_cookies",0);
+    ini_set("session.use_trans_sid",1);
+    session_start();
+?>
+
+function getUser(){
+				passedUsername = "<?php echo $_SESSION['username'] ?>";
+			}
+			
+function validateUser(){
+	var user= "<?php echo $_SESSION['username'] ?>";
+	var sessionid= "<?php echo session_id(); ?>";
+}	
+
+addrequests.php
+
+This page allows timetablers to add a new timetable request.
+The session is stored across pages in the URL from login.
+The session variables below are passed for the purpose of editing
+requests or 'adding similar'.
+
+Session variables are echoed to javascript variables.
+
+Josh and Nikk
+
+<?php
+    ini_set("session.use_cookies",0);
+    ini_set("session.use_only_cookies",0);
+    ini_set("session.use_trans_sid",1);
+    session_start();
+	$_SESSION["editreqid"] = $_POST["reqid"];
+	$_SESSION["editBool"] = $_POST["bool"];
+	$_SESSION["addSim"] = $_POST["similar"];
+?>
+
+function getUser(){
+	passedUsername = "<?php echo $_SESSION['username']; ?>";
+	seshId = "<?php echo session_id();?>";
+}
+
+function validateUser(){
+	var user= "<?php echo $_SESSION['username'] ?>";
+	var sessionid= "<?php echo session_id(); ?>";
+}
+
+function isEditreq(){
+	editBool = "<?php echo $_SESSION['editBool']; ?>";
+	if(editBool == "true"){
+		editrequestid = "<?php echo $_SESSION["editreqid"]; ?>";
+		addSim = "<?php echo $_SESSION["addSim"]; ?>";
+	}
+}
+
+auth.php
+
+This page is passed the username and password inputted by the user, and then
+checks it against the database table of users. The passwords are
+encrypted by a 256 hash and salt for security purposes.
+
+The session variables stored are the user-inputted user and password.
+
+Where JS is needed, the variables are assigned by echoing the PHP values.
+
+Daniel Cohen
+
+<?php
+    ini_set("session.use_cookies",0);
+    ini_set("session.use_only_cookies",0);
+    ini_set("session.use_trans_sid",1);
+    session_start();
+    $_SESSION['username']=$_POST['user_input'];
+    $_SESSION['password']=$_POST['pass_input'];
+?>
+$(document).ready ( function(){
+	var userUser = "<?php echo $_SESSION['username']; ?>";
+	$.get("GETauth.php",function(JSON){
+		var sessid = "<?php echo SID ?>";
+		var userPass;
+		userPass="<?php echo md5($_SESSION['password']. '4509ns;epkgjs3u');?>";
+		
+		<?php
+			require_once 'MDB2.php';
+			include "LTF.php"; //to provide $username,$password
+
+			$host='co-project.lboro.ac.uk'; //accesses database
+			$dbName='team04';//login
+			$dsn = "mysql://$username:$password@$host/$dbName";
+
+			$db =& MDB2::connect($dsn);
+			if(PEAR::isError($db)){
+				die($db->getMessage());
+			}
+
+			$sessid = md5(session_id());
+			$usernameSesh = mysql_real_escape_string($_SESSION['username']);
+			$sql="UPDATE UserTable SET sessid='$sessid' ";
+			$sql.="WHERE username = '$usernameSesh'";
+			$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+
+			$res =& $db->query($sql);
+			if(PEAR::isError($res)){
+				die($res->getMessage());
+			}
+
+		?>
+	},'JSON');
+});
+
+dbquery.php
+
+The script that uses LTF.php to connect to the Database
+and acts as a basis for all php scripts that connect to the database.
+	Josh
+<?php
+	require_once 'MDB2.php';
+	include "LTF.php"; //to provide $username,$password
+	
+	$host='co-project.lboro.ac.uk'; //accesses database
+	$dbName='team04';//login
+	$dsn = "mysql://$username:$password@$host/$dbName"; 
+	
+	$db =& MDB2::connect($dsn); 
+	if(PEAR::isError($db)){ 
+	   die($db->getMessage());
+	}
+	
+	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+	
+	$res =& $db->query($sql);
+	if(PEAR::isError($res)){
+		die($res->getMessage());
+	} 
+
+?>
+
+getallpreferences.php
+
+Finds the user's preferences from the database.
+The user's username is stored when they login.
+This is used to filter the preferences for that particular user.
+These preferences are used for initial values in the adding requests page
+and displaying chosen headers when viewing current requests.
+- Nikk Williams
+<?php
+	$username = $_GET["username"];
+    $sql="SELECT * FROM Preferences WHERE username='$username';";
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+?>
+
+getallrequests.php
+
+This file is used for retrieving all details for both writing the view requests
+table and supplying the data for the search to work. Instead of using 
+DBquery.php we had to connect directly with the database as the 
+real_escape_string could not function without it. This php file was used to 
+search through three different tables depending on the column and value
+that we wanted to search by.              
+					Matt									
+<?php
+	require_once 'MDB2.php';
+	include "LTF.php"; //to provide $username,$password
+	
+	$host='co-project.lboro.ac.uk'; //accesses database
+	$dbName='team04';//login
+	$dsn = "mysql://$username:$password@$host/$dbName"; 
+	
+	$db =& MDB2::connect($dsn); 
+	if(PEAR::isError($db)){ 
+	   die($db->getMessage());
+	}
+
+
+	$semsval = $_GET['semsval'];
+	$type = $_GET['type'];
+	$searchval = mysql_real_escape_string($_GET['searchval']);
+	
+	$typearray = array("EntryRequestTable.modulecode","moduletitle","day");
+	array_push($typearray,"requeststatus","period","duration","priority");
+	array_push($typearray,"noofstudents","qualityroom","preferredrooms");
+	array_push($typearray,"semester","noofrooms","wheelchairaccess");
+	array_push($typearray,"dataprojector","doubleprojector");
+	array_push($typearray,"visualiser","videodvdbluray","computer");
+	array_push($typearray,"whiteboard","chalkboard");
+	$username = $_GET['username'];
+	$year = $_GET["year"];
+	
+	$sql="SELECT * FROM EntryRequestTable "
+	$sql .= "INNER JOIN ModuleTable "
+	$sql .= "ON EntryRequestTable.ModuleCode=ModuleTable.ModuleCode "
+	$sql .= "INNER JOIN DepartmentTable "
+	$sql .= "ON ModuleTable.departmentid=DepartmentTable.departmentid "
+	$sql .= "INNER JOIN UserTable "
+	$sql .= "ON DepartmentTable.departmentid=UserTable.departmentid "
+	$sql .= "WHERE UserTable.username='$username' AND year = $year ";
+
+	if($type != "" AND $type != "20"){
+		$sql .= "AND $typearray[$type] LIKE '%$searchval%' ";
+	}
+	if($searchval != ""){
+		$sql .= "AND (EntryRequestTable.modulecode LIKE '%$searchval%' "
+		$sql .= "OR moduletitle LIKE '%$searchval%' OR day LIKE '%$searchval%' "
+		$sql .= "OR requeststatus LIKE '%$searchval%' OR period LIKE '%$searchval%' "
+		$sql .= "OR duration LIKE '%$searchval%' OR priority LIKE '%$searchval%' " 
+		$sql .= "OR noofstudents LIKE '%$searchval%' "
+		$sql .= "OR qualityroom LIKE '%$searchval%' "
+		$sql .= "OR preferredrooms LIKE '%$searchval%' "
+		$sql .= "OR noofrooms LIKE '%$searchval%' "
+		$sql .= "OR wheelchairaccess LIKE '%$searchval%' "
+		$sql .= "OR dataprojector LIKE '%$searchval%' "
+		$sql .= "OR doubleprojector LIKE '%$searchval%' "
+		$sql .= "OR visualiser LIKE '%$searchval%' "
+		$sql .= "OR videodvdbluray LIKE '%$searchval%' "
+		$sql .= "OR computer LIKE '%$searchval%' OR whiteboard LIKE '%$searchval%' "
+		$sql .= "OR chalkboard LIKE '%$searchval%') "; 
+	}
+	if($semsval != '0'){
+		$sql .= "AND semester = $semsval ";
+		
+	}
+	
+	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+	
+	$res =& $db->query($sql);
+	if(PEAR::isError($res)){
+		die($res->getMessage());
+	} 
+	$JSON = json_encode($res->fetchAll());
+	echo $JSON;
+
+?>
+
+getauth.php
+
+Brings in the username and encrypted password from the user
+table for checking on login to ensure their details are valid
+Dan
+
+<?php
+    $sql = "SELECT Username, Password FROM UserTable";
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+?>
+
+getbookedrooms2.php
+
+this script works for the page addrequests, it is used to grab booked rooms to
+be displayed on the 'booking' timetable - ensuring that the user can't book
+a confirmed booking
+	Callum
+<?php
+	$roomID = $_GET["roomid"];
+	
+	$sql="SELECT roomid,day,period,duration,week1,week2,"
+	$sql+="week3,week4,week5,week6,week7,week8,week9,week10,week11"
+	$sql+=",week12,week13,week14,week15 FROM ConfirmedBooking"
+	$sql+="INNER JOIN EntryRequestTable"
+	$sql+="ON EntryRequestTable.requestid = ConfirmedBooking.requestid"
+	$sql+="INNER JOIN WeekTable"
+	$sql+="ON EntryRequestTable.weekid = WeekTable.weekid"
+	$sql+="WHERE ConfirmedBooking.roomid='$roomID';";
+	
+
+	
+	include "DBquery.php";
+	$JSON = json_encode($res->fetchAll());
+    echo $JSON;
+
+?>
+
+getbookedrooms.php
+
+Pulls an SQL statement created in JavaScript from the previous page
+This script pulls from the database a list of all 'booked rooms'
+grabbing from the ConfirmedBookings table and WeeksTable and 
+EntryRequestsTable.
+			Callum
+<?php
+	
+	$sql=$_GET["sql"];
+
+	
+	include "DBquery.php";
+	$JSON = json_encode($res->fetchAll());
+    echo $JSON;
+
+?>
+
+getcurrentyear.php
+
+Gets the current university year which is stored on the database, this 
+is instead of using the current year which obviously does not take into 
+account the September to September year.
+			Josh
+<?php
+
+	$sql = "SELECT * FROM CurrentYear;";
+	include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+
+?>
+
+getdeleterequest.php
+
+This is sent a request id and uses it to find in the database the relevant
+entries and delete them. This will change depending on whether the 
+status of the request is accepted or not as it needs to delete from 
+three tables if it is accepted.
+		Matt
+<?php
+	$id = $_GET['id'];
+	$status=$_GET['status'];
+	if ($status == "0"){
+	$sql= 	"DELETE a.*, b.* FROM EntryRequestTable a ";
+	$sql .= "RIGHT JOIN RoomBooking b ON b.requestid = a.requestid ";
+	$sql .= "WHERE a.requestid = $id;";
+	}
+	else if ($status == "1"){
+	$sql= 	"DELETE a.*, b.*, c.* FROM EntryRequestTable a ";
+	$sql .= "RIGHT JOIN RoomBooking b ON b.requestid = a.requestid "; 
+	$sql .= "RIGHT JOIN ConfirmedBooking c ON a.requestid = c.requestid "; 
+	$sql .= "WHERE a.requestid = $id;";
+	}
+	include "DBquery.php";
+?>
+
+getdepartmentid.php
+
+This gets the department ID (eg. CO or MA) from the user table.
+It filters by the username which is stored when the user logs in.
+This is used for validating a new module that's been entered.
+It also finds the user's name to display that as a welcome message.
+- Nikk Williams
+<?php
+	$username = $_GET['username'];
+    $sql="SELECT * FROM UserTable WHERE username='$username'";
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+?>
+
+getdetailedrequests.php
+
+This is used to get all the details about a specific entry by using the
+request id as a reference. It then returns these details back to the 
+website for the details tab. 
+					Matt
+<?php
+
+    $id = $_GET["id"];
+	
+
+	$sql="SELECT * ";
+	$sql.= "FROM EntryRequestTable INNER JOIN ModuleTable "; 
+	$sql.= "ON EntryRequestTable.modulecode=ModuleTable.modulecode "; 
+	$sql.= "LEFT JOIN RoomBooking "; 
+	$sql.= "ON EntryRequestTable.requestid=RoomBooking.requestid ";
+	$sql.= "WHERE EntryRequestTable.requestid='$id'";
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+?>
+
+getdetailedrequeststimetable.php
+
+Displays all of the details of a specific request, to be displayed in 
+ViewTimetable after an onclick. The php connects to the database via DBquery
+	Callum
+<?php
+	$id = $_GET["id"];
+
+	$sql="SELECT * ";
+	$sql.="FROM EntryRequestTable INNER JOIN ModuleTable ";
+	$sql.="ON EntryRequestTable.modulecode=ModuleTable.modulecode "; 
+	$sql.="LEFT JOIN  ConfirmedBooking ";
+	$sql.="ON EntryRequestTable.requestid= ConfirmedBooking.requestid ";
+	$sql.="WHERE EntryRequestTable.requestid='$id' ORDER BY day, period";
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+
+?>
+
+geteditrequest.php
+
+Gets all the request details and room bookings associated
+with a request that's going to be edited. 
+		Josh
+<?php
+
+	$id = $_GET["id"];
+	$sql = "SELECT * FROM EntryRequestTable JOIN RoomBooking ";
+	$sql.= "WHERE EntryRequestTable.requestid = $id"; 
+	$sql.= "AND RoomBooking.requestid = $id";
+	include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+?>
+
+getlatestrequestid.php
+
+When a new request is added this is used to find that most recently added 
+request by limitting the return to one
+	Josh
+<?php
+	$sql = "SELECT requestid FROM EntryRequestTable ";
+	$sql.= "ORDER BY requestid DESC LIMIT 1;";
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+?>
+
+getlatestweekid.php
+
+This is used in addrequests to make sure the new entry is added to the correct 
+week
+		Callum & Josh
+<?php
+	$sql = "SELECT weekid FROM WeekTable ORDER BY weekid DESC LIMIT 1;";
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+?>
+
+getmoduleslist.php
+
+returns all module codes and titles from the DB where the id = the id of 
+timetablers department
+	Josh
+<?php
+
+    $id = $_GET["id"];
+    $sql="SELECT modulecode, moduletitle FROM ModuleTable WHERE departmentid="
+	$sql.="'$id'";
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+
+?>
+
+getrequeststatus.php
+
+
+This page is for returning the status of the request specified in the GET.
+
+This is used in GETdeleteRequests to properly delete depending on the
+status of the request.
+
+Josh
+
+<?php
+	$id=$_GET['id'];
+	
+	$sql= "SELECT * FROM EntryRequestTable WHERE requestid = $id" ;
+	include "DBquery.php";
+	$JSON = json_encode($res->fetchAll());
+	echo $JSON;
+
+?>
+
+getroomslist.php
+
+This page grabs a sql statement from the addrequests JS for
+collecting into a rooms list.
+
+Callum
+
+<?php
+
+    $sql=$_GET["sqlrooms"];
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+?>
+
+getrounddata.php
+
+This page gets the current date, comparing it to the start and end date
+of each round.
+
+Matt
+
+<?php
+
+
+
+$sql="SELECT * FROM Rounds WHERE CURDATE() >= startdate AND CURDATE() <= enddate"; 
+
+
+	include "DBquery.php";
+	$JSON = json_encode($res->fetchAll());
+	echo $JSON;
+?>
+
+getroundsdetails.php
+
+This gets all rounds info for putting it into a table on the
+view requests page.
+
+Matt
+
+<?php
+	$sql="SELECT * FROM Rounds ORDER BY startdate";
+	include "DBquery.php";
+	$JSON = json_encode($res->fetchAll());
+	echo $JSON;
+?>
+
+getseshid.php
+
+This page takes all data from the user table for means of the
+authentication with user and session id
+
+Dan, Matt
+
+<?php
+	$username = $_GET['username'];
+	$sql = "SELECT * FROM UserTable;";
+	include "DBquery.php";
+	$JSON = json_encode($res->fetchAll());
+	echo $JSON;
+?>
+
+getuserpassdeets.php
+
+This page takes the username and sessionid inputted
+and returns it back for comparison to the current brower's
+session id in their url.
+
+Matt
+
+<?php
+$username=$_GET['username'];
+$sessionid=$_GET['sessionid'];
+$sessionid=md5($sessionid);
+$sql="SELECT * FROM UserTable WHERE username='$username' AND sessid = '$sessionid'";
+
+	include 'DBquery.php';
+	$JSON = json_encode($res->fetchAll());
+	echo $JSON;
+?>
+
+getweek.php
+
+This is returning the relevant weeks in relation to the id GET,
+for the purpose of displaying the weeks on the view requests page.
+
+Matt
+
+<?php
+
+	$id = $_GET["id"];
+	$sql = "SELECT * FROM WeekTable WHERE weekid = $id";
+	include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+
+?>
+
+getweeksidexistence.php
+
+Passes in requested weeks, to check if there is a DB entry that
+matches their requested week selection. It returns the week id
+if it exists, else nothing.
+
+Josh
+
+<?php
+
+	
+	$wk1 = $_GET["weeks1"];
+	$wk2 = $_GET["weeks2"];
+	$wk3 = $_GET["weeks3"];
+	$wk4 = $_GET["weeks4"];
+	$wk5 = $_GET["weeks5"];
+	$wk6 = $_GET["weeks6"];
+	$wk7 = $_GET["weeks7"];
+	$wk8 = $_GET["weeks8"];
+	$wk9 = $_GET["weeks9"];
+	$wk10 = $_GET["weeks10"];
+	$wk11 = $_GET["weeks11"];
+	$wk12 = $_GET["weeks12"];
+	$wk13 = $_GET["weeks13"];
+	$wk14 = $_GET["weeks14"];
+	$wk15 = $_GET["weeks15"];
+	
+	$sql = "SELECT weekid FROM WeekTable WHERE week1 = $wk1 AND week2 = $wk2";
+	$sql .= "AND week3 = $wk3 AND week4 = $wk4 AND week5 = $wk5 AND week6 =";
+	$sql .= "$wk6 AND week7 = $wk7 AND week8 = $wk8 AND week9 = $wk9 AND ";
+	$sql .= "week10 = $wk10 AND week11 = $wk11 AND week12 = $wk12 AND ";
+	$sql .= "week13 = $wk13 AND week14 = $wk14 AND week15 = $wk15";
+
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+?>
+
+getweeks.php
+
+This script takes an Id of a week and outputs a value of 1 if 
+the specific requested item is on that week or 0 if not, 
+displays all 15 weeks
+	Callum
+<?php
+    $id = $_GET["id"];
+	$sql="SELECT *"
+	$sql=."FROM WeekTable"
+	$sql=."WHERE weekid='$id';";
+    include "DBquery.php";
+    $JSON = json_encode($res->fetchAll());
+    echo $JSON;
+
+?>
+
+logout.php
+
+Upon the user clicking logout, this page destroys the stored session
+and pushes them back to the login page.
+
+Dan and Matt
+
+<?php
+session_start();
+session_destroy();
+header( 'Location: index.htm' ) ;
+?>
+
+ltf.php
+
+Stores the Password and user name of the database, 
+as this is not directly accessed, it remains hidden from the public
+	Josh 
+
+<?php
+	//username and password for database query php
+	$username='team04';
+	$password='bsf43stf';
+    
+?>
+
+postcolumnprefs.php
+
+This finds the headers set by the user in the account page.
+It then updates the preferences table with the set values for column headers.
+The username is stored on user login.
+- Nikk Williams
+<?php
+	$username = $_GET['username'];
+	$h1= $_GET["h1"];
+	$h2= $_GET["h2"];
+	$h3= $_GET["h3"];
+	$h4= $_GET["h4"];
+	$h5= $_GET["h5"];
+	$h6= $_GET["h6"];
+	
+	$sql="UPDATE Preferences SET header1=$h1, header2=$h2, header3=$h3, ";
+	$sql.="header4=$h4, header5=$h5, header6=$h6 WHERE username='$username'";
+	include "DBquery.php";
+?>
+
+postdeletebooking.php
+
+This is used in the editing of the modules. This script will delete all
+room bookings from the database associated with the request being edited
+so that a new room bookings can be written.
+		Josh
+<?php
+	
+	$editRequestId = $_GET["editrequestid"];
+	$sql = "DELETE FROM RoomBooking WHERE requestid = $editRequestId";
+	include "DBquery.php"
+
+?>
+
+postmoduletable.php
+
+This page adds a new module to the module table
+using the entered values of module code and module title
+verified by the user's department.
+
+nikk
+
+<?php
+	require_once 'MDB2.php';
+	include "LTF.php"; //to provide $username,$password
+	
+	$host='co-project.lboro.ac.uk'; //accesses database
+	$dbName='team04';//login
+	$dsn = "mysql://$username:$password@$host/$dbName"; 
+	
+	$db =& MDB2::connect($dsn); 
+	if(PEAR::isError($db)){ 
+	   die($db->getMessage());
+	}
+	$code = mysql_real_escape_string($_GET["code"]);
+	$title = mysql_real_escape_string($_GET["title"]);
+	$dept = ($_GET["dept"]);
+	$sql="INSERT INTO ModuleTable VALUES ('$code', '$title', '$dept');";
+	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+	
+	$res =& $db->query($sql);
+	if(PEAR::isError($res)){
+		die($res->getMessage());
+	} 
+
+?>
