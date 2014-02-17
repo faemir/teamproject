@@ -50,6 +50,7 @@
 		var ARooms = 0;
 		var AClick = 0;
 		var roomlen = 0;
+		var round = false;
 		//Selected periods from table - false = not selected.
 		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
@@ -130,20 +131,24 @@
 				document.getElementById('PRN').disabled=true;
 				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
+				round = false;
 			}
 			else if (roundsNumber==2 && semesterNumber==1){
 				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
+				round = true;
 			}
 			else if (roundsNumber==1 && semesterNumber==2){
 				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
+				round = false;
 			}
 			//else if (roundsNumber==2 && semesterNumber==2){
 			//}
 			else {
 				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
+				round = true;
 			}
 		}		 
 
@@ -702,6 +707,7 @@
 				roomsNamesQueue.length = valuess;
 				ARooms = valuess;
 			}
+			getBookedRooms();
 			AClick = valuess;
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 			
@@ -758,50 +764,54 @@
 				roomsNamesQueue = [];
 			}
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
-			resetBooked();
+			
+			
 			getBookedRooms();
 		}
 		function getBookedRooms(){
-			bookedRoomsArr= [];
-			for(var i = 0; i <roomsNamesQueue.length; i++){
-				$.ajax({
-					type: "GET",
-					url: "GETbookedRooms2.php",
-					dataType: "json",
-					data: {'roomid': roomsNamesQueue[i]},
-					async: false,
-					success: function(JSON){
-						var timeSlotsArray = [];
-						if(JSON.length !=0){
-							for (var j = 0; j< JSON.length; j++){
-								var timeSlots = [];
-								timeSlots[0] = JSON[j].day ;
-								timeSlots[1] = JSON[j].period ;
-								timeSlots[2] = JSON[j].duration ;
-								timeSlots[3] = JSON[j].week1 ;
-								timeSlots[4] = JSON[j].week2 ;
-								timeSlots[5] = JSON[j].week3 ;
-								timeSlots[6] = JSON[j].week4 ;
-								timeSlots[7] = JSON[j].week5 ;
-								timeSlots[8] = JSON[j].week6 ;
-								timeSlots[9] = JSON[j].week7 ;
-								timeSlots[10] = JSON[j].week8 ;
-								timeSlots[11] = JSON[j].week9 ;
-								timeSlots[12] = JSON[j].week10 ;
-								timeSlots[13] = JSON[j].week11 ;
-								timeSlots[14] = JSON[j].week12 ;
-								timeSlots[15] = JSON[j].week13 ;
-								timeSlots[16] = JSON[j].week14 ;
-								timeSlots[17] = JSON[j].week15 ;
-								timeSlotsArray[timeSlotsArray.length]=timeSlots;
+			if(round){
+				resetBooked();
+				bookedRoomsArr= [];
+				for(var i = 0; i <roomsNamesQueue.length; i++){
+					$.ajax({
+						type: "GET",
+						url: "GETbookedRooms2.php",
+						dataType: "json",
+						data: {'roomid': roomsNamesQueue[i]},
+						async: false,
+						success: function(JSON){
+							var timeSlotsArray = [];
+							if(JSON.length !=0){
+								for (var j = 0; j< JSON.length; j++){
+									var timeSlots = [];
+									timeSlots[0] = JSON[j].day ;
+									timeSlots[1] = JSON[j].period ;
+									timeSlots[2] = JSON[j].duration ;
+									timeSlots[3] = JSON[j].week1 ;
+									timeSlots[4] = JSON[j].week2 ;
+									timeSlots[5] = JSON[j].week3 ;
+									timeSlots[6] = JSON[j].week4 ;
+									timeSlots[7] = JSON[j].week5 ;
+									timeSlots[8] = JSON[j].week6 ;
+									timeSlots[9] = JSON[j].week7 ;
+									timeSlots[10] = JSON[j].week8 ;
+									timeSlots[11] = JSON[j].week9 ;
+									timeSlots[12] = JSON[j].week10 ;
+									timeSlots[13] = JSON[j].week11 ;
+									timeSlots[14] = JSON[j].week12 ;
+									timeSlots[15] = JSON[j].week13 ;
+									timeSlots[16] = JSON[j].week14 ;
+									timeSlots[17] = JSON[j].week15 ;
+									timeSlotsArray[timeSlotsArray.length]=timeSlots;
+								}
+								bookedRoomsArr[bookedRoomsArr.length]=[JSON[0].roomid,timeSlotsArray];
+								//alert(bookedRoomsArr);
+								displayBRooms();
 							}
-							bookedRoomsArr[bookedRoomsArr.length]=[JSON[0].roomid,timeSlotsArray];
-							//alert(bookedRoomsArr);
-							displayBRooms();
 						}
-					}
-				});
-			}			
+					});
+				}		
+			}
 			
 		}
 		function resetBooked(){
@@ -824,26 +834,36 @@
 						case "Thursday":day = 4;break;
 						case "Friday":day = 5;break;
 					}
-					//alert(bookedRoomsArr[i][1][j][2]);
-					for (var k = 0; k < bookedRoomsArr[i][1][j][2]; k ++){
-						var bubble = parseInt(bookedRoomsArr[i][1][j][1])+k;
-						$("#t"+day+''+bubble).removeClass('grid');
-						
-						$("#t"+day+''+bubble).removeClass('grid');
-						$("#t"+day+''+bubble).removeClass('gridClicked');
-						$("#t"+day+''+bubble).addClass('gridBooked');
-						tableSelect("t"+day+''+bubble);
-						var weekshtml = "Weeks:";
-						for(p=3; p <=17;p++){
-							if(bookedRoomsArr[i][1][j][p]==1){
-								weekshtml += p-2 + ", ";
-							}
+					var checking = false;
+					var weekcheck = 0;
+					for(var t = 3; t <= 17; t++){
+						weekcheck = 0;
+						if(document.getElementById('wk'+(t-2)).checked){weekcheck = '1';}
+						if(bookedRoomsArr[i][1][j][t]==1&&weekcheck==1){
+							checking=true;
 						}
-						weekshtml=weekshtml.substring(0,weekshtml.length-2);
-						if (document.getElementById("t"+day+''+bubble).innerHTML==""){
-							document.getElementById("t"+day+''+bubble).innerHTML=bookedRoomsArr[i][0] + " " + weekshtml;
-						}else{
-							document.getElementById("t"+day+''+bubble).innerHTML = document.getElementById("t"+day+''+bubble).innerHTML + "<br>" + bookedRoomsArr[i][0] + " " + weekshtml;
+					}
+					if(checking){
+						for (var k = 0; k < bookedRoomsArr[i][1][j][2]; k ++){
+							var bubble = parseInt(bookedRoomsArr[i][1][j][1])+k;
+							$("#t"+day+''+bubble).removeClass('grid');
+							
+							$("#t"+day+''+bubble).removeClass('grid');
+							$("#t"+day+''+bubble).removeClass('gridClicked');
+							$("#t"+day+''+bubble).addClass('gridBooked');
+							tableSelect("t"+day+''+bubble);
+							var weekshtml = "Weeks:";
+							for(p=3; p <=17;p++){
+								if(bookedRoomsArr[i][1][j][p]==1){
+									weekshtml += p-2 + ", ";
+								}
+							}
+							weekshtml=weekshtml.substring(0,weekshtml.length-2);
+							if (document.getElementById("t"+day+''+bubble).innerHTML==""){
+								document.getElementById("t"+day+''+bubble).innerHTML=bookedRoomsArr[i][0] + " " + weekshtml;
+							}else{
+								document.getElementById("t"+day+''+bubble).innerHTML = document.getElementById("t"+day+''+bubble).innerHTML + "<br>" + bookedRoomsArr[i][0] + " " + weekshtml;
+							}
 						}
 					}
 				}
@@ -1258,21 +1278,21 @@
 							</td>
 							<td>
 								<label class="wkInput" id="wkLabel">Weeks</label>
-								<input type="checkbox" class="wkInput" id="wk1" ><label for="wk1">1</label>
-								<input type="checkbox" class="wkInput" id="wk2" ><label for="wk2">2</label>
-								<input type="checkbox" class="wkInput" id="wk3" ><label for="wk3">3</label>
-								<input type="checkbox" class="wkInput" id="wk4" ><label for="wk4">4</label>
-								<input type="checkbox" class="wkInput" id="wk5" ><label for="wk5">5</label>
-								<input type="checkbox" class="wkInput" id="wk6" ><label for="wk6">6</label>
-								<input type="checkbox" class="wkInput" id="wk7" ><label for="wk7">7</label>
-								<input type="checkbox" class="wkInput" id="wk8" ><label for="wk8">8</label>
-								<input type="checkbox" class="wkInput" id="wk9" ><label for="wk9">9</label>
-								<input type="checkbox" class="wkInput" id="wk10" ><label for="wk10">10</label>
-								<input type="checkbox" class="wkInput" id="wk11" ><label for="wk11">11</label>
-								<input type="checkbox" class="wkInput" id="wk12" ><label for="wk12">12</label>
-								<input type="checkbox" class="wkInput" id="wk13"><label for="wk13">13</label>
-								<input type="checkbox" class="wkInput" id="wk14"><label for="wk14">14</label>
-								<input type="checkbox" class="wkInput" id="wk15"><label for="wk15">15</label>
+								<input type="checkbox" class="wkInput" id="wk1" onclick="getBookedRooms()"><label for="wk1">1</label>
+								<input type="checkbox" class="wkInput" id="wk2" onclick="getBookedRooms()"><label for="wk2">2</label>
+								<input type="checkbox" class="wkInput" id="wk3" onclick="getBookedRooms()"><label for="wk3">3</label>
+								<input type="checkbox" class="wkInput" id="wk4" onclick="getBookedRooms()"><label for="wk4">4</label>
+								<input type="checkbox" class="wkInput" id="wk5" onclick="getBookedRooms()"><label for="wk5">5</label>
+								<input type="checkbox" class="wkInput" id="wk6" onclick="getBookedRooms()"><label for="wk6">6</label>
+								<input type="checkbox" class="wkInput" id="wk7" onclick="getBookedRooms()"><label for="wk7">7</label>
+								<input type="checkbox" class="wkInput" id="wk8" onclick="getBookedRooms()"><label for="wk8">8</label>
+								<input type="checkbox" class="wkInput" id="wk9" onclick="getBookedRooms()"><label for="wk9">9</label>
+								<input type="checkbox" class="wkInput" id="wk10" onclick="getBookedRooms()"><label for="wk10">10</label>
+								<input type="checkbox" class="wkInput" id="wk11" onclick="getBookedRooms()"><label for="wk11">11</label>
+								<input type="checkbox" class="wkInput" id="wk12" onclick="getBookedRooms()"><label for="wk12">12</label>
+								<input type="checkbox" class="wkInput" id="wk13" onclick="getBookedRooms()"><label for="wk13">13</label>
+								<input type="checkbox" class="wkInput" id="wk14" onclick="getBookedRooms()"><label for="wk14">14</label>
+								<input type="checkbox" class="wkInput" id="wk15" onclick="getBookedRooms()"><label for="wk15">15</label>
 							</td>
 						</tr>
 					</table>

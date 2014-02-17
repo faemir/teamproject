@@ -345,10 +345,12 @@ MEDIA QUERIES - currently incomplete
 	}
 	.tabledaysVT
 	{
+		background-color: #f0efef;
 		width: 19%;
 	}
 	.tabletdVT
 	{
+		background-color: #fafafa;
 		min-height:50px;
 		width: 9%;
 		max-width: 0px;
