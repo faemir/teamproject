@@ -178,10 +178,13 @@
 			else if (roundsNumber==1 && semesterNumber==2){
 				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
+				document.getElementById('sem2').checked=true;
 				round = false;
 			}
-			//else if (roundsNumber==2 && semesterNumber==2){
-			//}
+			else if (roundsNumber==2 && semesterNumber==2){
+				document.getElementById('sem2').checked=true;
+				round = true;
+			}
 			else {
 				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
