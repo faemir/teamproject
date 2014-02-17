@@ -285,6 +285,25 @@ MEDIA QUERIES - currently incomplete
 
     #formControlsBox {
     }
+	#roomSelectorBox2 
+	{
+		width : 97%;
+		height: 100px;
+	}
+	#timetableViewerBox,#actiontimeBox{
+		margin : 0px;
+		width: 97%;
+		
+	}
+	#timetableViewerBox{
+		margin : 0px;
+		margin-top: 5px;
+	}
+	#userPrefBox, #prefDemoBox, #prefBox{
+		float:left;
+		margin: 5px;
+		width: 94%;
+	}
 }
 
 /* for 700px or less */
