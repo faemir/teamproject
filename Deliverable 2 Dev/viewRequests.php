@@ -85,13 +85,25 @@
 			});
 		}
 		function validateUser(){
-				var user= "<?php echo $_SESSION['username'] ?>";
-				var sessionid= "<?php echo session_id(); ?>";
-				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
-					if (JSON.length==0)
+			var user= "<?php echo $_SESSION['username'] ?>";
+			var sessionid= "<?php echo session_id(); ?>";
+			$.ajax({
+				type: "GET",
+				url: "GETuserpassdeets.php",
+				dataType: "JSON",
+				data: {'username':user, 'sessionid':sessionid},
+				async: false,
+				success: function(){
+					if (JSON.length==0){
 						window.location.replace("login.php");
-				}, 'json');
-			}
+					}
+				}
+			});
+			// $.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+				// if (JSON.length==0)
+					// window.location.replace("login.php");
+			// }, 'json');
+		}
 
 			
 		function wrdetailsTitle(){
@@ -105,12 +117,20 @@
 			$("#detailsBox").append(codeStd);
 
 		}
-
 			
 		function getCurrentyear(){
-			$.get("GETcurrentYear.php",function(JSON){
-				currentYear = JSON[0].year;
-			},'json');
+			$.ajax({
+				type: "GET",
+				url: "GETcurrentYear.php",
+				dataType: "JSON",
+				async: false,
+				success: function(JSON){
+					currentYear = JSON[0].year;
+				}
+			});
+			// $.get("GETcurrentYear.php",function(JSON){
+				// currentYear = JSON[0].year;
+			// },'json');
 		}		
 			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
@@ -151,9 +171,10 @@
 			$("#tableBox").empty();
 			$.ajax({
                 type: "GET",
-                dataType: "json",
+                dataType: "JSON",
                 url: "GETallRequests.php",
 				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername, 'year': reqYear},
+				async: false,
                 success: function(JSON){
 					var codeStb = "";
 					if(JSON.length!=0){
@@ -336,93 +357,178 @@
 					document.getElementById("rejectedreq").innerHTML="No of Rejected: " + noofrejected;
                 }
             });
-			
-			 
+		 
 		}
 		
 	
 		function showDetails(requestID,button){
-			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
-				$("#detailsBox").empty();
+			
+			$.ajax({
+				type: "GET",
+				url: "GETdetailedRequests.php",
+				dataType: "JSON",
+				data: {id: requestID},
+				async: false,
+				success: function(JSON){
+					$("#detailsBox").empty();
 				
-				var codeStl = "<table>";
-				codeStl += "<tr>";
-				codeStl += "<h4>Selected room details</h4>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				codeStl += "<td>Request ID: " + JSON[0].requestid + "</td>";
-				codeStl += "<td>Year: " + JSON[0].year + "</td>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				codeStl += "<td>Module Code: " + JSON[0].modulecode + "</td>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				codeStl += "<td colspan='2'>" + JSON[0].moduletitle + "</td>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				codeStl += "<td>Day: " + JSON[0].day + "</td>";
-				codeStl += "<td>Period: " + JSON[0].period + "</td>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				
-				if (timeFormat==1){
-					var Starttime = startTimeList1.concat(startTimeList2);
-					var Endtime = endTimeList1.concat(endTimeList2)
+					var codeStl = "<table>";
+					codeStl += "<tr>";
+					codeStl += "<td colspan='2'><h4>Selected room details</h4></td>";
+					codeStl += "</tr>";
+					codeStl += "<tr>";
+					codeStl += "<td>Request ID: " + JSON[0].requestid + "</td>";
+					codeStl += "<td>Year: " + JSON[0].year + "</td>";
+					codeStl += "</tr>";
+					codeStl += "<tr>";
+					codeStl += "<td>Module Code: " + JSON[0].modulecode + "</td>";
+					codeStl += "</tr>";
+					codeStl += "<tr>";
+					codeStl += "<td colspan='2'>" + JSON[0].moduletitle + "</td>";
+					codeStl += "</tr>";
+					codeStl += "<tr>";
+					codeStl += "<td>Day: " + JSON[0].day + "</td>";
+					codeStl += "<td>Period: " + JSON[0].period + "</td>";
+					codeStl += "</tr>";
+					codeStl += "<tr>";
+					
+					if (timeFormat==1){
+						var Starttime = startTimeList1.concat(startTimeList2);
+						var Endtime = endTimeList1.concat(endTimeList2)
+					}
+					else{
+						var Starttime = startTimeList1.concat(startTimeList3);
+						var Endtime = endTimeList1.concat(endTimeList3);
+					}
+					var starttime = Starttime[JSON[0].period-1];
+					var endtime = Endtime[(parseInt(JSON[0].period) + parseInt(JSON[0].duration)-2)];
+					codeStl += "<td colspan='2'>Requested Time: " + starttime + "-" + endtime + "</td>";
+					codeStl += "</tr>";
+					codeStl += "<tr>";
+					codeStl += "<td>No. Students: " + JSON[0].noofstudents + "</td>";
+					codeStl += "<td>No. Rooms: " + JSON[0].noofrooms + "</td>";
+					codeStl += "</tr>";
+					codeStl += "<tr>";
+									codeStl +="<td colspan='2'>Preferred room: ";
+					var NAbool = true;
+						for(i=0;i<JSON.length;i++){
+							if(JSON[i].preferredrooms==1){
+								codeStl += JSON[i].roomid +", ";	
+							}
+							if(JSON[i].roomid=="NULL" && NAbool==true){
+							codeStl += "N/A";
+							NAbool = false;
+							}
+						}
+					codeStl +="</td>"
+					codeStl += "</tr><tr><td colspan='2'>Weeks: ";
+					$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: "GETweek.php",	
+					async: false,
+					data: {'id': JSON[0].weekid},
+					success: function(JSON2){
+						if (JSON2[0].week1==1){
+							codeStl += "1, ";
+						}
+						if (JSON2[0].week2==1){
+							codeStl += "2, ";
+						}
+						if (JSON2[0].week3==1){
+							codeStl += "3, ";
+						}
+						if (JSON2[0].week4==1){
+							codeStl += "4, ";
+						}
+						if (JSON2[0].week5==1){
+							codeStl += "5, ";
+						}
+						if (JSON2[0].week6==1){
+							codeStl += "6, ";
+						}
+						if (JSON2[0].week7==1){
+							codeStl += "7, ";
+						}
+						if (JSON2[0].week8==1){
+							codeStl += "8, ";
+						}
+						if (JSON2[0].week9==1){
+							codeStl += "9, ";
+						}
+						if (JSON2[0].week10==1){
+							codeStl += "10, ";
+						}
+						if (JSON2[0].week11==1){
+							codeStl += "11, ";
+						}
+						if (JSON2[0].week12==1){
+							codeStl += "12, ";
+						}
+						if (JSON2[0].week13==1){
+							codeStl += "13, ";
+						}
+						if (JSON2[0].week14==1){
+							codeStl += "14, ";
+						}
+						if (JSON2[0].week15==1){
+							codeStl += "15, ";
+						}
+						codeStl = codeStl.substring(0,codeStl.length-2);
+					}
+				});	
+				codeStl += "</td></tr>";
+					var checker = false;
+					codeStl += "<tr><td colspan='2'>";
+					if(JSON[0].qualityroom==1){
+						codeStl += "Quality Room, ";
+						checker = true;
+					}
+					if(JSON[0].wheelchairaccess==1){
+						codeStl += "Wheelchair Access, ";
+						checker = true;
+					}
+					if(JSON[0].dataprojector==1){
+						codeStl += "Data Projector, ";
+						checker = true;
+					}
+					if(JSON[0].doubleprojector==1){
+						codeStl += "Double Projector, ";
+						checker = true;
+					}
+					if(JSON[0].visualiser==1){
+						codeStl += "Visualiser, ";
+						checker = true;
+					}
+					if(JSON[0].videodvdbluray==1){
+						codeStl += "Video/DVD/Bluray, ";
+						checker = true;
+					}
+					if(JSON[0].computer==1){
+						codeStl += "Computer, ";
+						checker = true;
+					}
+					if(JSON[0].whiteboard==1){
+						codeStl += "White Board, ";
+						checker = true;
+					}
+					if(JSON[0].chalkboard==1){
+						codeStl += "Chalk Board, ";
+						checker = true;
+					}
+					if(JSON[0].nearestroom==1){
+						codeStl += "Nearest Room, ";
+						checker = true;
+					}
+					if(checker){
+						codeStl = codeStl.substring(0,codeStl.length-2);
+					}
+					codeStl += "</td></tr></table>";
+					
+					$("#detailsBox").append(codeStl);
 				}
-				else{
-					var Starttime = startTimeList1.concat(startTimeList3);
-					var Endtime = endTimeList1.concat(endTimeList3);
-				}
-				var starttime = Starttime[JSON[0].period-1];
-				var endtime = Endtime[(parseInt(JSON[0].period) + parseInt(JSON[0].duration)-2)];
-				codeStl += "<td colspan='2'>Requested Time: " + starttime + "-" + endtime + "</td>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				codeStl += "<td>No. Students: " + JSON[0].noofstudents + "</td>";
-				codeStl += "<td>No. Rooms: " + JSON[0].noofrooms + "</td>";
-				codeStl += "</tr>";
-				codeStl += "<tr>";
-				if(JSON[0].preferredrooms==1){
-					codeStl += "<td colspan='2'>Preferred room: "+ JSON[0].roomid +"</td>";
-				}
-				codeStl += "<tr><td colspan='2'>";
-				if(JSON[0].qualityroom==1){
-					codeStl += "Quality Room, ";
-				}
-				if(JSON[0].wheelchairaccess==1){
-					codeStl += "Wheelchair Access, ";
-				}
-				if(JSON[0].dataprojector==1){
-					codeStl += "Data Projector, ";
-				}
-				if(JSON[0].doubleprojector==1){
-					codeStl += "Double Projector, ";
-				}
-				if(JSON[0].visualiser==1){
-					codeStl += "Visualiser, ";
-				}
-				if(JSON[0].videodvdbluray==1){
-					codeStl += "Video/DVD/Bluray, ";
-				}
-				if(JSON[0].computer==1){
-					codeStl += "Computer, ";
-				}
-				if(JSON[0].whiteboard==1){
-					codeStl += "White Board, ";
-				}
-				if(JSON[0].chalkboard==1){
-					codeStl += "Chalk Board, ";
-				}
-				if(JSON[0].nearestroom==1){
-					codeStl += "Nearest Room, ";
-				}
-				codeStl = codeStl.substring(0,codeStl.length-2);
-				codeStl += ".</tr>";
-				
-				$("#detailsBox").append(codeStl);
-				
-				
-            }, 'json');
+			});
+			            
 			if (lastRow!=""){
 				$("#"+lastRow).toggleClass('requestsRowClk');
 				$("#"+lastRow +" > .butCells > .requestButtons").toggleClass('requestButtonsClk');
@@ -451,8 +557,15 @@
 						}
 					}
 				});
-				$.get("GETdeleterequest.php", {'id': requestID, 'status': status});
-				$(document).ready(function(){wrRequestsTable(prevBool);});
+				$.ajax({
+					type: "GET",
+					url: "GETdeleterequest.php", 
+					data: {'id': requestID, 'status': status},
+					dataType: "json",
+					async: false,
+				
+				});
+				wrRequestsTable(prevBool);
 				$("#detailsBox").empty();
 			}
 		}
@@ -538,59 +651,66 @@
 			//Empty and refill table's div tag.
 			document.getElementById("tableBox").innerHTML = "";
 			document.getElementById("tableBox").innerHTML = codeStr;
-			// if (lastHead!=""){
-				// $('#'+lastHead).toggleClass('tableH');
-			// }
-			// lastHead=$(JsonObj).parent().parent().attr('id');
-			//alert($(column).attr('id'));
 			$(heads).toggleClass("tableHClick");
 
 			
 		}
 		
 		function rdRoundData(){
-			$.get("GETroundData.php",function(JSON){
-				if(JSON.length!=0){
-					roundsNumber=JSON[0].roundsnum;
+			$.ajax({
+				type: "GET",
+				url: "GETroundData.php", 
+				dataType: "json",
+				async: false,
+				success: function(JSON){
+					if(JSON.length!=0){
+						roundsNumber=JSON[0].roundsnum;
+					}
 				}
-			},'json');
+			});
 		}
 		
 		function wrRoundsTable(){	
-			$.get("GETRoundsDetails.php", function(JSON){
-				var codeStp = "<table id='roundsInfoTable'>";
-				codeStp += "<tr>";
-				codeStp += "<th colspan='4'>Rounds Table</th>";
-				codeStp += "</tr>";
-				codeStp += "<tr>";
-				codeStp += "<th>" + "Semester" + "</th>";
-				codeStp += "<th>" + "Rounds Num" + "</th>";
-				codeStp += "<th>" + "Start Date" + "</th>";
-				codeStp += "<th>" + "End Date" + "</th>";
-				codeStp += "</tr>";
-				
-				for(var i=0;i<JSON.length;i++){
+			$.ajax({
+				type: "GET",
+				url: "GETRoundsDetails.php", 
+				dataType: "json",
+				async: false,
+				success: function(JSON){
+					var codeStp = "<table id='roundsInfoTable'>";
 					codeStp += "<tr>";
-					codeStp += "<td>" + JSON[i].semester + "</td>";
-					codeStp += "<td>" + JSON[i].roundsnum + "</td>";
-					codeStp += "<td>" + JSON[i].startdate + "</td>";
-					codeStp += "<td>" + JSON[i].enddate + "</td>";
+					codeStp += "<th colspan=4>Rounds Table</th>";
 					codeStp += "</tr>";
-				}
+					codeStp += "<tr>";
+					codeStp += "<th>" + "Semester" + "</th>";
+					codeStp += "<th>" + "Rounds Num" + "</th>";
+					codeStp += "<th>" + "Start Date" + "</th>";
+					codeStp += "<th>" + "End Date" + "</th>";
+					codeStp += "</tr>";
+					
+					for(var i=0;i<JSON.length;i++){
+						codeStp += "<tr>";
+						codeStp += "<td>" + JSON[i].semester + "</td>";
+						codeStp += "<td>" + JSON[i].roundsnum + "</td>";
+						codeStp += "<td>" + JSON[i].startdate + "</td>";
+						codeStp += "<td>" + JSON[i].enddate + "</td>";
+						codeStp += "</tr>";
+					}
 
-				if (roundsNumber==0){
-					codeStp += "<tr>" ;
-					codeStp += "<td colspan='4'>You are in adhoc round</td>";
-					codeStp += "</tr>";
+					if (roundsNumber==0){
+						codeStp += "<tr>" ;
+						codeStp += "<td colspan='4'>You are in adhoc round</td>";
+						codeStp += "</tr>";
+					}
+					else{
+						codeStp += "<tr>" ;
+						codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
+						codeStp += "</tr>";
+					}
+					codeStp +="</table>";
+					$("#roundsBox").append(codeStp);
 				}
-				else{
-					codeStp += "<tr>" ;
-					codeStp += "<td colspan='4'>You are in round " + roundsNumber + "</td>";
-					codeStp += "</tr>";
-				}
-				codeStp +="</table>";
-				$("#roundsBox").append(codeStp);
-			},'json');	
+			});			
 		}
 	
 		
