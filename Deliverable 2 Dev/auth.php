@@ -15,12 +15,6 @@ $(document).ready ( function(){
 	var userUser = "<?php echo $_SESSION['username']; ?>";
 	var newUser = false;
 
-	/*$.get("GETseshid.php",{'username': userUser},function(JSON){
-		if (JSON[0].sessid==""){
-			newUser=true;
-		}
-	},'json');*/
-
 	$.get("GETauth.php",function(JSON){
 		var sessid = "<?php echo SID ?>";
 		var users = [];
