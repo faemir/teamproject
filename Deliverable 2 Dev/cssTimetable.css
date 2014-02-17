@@ -399,6 +399,8 @@ MEDIA QUERIES - currently incomplete
     .grid
         {
         cursor: pointer;
+		max-width:40px;
+		min-width:30px;
     }
     .grid:hover
         {
@@ -409,11 +411,14 @@ MEDIA QUERIES - currently incomplete
         {
         background-color:#431367;
         border: 2px solid black;
+		max-width:40px;
+		min-width:30px;
     }
     .gridBooked
         {
         background-color:#aaa;
         border: 1px solid black;
+		max-width:40px;
     }
     .gridClicked:hover
         {

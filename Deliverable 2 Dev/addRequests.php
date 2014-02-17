@@ -436,15 +436,20 @@
         function ClrTab(){
 			for(var k = 1;k<=pOrTChildren.length;k++){
 				if (mondaySele[k-1]==true)
-					{$("#t1"+ k).toggleClass("gridClicked");}
+					{$("#t1"+ k).removeClass("gridClicked");}
+					{$("#t1"+ k).addClass("grid");}
 				if (tuesdaySele[k-1]==true)
-					{$("#t2"+ k).toggleClass("gridClicked");}
+					{$("#t2"+ k).removeClass("gridClicked");}
+					{$("#t2"+ k).addClass("grid");}
 				if (wednesdaySele[k-1]==true)
-					{$("#t3"+ k).toggleClass("gridClicked");}
+					{$("#t3"+ k).removeClass("gridClicked");}
+					{$("#t3"+ k).addClass("grid");}
 				if (thursdaySele[k-1]==true)
-					{$("#t4"+ k).toggleClass("gridClicked");}
+					{$("#t4"+ k).removeClass("gridClicked");}
+					{$("#t4"+ k).addClass("grid");}
 				if (fridaySele[k-1]==true)
-					{$("#t5"+ k).toggleClass("gridClicked");}
+					{$("#t5"+ k).removeClass("gridClicked");}
+					{$("#t5"+ k).addClass("grid");}
 			}
 			mondaySele = [false,false,false,false,false,false,false,false,false];
 			tuesdaySele = [false,false,false,false,false,false,false,false,false];
@@ -482,16 +487,21 @@
 				ARooms=0;
 				document.getElementById("room1").checked = true;
 			}
+			
 		}
 		function EmptyRoom(){
 			ClrRoom();
 			roomsQueue = [];
 			roomsNamesQueue = [];
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+			resetBooked()
+			getBookedRooms();
+			
 		}
 		function ClrAll(){
 			if (confirm("Are you sure you are want to clear this?")){
-				ClrRoom();
+				
+				EmptyRoom();
 				ClrTab();
 				ClrSpec();
 			}
@@ -501,9 +511,15 @@
         //onclick for table buttons
         function tableSelect(gridRef){
 			if ($("#"+gridRef).attr('class')!='gridBooked'){
-				$("#"+ gridRef).toggleClass("gridClicked");
-				TFTable(gridRef.substring(1,gridRef.length));
+				if($("#"+gridRef).attr('class')=='gridClicked'){
+					$("#"+ gridRef).removeClass("gridClicked");
+					$("#"+ gridRef).addClass("grid");
+				}else{
+					$("#"+ gridRef).removeClass("grid");
+					$("#"+ gridRef).addClass("gridClicked");
+				}
 			}
+			TFTable(gridRef.substring(1,gridRef.length));
         }	
         
         //toggles boolean value of each square in input table for other functions to use
@@ -515,35 +531,45 @@
 					{
 						if (mondaySele[periodSele]==true)
 							{mondaySele[periodSele]=false;}
-						else{mondaySele[periodSele]=true;}
+						else{
+							if($("#t"+gridRef).attr('class')!='gridBooked'){mondaySele[periodSele]=true;}
+							}
 					}
 					break;
 					case 2:
 					{
 						if (tuesdaySele[periodSele]==true)
 							{tuesdaySele[periodSele]=false;}
-						else{tuesdaySele[periodSele]=true;}
+						else{
+							if($("#t"+gridRef).attr('class')!='gridBooked'){tuesdaySele[periodSele]=true;}
+							}
 					}
 					break;
 					case 3:
 					{
 						if (wednesdaySele[periodSele]==true)
 							{wednesdaySele[periodSele]=false;}
-						else{wednesdaySele[periodSele]=true;}
+						else{
+							if($("#t"+gridRef).attr('class')!='gridBooked'){wednesdaySele[periodSele]=true;}
+							}
 					}
 					break;
 					case 4:
 					{
 						if (thursdaySele[periodSele]==true)
 							{thursdaySele[periodSele]=false;}
-						else{thursdaySele[periodSele]=true;}
+						else{
+							if($("#t"+gridRef).attr('class')!='gridBooked'){thursdaySele[periodSele]=true;}
+						}
 					}
 					break;
 					case 5:
 					{
 						if (fridaySele[periodSele]==true)
 							{fridaySele[periodSele]=false;}
-						else{fridaySele[periodSele]=true;}
+						else{
+							if($("#t"+gridRef).attr('class')!='gridBooked'){fridaySele[periodSele]=true;}
+							}
 					}
 					break;
 				}
@@ -802,16 +828,22 @@
 					for (var k = 0; k < bookedRoomsArr[i][1][j][2]; k ++){
 						var bubble = parseInt(bookedRoomsArr[i][1][j][1])+k;
 						$("#t"+day+''+bubble).removeClass('grid');
-						if ($("#t"+day+''+bubble).attr('class')=='gridClicked'){
-							$("#t"+day+''+bubble).removeClass('gridClicked');
-							tableSelect("t"+day+''+bubble);
-						}
+						
 						$("#t"+day+''+bubble).removeClass('grid');
+						$("#t"+day+''+bubble).removeClass('gridClicked');
 						$("#t"+day+''+bubble).addClass('gridBooked');
+						tableSelect("t"+day+''+bubble);
+						var weekshtml = "Weeks:";
+						for(p=3; p <=17;p++){
+							if(bookedRoomsArr[i][1][j][p]==1){
+								weekshtml += p-2 + ", ";
+							}
+						}
+						weekshtml=weekshtml.substring(0,weekshtml.length-2);
 						if (document.getElementById("t"+day+''+bubble).innerHTML==""){
-							document.getElementById("t"+day+''+bubble).innerHTML=bookedRoomsArr[i][0];
+							document.getElementById("t"+day+''+bubble).innerHTML=bookedRoomsArr[i][0] + " " + weekshtml;
 						}else{
-							document.getElementById("t"+day+''+bubble).innerHTML = document.getElementById("t"+day+''+bubble).innerHTML + "<br>" + bookedRoomsArr[i][0];
+							document.getElementById("t"+day+''+bubble).innerHTML = document.getElementById("t"+day+''+bubble).innerHTML + "<br>" + bookedRoomsArr[i][0] + " " + weekshtml;
 						}
 					}
 				}
