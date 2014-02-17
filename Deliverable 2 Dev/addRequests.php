@@ -128,6 +128,7 @@
 					}
 				}
 			});
+
 		}
 		
 		function rdRoundData(){
@@ -143,12 +144,7 @@
 					}				
 				}
 			});
-			// $.get("GETroundData.php",function(JSON){
-				// if(JSON.length!=0){
-				// semesterNumber=JSON[0].semester;
-				// roundsNumber=JSON[0].roundsnum;
-				// }
-			// },'json');
+
 		}
 		
 		function getCurrentyear(){
@@ -161,9 +157,6 @@
 					currentYear = JSON[0].year;
 				}
 			});
-			// $.get("GETcurrentYear.php",function(JSON){
-				// currentYear = JSON[0].year;
-			// },'json');
 		}
 		
 		function roundChanges(){
@@ -184,8 +177,9 @@
 				document.getElementById('PRN').disabled=true;
 				round = false;
 			}
-			//else if (roundsNumber==2 && semesterNumber==2){
-			//}
+			else if (roundsNumber==2 && semesterNumber==2){
+				round = true;
+			}
 			else {
 				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
