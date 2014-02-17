@@ -67,7 +67,6 @@
         //FUNCTIONS --------------------------------------------------//
 		
 		function theOnload(){
-
 			getCurrentyear();
 			rdRoundData();
 			validateUser();
@@ -155,6 +154,12 @@
 					currentYear = JSON[0].year;
 				}
 			});
+		}
+		
+		function getCurrentyear(){
+			$.get("GETcurrentYear.php",function(JSON){
+				currentYear = JSON[0].year;
+			},'json');
 		}
 		
 		function roundChanges(){
@@ -1162,7 +1167,7 @@
 							window.location.replace("viewRequests.php?PHPSESSID=" + seshId);
 						}else{
 							window.location.replace("addRequests.php?PHPSESSID=" +seshId);
-						}	
+						}
 					}
 				}
 			}
@@ -1190,7 +1195,6 @@
             <div class="contentBox" id="roomSelectorBox"></div>
 
             <div class="contentBox" id="inputWeeksBox">
-                <!-- unsure if css is css3  -->
 				<center>
 					<table id="SemWekTab">
 						<tr>

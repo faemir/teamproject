@@ -326,6 +326,7 @@
 						type: "GET",
 						dataType: "json",
 						url: "GETdepartmentID.php",
+						async: false,
 						data: {'username': passedUsername},
 						success: function(JSON){
 							newDepartmentID = JSON[0].departmentid;
@@ -350,13 +351,13 @@
 									alert("Please enter a valid module title.");}
 							}
 							else{
-								alert("3Please enter a valid module code.");}
+								alert("Please enter a valid module code.");}
 						}
 						else{
-							alert("2Please enter a valid module code.");}
+							alert("Please enter a valid module code.");}
 					}
 					else{
-						alert("1Please enter a valid module code.");}
+						alert("Please enter a valid module code.");}
 				}
 			}
 			
