@@ -61,19 +61,23 @@
 		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 
         //ONLOAD FUNCTIONS -----------------------------------------//
-		$(document).ready(function(){getCurrentyear();});
-		$(document).ready(function(){rdRoundData()});
-		$(document).ready(function(){validateUser()});
-		$(document).ready(function(){getUser()});
-		$(document).ready(function(){GetPrefData()});
-        $(document).ready(function(){wrInputTable()});
-        $(document).ready(function(){loadDefaultWeeks()});
-		$(document).ready(function(){popModulesList(userDepartmentID)});
-		$(document).ready(function(){wrRoomsList()});
-		$(document).ready(function(){isEditreq()});
-		$(document).ready(function(){roundChanges()});
-		
+		$(document).ready(function(){theOnload()});
         //FUNCTIONS --------------------------------------------------//
+		
+		function theOnload(){
+			getCurrentyear();
+			rdRoundData();
+			validateUser();
+			getUser();
+			GetPrefData();
+			wrInputTable();
+			loadDefaultWeeks();
+			popModulesList(userDepartmentID);
+			wrRoomsList();
+			isEditreq();
+			roundChanges();
+		}
+		
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username']; ?>";
 			seshId = "<?php echo session_id();?>";
@@ -109,29 +113,64 @@
 		function validateUser(){
 			var user= "<?php echo $_SESSION['username'] ?>";
 			var sessionid= "<?php echo session_id(); ?>";
-			$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
-				if (JSON.length==0)
-				window.location.replace("login.php");
-			}, 'json');
+			$.ajax({
+				type: "GET",
+				url: "GETuserpassdeets.php",
+				data: {'username':user, 'sessionid':sessionid},
+				dataType: "JSON",
+				async: false,
+				success: function(JSON){
+					if (JSON.length==0){
+						window.location.replace("login.php");
+					}
+				}
+			});
+			
+			
+			// $.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+				// if (JSON.length==0)
+				// window.location.replace("login.php");
+			// }, 'json');
 		}
 		
 		function rdRoundData(){
-			$.get("GETroundData.php",function(JSON){
-				if(JSON.length!=0){
-				semesterNumber=JSON[0].semester;
-				roundsNumber=JSON[0].roundsnum;
+			$.ajax({
+				type: "GET",
+				url: "GETroundData.php",
+				dataType: "JSON",
+				async: false,
+				success: function(JSON){
+					if(JSON.length!=0){
+						semesterNumber=JSON[0].semester;
+						roundsNumber=JSON[0].roundsnum;
+					}				
 				}
-			},'json');
+			});
+			// $.get("GETroundData.php",function(JSON){
+				// if(JSON.length!=0){
+				// semesterNumber=JSON[0].semester;
+				// roundsNumber=JSON[0].roundsnum;
+				// }
+			// },'json');
 		}
 		
 		function getCurrentyear(){
-			$.get("GETcurrentYear.php",function(JSON){
-				currentYear = JSON[0].year;
-			},'json');
+			$.ajax({
+				type: "GET",
+				url: "GETroundData.php",
+				dataType: "JSON",
+				async: false,
+				success: function(JSON){
+					currentYear = JSON[0].year;
+				}
+			});
+			// $.get("GETcurrentYear.php",function(JSON){
+				// currentYear = JSON[0].year;
+			// },'json');
 		}
 		
 		function roundChanges(){
-			
+			alert("whacky");
 			if (roundsNumber==1 && semesterNumber==1){
 				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
@@ -764,10 +803,6 @@
 		}
 
 		
-		function getBookedRooms(selectedRooms){
-			$.get("GETbookedRooms.php",{roomsarray: selectedRooms},function(JSON){});
-		}
-		
 		function countText(){
 			document.getElementById("charToGo").innerHTML = (280 - document.getElementById("ORE").value.length) + " Characters remaining"
 			if (document.getElementById("ORE").value.length >= 280){
@@ -782,71 +817,77 @@
             //check if lists already loaded
             if(alreadyLoaded == false){
                 //if not then send php
-                $.get("GETmodulesList.php", {'id': userDepartmentID}, function(JSON){
-                    titleOpt = "";
-                    codeOpt = "";
-                    codeStr ="";
+				$.ajax({
+					type: "GET",
+					url: "GETmodulesList.php",
+					dataType: "JSON",
+					data:{'id': userDepartmentID},
+					async: false,
+					success: function(JSON){
+						 titleOpt = "";
+						codeOpt = "";
+						codeStr ="";
 
-                    //mod title populator
-                    for(var i=0;i<JSON.length;i++){
-                        titleOpt += "<option value='" + JSON[i].moduletitle + "'>" + JSON[i].moduletitle + "</option>"
-                    }
-                    $("#modTitleSelect").empty();
-                    $("#modTitleSelect").append(titleOpt);
+						//mod title populator
+						for(var i=0;i<JSON.length;i++){
+							titleOpt += "<option value='" + JSON[i].moduletitle + "'>" + JSON[i].moduletitle + "</option>"
+						}
+						$("#modTitleSelect").empty();
+						$("#modTitleSelect").append(titleOpt);
 
-                    //mod code populator
-                    for(var i=0;i<JSON.length;i++){
-                        codeOpt += "<option value='" + JSON[i].modulecode + "'>" + JSON[i].modulecode + "</option>"
-                    }
-                    $("#modCodeSelect").empty();
-                    $("#modCodeSelect").append(codeOpt);
+						//mod code populator
+						for(var i=0;i<JSON.length;i++){
+							codeOpt += "<option value='" + JSON[i].modulecode + "'>" + JSON[i].modulecode + "</option>"
+						}
+						$("#modCodeSelect").empty();
+						$("#modCodeSelect").append(codeOpt);
 
-                    //spec requirements populator
-					codeStr += "<table class='modTable'><tr>"
-                    codeStr += "<td><input type='checkbox' class='specReq' id='QUR' onchange='GetRoom(false)'><label for='QUR'>Quality Room</label></td>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='WHC' onchange='GetRoom(false)'><label for='WHC'>Wheelchair</label></td>";
-                    codeStr += "</tr><tr>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='DP1' onchange='GetRoom(false)'><label for='DP1'>Data Projector</label></td>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='DP2' disabled='true' onchange='GetRoom(false)'><label for='DP2'>Data Projector * 2</label></td>";
-					codeStr += "</tr><tr>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='VIS' onchange='GetRoom(false)'><label for='VIS'>Visualiser</label></td>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='VDB' onchange='GetRoom(false)'><label for='VDB'>Video/DVD/BluRay</label></td>";
-					codeStr += "</tr><tr>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='CMP' onchange='GetRoom(false)'><label for='CMP'>Computer</label></td>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='WHB' onchange='GetRoom(false)'><label for='WHB'>Whiteboard</label></td>";
-					codeStr += "</tr><tr>";
-                    codeStr += "<td><input type='checkbox' class='specReq' id='CHB' onchange='GetRoom(false)'><label for='CHB'>Chalkboard</label></td>";
-					codeStr += "<td><input type='checkbox' class='specReq' id='NER' onchange='GetRoom(false)'><label for='NER'>Near Previous Room</label></td>";
-					codeStr += "</tr>";
-					codeStr +="<tr><td>No of Students:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onclick='CapacityChange()' onchange='CapacityChange()' onkeypress='CapacityChange()' onkeyup='CapacityChange()'></td></tr>";
-					codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom(false)' class='modChooser'>";
-					if(prefLoc == "ANY"){
-						codeStr +="<option value='ANY' selected>Any</option><option value='E'>East</option><option value='C'>Central</option><option value='W'>West</option>"
+						//spec requirements populator
+						codeStr += "<table class='modTable'><tr>"
+						codeStr += "<td><input type='checkbox' class='specReq' id='QUR' onchange='GetRoom(false)'><label for='QUR'>Quality Room</label></td>";
+						codeStr += "<td><input type='checkbox' class='specReq' id='WHC' onchange='GetRoom(false)'><label for='WHC'>Wheelchair</label></td>";
+						codeStr += "</tr><tr>";
+						codeStr += "<td><input type='checkbox' class='specReq' id='DP1' onchange='GetRoom(false)'><label for='DP1'>Data Projector</label></td>";
+						codeStr += "<td><input type='checkbox' class='specReq' id='DP2' disabled='true' onchange='GetRoom(false)'><label for='DP2'>Data Projector * 2</label></td>";
+						codeStr += "</tr><tr>";
+						codeStr += "<td><input type='checkbox' class='specReq' id='VIS' onchange='GetRoom(false)'><label for='VIS'>Visualiser</label></td>";
+						codeStr += "<td><input type='checkbox' class='specReq' id='VDB' onchange='GetRoom(false)'><label for='VDB'>Video/DVD/BluRay</label></td>";
+						codeStr += "</tr><tr>";
+						codeStr += "<td><input type='checkbox' class='specReq' id='CMP' onchange='GetRoom(false)'><label for='CMP'>Computer</label></td>";
+						codeStr += "<td><input type='checkbox' class='specReq' id='WHB' onchange='GetRoom(false)'><label for='WHB'>Whiteboard</label></td>";
+						codeStr += "</tr><tr>";
+						codeStr += "<td><input type='checkbox' class='specReq' id='CHB' onchange='GetRoom(false)'><label for='CHB'>Chalkboard</label></td>";
+						codeStr += "<td><input type='checkbox' class='specReq' id='NER' onchange='GetRoom(false)'><label for='NER'>Near Previous Room</label></td>";
+						codeStr += "</tr>";
+						codeStr +="<tr><td>No of Students:</td><td><input type='textbox' class='specReqText' id='CAP' value='50' onclick='CapacityChange()' onchange='CapacityChange()' onkeypress='CapacityChange()' onkeyup='CapacityChange()'></td></tr>";
+						codeStr +="<tr><td>Park:</td><td><select id='PRK' onchange='GetRoom(false)' class='modChooser'>";
+						if(prefLoc == "ANY"){
+							codeStr +="<option value='ANY' selected>Any</option><option value='E'>East</option><option value='C'>Central</option><option value='W'>West</option>"
+						}
+						if(prefLoc == "E"){
+							codeStr +="<option value='ANY'>Any</option><option value='E' selected>East</option><option value='C'>Central</option><option value='W'>West</option>"
+						}
+						if(prefLoc == "C"){
+							codeStr +="<option value='ANY'>Any</option><option value='E'>East</option><option value='C' selected>Central</option><option value='W'>West</option>"
+						}
+						if(prefLoc == "W"){
+							codeStr +="<option value='ANY'>Any</option><option value='E'>East</option><option value='C'>Central</option><option value='W' selected>West</option>"
+						}
+						codeStr +="</select></td></tr>";
+						codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' onkeyup='countText()' id='ORE' placeholder='Type here...'></td></tr>";
+						codeStr +="<tr><td></td><td><label id='charToGo'> </label></td></tr>";
+						codeStr +="<tr><td>Amount of rooms:</td><td><input type='radio' class='specReqR' id='room1' value='1' name='RoomCount' onclick='roomamount(1)' checked><label for='room1'>1</label>";
+						codeStr +="<input type='radio' class='specReqR' id='room2' value='2' name='RoomCount' onclick='roomamount(2)' ><label for='room2'>2</label>";
+						codeStr +="<input type='radio' class='specReqR' id='room3' value='3' name='RoomCount' onclick='roomamount(3)' ><label for='room3'>3</label>";
+						codeStr +="<input type='radio' class='specReqR' id='room4' value='4' name='RoomCount' onclick='roomamount(4)' ><label for='room4'>4</label>";
+						codeStr +="<input type='radio' class='specReqR' id='room5' value='5' name='RoomCount' onclick='roomamount(5)' ><label for='room5'>5</label></td></tr>";
+						codeStr +="<tr><td>Priority:</td><td>";
+						codeStr +="<input type='radio' class='specReqP' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
+						codeStr +="<input type='radio' class='specReqP' id='PRN' name='Priority' ><label for='PRN'>No</label></td></tr></table>";
+						
+						$("#basicBox").append(codeStr);
 					}
-					if(prefLoc == "E"){
-						codeStr +="<option value='ANY'>Any</option><option value='E' selected>East</option><option value='C'>Central</option><option value='W'>West</option>"
-					}
-					if(prefLoc == "C"){
-						codeStr +="<option value='ANY'>Any</option><option value='E'>East</option><option value='C' selected>Central</option><option value='W'>West</option>"
-					}
-					if(prefLoc == "W"){
-						codeStr +="<option value='ANY'>Any</option><option value='E'>East</option><option value='C'>Central</option><option value='W' selected>West</option>"
-					}
-					codeStr +="</select></td></tr>";
-					codeStr +="<tr><td>Other Requirements:</td><td><input type='textbox' class='specReqText' onkeyup='countText()' id='ORE' placeholder='Type here...'></td></tr>";
-					codeStr +="<tr><td></td><td><label id='charToGo'> </label></td></tr>";
-					codeStr +="<tr><td>Amount of rooms:</td><td><input type='radio' class='specReqR' id='room1' value='1' name='RoomCount' onclick='roomamount(1)' checked><label for='room1'>1</label>";
-					codeStr +="<input type='radio' class='specReqR' id='room2' value='2' name='RoomCount' onclick='roomamount(2)' ><label for='room2'>2</label>";
-					codeStr +="<input type='radio' class='specReqR' id='room3' value='3' name='RoomCount' onclick='roomamount(3)' ><label for='room3'>3</label>";
-					codeStr +="<input type='radio' class='specReqR' id='room4' value='4' name='RoomCount' onclick='roomamount(4)' ><label for='room4'>4</label>";
-					codeStr +="<input type='radio' class='specReqR' id='room5' value='5' name='RoomCount' onclick='roomamount(5)' ><label for='room5'>5</label></td></tr>";
-					codeStr +="<tr><td>Priority:</td><td>";
-					codeStr +="<input type='radio' class='specReqP' id='PRY' name='Priority' ><label for='PRY'>Yes</label>";
-					codeStr +="<input type='radio' class='specReqP' id='PRN' name='Priority' ><label for='PRN'>No</label></td></tr></table>";
-					
-                    $("#basicBox").append(codeStr);
-
-                }, 'json');
+				});
                 alreadyLoaded = true;
             }
 
@@ -950,6 +991,7 @@
 								data: {'editrequestid': editrequestid,'editBool': eBool,'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':checkRoom , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value), 'year': currentYear},
 							});
 							i++;
+							
 							// //get latest request id
 							var lReq = 0;
 							$.ajax({
@@ -963,9 +1005,16 @@
 							});
 							
 							if(editBool){
-								$.get("POSTdeleteBooking.php", {'editrequestid': editrequestid});
+								$.ajax({
+									type: "GET",
+									url: "POSTdeleteBooking.php",
+									data: {'editrequestid': editrequestid},
+									dataType: "json",
+									async: false,
+								});
 								lReq = editrequestid;
 							}
+							
 							if (preferredRoom ==1){
 								for(var j =0; j < checkRoom;j++){
 									$.ajax({
@@ -986,7 +1035,7 @@
 									});
 								}
 							}
-							
+							editBool = false;
 						}while(i<DPTArray.length);
 					
 						// if(redirectBool){
@@ -994,7 +1043,7 @@
 						// }else{
 							// window.location.replace("addRequests.php?PHPSESSID=" +seshId);
 						// }	
-						alert("here");
+				
 					}
 				}
 			}

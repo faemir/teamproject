@@ -13,11 +13,7 @@
         <title>Account Preferences</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script type='text/javascript'>
-			$(document).ready(function(){validateUser();});
-			$(document).ready(function(){getUser();});
-			$(document).ready(function(){wrPreferencesTable();});
-			$(document).ready(function(){addModuleSection();});
-			$(document).ready(function(){clearAddBoxes();});
+			//---------------------------------------------------------------------------------------//
 			var periodValue = "";
 			var timeValue = "";
 			var weeksValue = "";
@@ -25,6 +21,17 @@
 			var parkValue = "";
 			var roomsQueue = [];
 			var passedUsername = "";
+			//-----------------------------------------------------------------------------------------//
+			$(document).ready(function(){theOnLoad()});
+			//-----------------------------------------------------------------------------------------//
+			function theOnLoad(){
+				validateUser();
+				getUser();
+				wrPreferencesTable();
+				addModuleSection();
+				clearAddBoxes();
+			}
+			
 			function getUser(){
 				passedUsername = "<?php echo $_SESSION['username'] ?>";
 			}
@@ -292,7 +299,6 @@
 							parkValue = document.getElementsByName('park')[i].value;
 					}
 					//POST values in prefBox to Preferences table
-					alert(periodValue + ":" + timeValue + ":" + weeksValue + ":" + weekeValue + ":" + parkValue);
 					$.ajax({
 						type: "GET", 
 						url: "POSTviewingPrefs.php",
