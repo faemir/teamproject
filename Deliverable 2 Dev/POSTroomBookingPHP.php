@@ -6,6 +6,7 @@ are made for the same request.
 	$requestid = $_GET["requestid"];
 	$room = $_GET["room"];
 	$modulecode = $_GET["modulecode"];
-	$sql = "INSERT INTO RoomBooking (RequestID, RoomID, ModuleCode) VALUES ($requestid,'$room','$modulecode');";
+	$sql = "INSERT INTO RoomBooking (RequestID, RoomID, ModuleCode) VALUES "
+	$sql .= "($requestid,'$room','$modulecode');";
 	include "DBquery.php";
 ?>

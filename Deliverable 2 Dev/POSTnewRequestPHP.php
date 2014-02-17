@@ -48,17 +48,30 @@ request.
 	if($editBool == 'true'){
 
 		$sql = "UPDATE EntryRequestTable ";
-		$sql .= "SET Year=$year,ModuleCode='$modulecode',Priority=$priority,Semester=$semester,Day='$day',Period=$period,Duration=$duration,WeekID=$weekid,NoOfStudents=$noofstudents,NoOfRooms=$noofrooms,";
-		$sql .= "PreferredRooms=$preferredroom,RequestStatus='$requeststatus',QualityRoom=$qualityroom,WheelChairAccess=$wheelchair,DataProjector=$dataprojector,DoubleProjector=$doubleprojector,Visualiser=$visualiser,VideoDVDBluray=$videodvdbluray,";
-		$sql .= "Computer=$computer,WhiteBoard=$whiteboard,ChalkBoard=$chalkboard,NearestRoom=$nearestroom,Other='$other' WHERE RequestID=$editRequestId;";
+		$sql .= "SET Year=$year,ModuleCode='$modulecode',Priority=$priority,";
+		$sql .= "Semester=$semester,Day='$day',Period=$period,";
+		$sql .= "Duration=$duration,WeekID=$weekid,NoOfStudents=$noofstudents";
+		$sql .= ",NoOfRooms=$noofrooms,PreferredRooms=$preferredroom,";
+		$sql .= "RequestStatus='$requeststatus',QualityRoom=$qualityroom,";
+		$sql .= "WheelChairAccess=$wheelchair,DataProjector=$dataprojector,";
+		$sql .= "DoubleProjector=$doubleprojector,Visualiser=$visualiser,";
+		$sql .= "VideoDVDBluray=$videodvdbluray,Computer=$computer,";
+		$sql .= "WhiteBoard=$whiteboard,ChalkBoard=$chalkboard,";
+		$sql .= "NearestRoom=$nearestroom,Other='$other' WHERE"; 
+		$sql .= "RequestID=$editRequestId;";
 
 	}
 	else{
-		$sql = "INSERT INTO EntryRequestTable(Year,ModuleCode,Priority,Semester,Day,Period,Duration,";
-		$sql .= "WeekID,NoOfStudents,NoOfRooms,PreferredRooms,RequestStatus,QualityRoom,WheelchairAccess,DataProjector,";
-		$sql .= "DoubleProjector,Visualiser,VideoDVDBluray,Computer,WhiteBoard,ChalkBoard,NearestRoom,Other) VALUES ";
-		$sql .= "($year,'$modulecode',$priority,$semester,'$day',$period,$duration,$weekid,$noofstudents,$noofrooms,";
-		$sql .= "$preferredroom,'$requeststatus',$qualityroom,$wheelchair,$dataprojector,$doubleprojector,$visualiser,$videodvdbluray,";
+		$sql = "INSERT INTO EntryRequestTable(Year,ModuleCode,Priority,";
+		$sql .= "Semester,Day,Period,Duration,";
+		$sql .= "WeekID,NoOfStudents,NoOfRooms,PreferredRooms,";
+		$sql .= "RequestStatus,QualityRoom,WheelchairAccess,DataProjector,";
+		$sql .= "DoubleProjector,Visualiser,VideoDVDBluray,Computer,";
+		$sql .= "WhiteBoard,ChalkBoard,NearestRoom,Other) VALUES ";
+		$sql .= "($year,'$modulecode',$priority,$semester,'$day',";
+		$sql .= "$period,$duration,$weekid,$noofstudents,$noofrooms,";
+		$sql .= "$preferredroom,'$requeststatus',$qualityroom,$wheelchair,";
+		$sql .= "$dataprojector,$doubleprojector,$visualiser,$videodvdbluray,";
 		$sql .= "$computer,$whiteboard,$chalkboard,$nearestroom,'$other');";
 	}
 
