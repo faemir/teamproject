@@ -44,12 +44,12 @@
 		var roomsQueue = [];
 		var roomsNamesQueue = [];
 		var roomsNames = [];
+		var bookedRoomsArr = [];
 		var roomsJSONchecker = true;
 		var sort = false; // for sorting my capacity
 		var ARooms = 0;
 		var AClick = 0;
 		var roomlen = 0;
-
 		//Selected periods from table - false = not selected.
 		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
@@ -471,25 +471,24 @@
 			document.getElementById("modCodeSelect").selectedIndex=0;
 			//defaults?
 		}
-		
 		function ClrRoom(){
 			if (roomsJSONchecker){
-				for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
+				if (roomsQueue.length!=0){
+					for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
 						document.getElementById("r"+roomsQueue[j]).checked = false;
+					}
 				}
+				document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+				ARooms=0;
+				document.getElementById("room1").checked = true;
 			}
-			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
-			ARooms=0;
-			document.getElementById("room1").checked = true;
 		}
-		
 		function EmptyRoom(){
 			ClrRoom();
 			roomsQueue = [];
 			roomsNamesQueue = [];
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 		}
-		
 		function ClrAll(){
 			if (confirm("Are you sure you are want to clear this?")){
 				ClrRoom();
@@ -501,52 +500,54 @@
 		//---------------------------------------------------------------------------------------------//
         //onclick for table buttons
         function tableSelect(gridRef){
-            $("#"+ gridRef).toggleClass("gridClicked");
-			TFTable(gridRef.substring(1,gridRef.length));
+			if ($("#"+gridRef).attr('class')!='gridBooked'){
+				$("#"+ gridRef).toggleClass("gridClicked");
+				TFTable(gridRef.substring(1,gridRef.length));
+			}
         }	
         
         //toggles boolean value of each square in input table for other functions to use
 		function TFTable(gridRef){
-			var daySele = parseInt(gridRef.substring(0,1));
-			var periodSele = parseInt(gridRef.substring(1,gridRef.length)) -1;
-			switch (daySele){
-				case 1:
-				{
-					if (mondaySele[periodSele]==true)
-						{mondaySele[periodSele]=false;}
-					else{mondaySele[periodSele]=true;}
+				var daySele = parseInt(gridRef.substring(0,1));
+				var periodSele = parseInt(gridRef.substring(1,gridRef.length)) -1;
+				switch (daySele){
+					case 1:
+					{
+						if (mondaySele[periodSele]==true)
+							{mondaySele[periodSele]=false;}
+						else{mondaySele[periodSele]=true;}
+					}
+					break;
+					case 2:
+					{
+						if (tuesdaySele[periodSele]==true)
+							{tuesdaySele[periodSele]=false;}
+						else{tuesdaySele[periodSele]=true;}
+					}
+					break;
+					case 3:
+					{
+						if (wednesdaySele[periodSele]==true)
+							{wednesdaySele[periodSele]=false;}
+						else{wednesdaySele[periodSele]=true;}
+					}
+					break;
+					case 4:
+					{
+						if (thursdaySele[periodSele]==true)
+							{thursdaySele[periodSele]=false;}
+						else{thursdaySele[periodSele]=true;}
+					}
+					break;
+					case 5:
+					{
+						if (fridaySele[periodSele]==true)
+							{fridaySele[periodSele]=false;}
+						else{fridaySele[periodSele]=true;}
+					}
+					break;
 				}
-				break;
-				case 2:
-				{
-					if (tuesdaySele[periodSele]==true)
-						{tuesdaySele[periodSele]=false;}
-					else{tuesdaySele[periodSele]=true;}
-				}
-				break;
-				case 3:
-				{
-					if (wednesdaySele[periodSele]==true)
-						{wednesdaySele[periodSele]=false;}
-					else{wednesdaySele[periodSele]=true;}
-				}
-				break;
-				case 4:
-				{
-					if (thursdaySele[periodSele]==true)
-						{thursdaySele[periodSele]=false;}
-					else{thursdaySele[periodSele]=true;}
-				}
-				break;
-				case 5:
-				{
-					if (fridaySele[periodSele]==true)
-						{fridaySele[periodSele]=false;}
-					else{fridaySele[periodSele]=true;}
-				}
-				break;
-			}
-
+			
 		}
         //collect day time and period information for all days
 		function timetableGetter(){
@@ -731,9 +732,91 @@
 				roomsNamesQueue = [];
 			}
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+			resetBooked();
+			getBookedRooms();
+		}
+		function getBookedRooms(){
+			bookedRoomsArr= [];
+			for(var i = 0; i <roomsNamesQueue.length; i++){
+				$.ajax({
+					type: "GET",
+					url: "GETbookedRooms2.php",
+					dataType: "json",
+					data: {'roomid': roomsNamesQueue[i]},
+					async: false,
+					success: function(JSON){
+						var timeSlotsArray = [];
+						if(JSON.length !=0){
+							for (var j = 0; j< JSON.length; j++){
+								var timeSlots = [];
+								timeSlots[0] = JSON[j].day ;
+								timeSlots[1] = JSON[j].period ;
+								timeSlots[2] = JSON[j].duration ;
+								timeSlots[3] = JSON[j].week1 ;
+								timeSlots[4] = JSON[j].week2 ;
+								timeSlots[5] = JSON[j].week3 ;
+								timeSlots[6] = JSON[j].week4 ;
+								timeSlots[7] = JSON[j].week5 ;
+								timeSlots[8] = JSON[j].week6 ;
+								timeSlots[9] = JSON[j].week7 ;
+								timeSlots[10] = JSON[j].week8 ;
+								timeSlots[11] = JSON[j].week9 ;
+								timeSlots[12] = JSON[j].week10 ;
+								timeSlots[13] = JSON[j].week11 ;
+								timeSlots[14] = JSON[j].week12 ;
+								timeSlots[15] = JSON[j].week13 ;
+								timeSlots[16] = JSON[j].week14 ;
+								timeSlots[17] = JSON[j].week15 ;
+								timeSlotsArray[timeSlotsArray.length]=timeSlots;
+							}
+							bookedRoomsArr[bookedRoomsArr.length]=[JSON[0].roomid,timeSlotsArray];
+							//alert(bookedRoomsArr);
+							displayBRooms();
+						}
+					}
+				});
+			}			
 			
 		}
-
+		function resetBooked(){
+			for(i=1;i<=9;i++){
+				for(j=1;j<=5;j++){
+					$("#t"+j+''+i).removeClass('gridBooked');
+					document.getElementById("t"+j+''+i).innerHTML="";
+				}
+			}
+		}
+		function displayBRooms(){
+			resetBooked();
+			for(i=0; i<bookedRoomsArr.length; i++){
+				for(j=0; j<bookedRoomsArr[i][1].length;j++){
+					var day =0;
+					switch (bookedRoomsArr[i][1][j][0]){
+						case "Monday":day = 1;break;
+						case "Tuesday":day = 2;break;
+						case "Wednesday":day = 3;break
+						case "Thursday":day = 4;break;
+						case "Friday":day = 5;break;
+					}
+					//alert(bookedRoomsArr[i][1][j][2]);
+					for (var k = 0; k < bookedRoomsArr[i][1][j][2]; k ++){
+						var bubble = parseInt(bookedRoomsArr[i][1][j][1])+k;
+						$("#t"+day+''+bubble).removeClass('grid');
+						if ($("#t"+day+''+bubble).attr('class')=='gridClicked'){
+							$("#t"+day+''+bubble).removeClass('gridClicked');
+							tableSelect("t"+day+''+bubble);
+						}
+						$("#t"+day+''+bubble).removeClass('grid');
+						$("#t"+day+''+bubble).addClass('gridBooked');
+						if (document.getElementById("t"+day+''+bubble).innerHTML==""){
+							document.getElementById("t"+day+''+bubble).innerHTML=bookedRoomsArr[i][0];
+						}else{
+							document.getElementById("t"+day+''+bubble).innerHTML = document.getElementById("t"+day+''+bubble).innerHTML + "<br>" + bookedRoomsArr[i][0];
+						}
+					}
+				}
+			}		
+		}
 		//-------------Change Room list accordingly
 		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails ORDER BY roomid";// declares SQL for room
 		function GetRoom(type){
@@ -873,9 +956,9 @@
 		}
 
 		
-		function getBookedRooms(selectedRooms){
-			$.get("GETbookedRooms.php",{roomsarray: selectedRooms},function(JSON){});
-		}
+		// function getBookedRooms(selectedRooms){
+			// $.get("GETbookedRooms.php",{roomsarray: selectedRooms},function(JSON){});
+		// }
 		
 		function countText(){
 			document.getElementById("charToGo").innerHTML = (280 - document.getElementById("ORE").value.length) + " Characters remaining"

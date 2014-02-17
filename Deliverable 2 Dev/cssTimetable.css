@@ -410,7 +410,11 @@ MEDIA QUERIES - currently incomplete
         background-color:#431367;
         border: 2px solid black;
     }
-    
+    .gridBooked
+        {
+        background-color:#aaa;
+        border: 1px solid black;
+    }
     .gridClicked:hover
         {
         background-color:#B32561;
