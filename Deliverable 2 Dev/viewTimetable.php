@@ -64,7 +64,7 @@
 				var sessionid= "<?php echo session_id(); ?>";
 				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
 					if (JSON.length==0)
-					window.location.replace("login.php");
+					window.location.replace("index.htm");
 				}, 'json');
 			}
 
