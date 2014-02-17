@@ -715,3 +715,186 @@ nikk
 	} 
 
 ?>
+
+postnewrequest.php
+
+This script posts a new request entry into EntryRequestTable. A connection 
+with the database is established at the beginning for the use of 
+mysql_real_escape_string() function before a query is made later on in script.
+the editbool value decides whether request is new or its an edit of a existing
+request.
+	Josh, Callum
+<?php
+	require_once 'MDB2.php';
+	include "LTF.php"; //to provide $username,$password
+	
+	$host='co-project.lboro.ac.uk'; //accesses database
+	$dbName='team04';//login
+	$dsn = "mysql://$username:$password@$host/$dbName"; 
+	
+	$db =& MDB2::connect($dsn); 
+	if(PEAR::isError($db)){ 
+	   die($db->getMessage());
+	}
+	
+	$editBool = $_GET["editBool"];
+	$editRequestId = $_GET["editrequestid"];
+	$year = $_GET["year"]; 
+    $modulecode = $_GET["modulecode"]; 
+    $priority = $_GET["priority"];
+    $semester = $_GET["semester"];
+    $day = $_GET["day"];
+	$period = $_GET["period"];
+    $duration = $_GET["duration"];
+    $weekid = $_GET["weekid"];
+    $noofstudents = $_GET["noofstudents"];
+    $noofrooms = $_GET["noofrooms"];
+    $preferredroom = $_GET["preferredroom"];
+    
+    $requeststatus = "pending";
+    
+    $qualityroom =  $_GET["qualityroom"];
+    $wheelchair = $_GET["wheelchair"];
+    $dataprojector = $_GET["dataprojector"];
+    $doubleprojector = $_GET["doubleprojector"];
+    $visualiser = $_GET["visualiser"];
+    $videodvdbluray = $_GET["videodvdbluray"];
+    $computer = $_GET["computer"];
+    $whiteboard = $_GET["whiteboard"];
+    $chalkboard = $_GET["chalkboard"];
+	$nearestroom = $_GET["nearestroom"];
+	$other = mysql_real_escape_string($_GET["other"]);
+	
+	if($editBool == 'true'){
+
+		$sql = "UPDATE EntryRequestTable ";
+		$sql .= "SET Year=$year,ModuleCode='$modulecode',Priority=$priority,";
+		$sql .= "Semester=$semester,Day='$day',Period=$period,";
+		$sql .= "Duration=$duration,WeekID=$weekid,NoOfStudents=$noofstudents";
+		$sql .= ",NoOfRooms=$noofrooms,PreferredRooms=$preferredroom,";
+		$sql .= "RequestStatus='$requeststatus',QualityRoom=$qualityroom,";
+		$sql .= "WheelChairAccess=$wheelchair,DataProjector=$dataprojector,";
+		$sql .= "DoubleProjector=$doubleprojector,Visualiser=$visualiser,";
+		$sql .= "VideoDVDBluray=$videodvdbluray,Computer=$computer,";
+		$sql .= "WhiteBoard=$whiteboard,ChalkBoard=$chalkboard,";
+		$sql .= "NearestRoom=$nearestroom,Other='$other' WHERE"; 
+		$sql .= "RequestID=$editRequestId;";
+
+	}
+	else{
+		$sql = "INSERT INTO EntryRequestTable(Year,ModuleCode,Priority,";
+		$sql .= "Semester,Day,Period,Duration,";
+		$sql .= "WeekID,NoOfStudents,NoOfRooms,PreferredRooms,";
+		$sql .= "RequestStatus,QualityRoom,WheelchairAccess,DataProjector,";
+		$sql .= "DoubleProjector,Visualiser,VideoDVDBluray,Computer,";
+		$sql .= "WhiteBoard,ChalkBoard,NearestRoom,Other) VALUES ";
+		$sql .= "($year,'$modulecode',$priority,$semester,'$day',";
+		$sql .= "$period,$duration,$weekid,$noofstudents,$noofrooms,";
+		$sql .= "$preferredroom,'$requeststatus',$qualityroom,$wheelchair,";
+		$sql .= "$dataprojector,$doubleprojector,$visualiser,$videodvdbluray,";
+		$sql .= "$computer,$whiteboard,$chalkboard,$nearestroom,'$other');";
+	}
+
+	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+	$res =& $db->query($sql);
+	if(PEAR::isError($res)){
+		die($res->getMessage());
+	} 
+
+?>
+
+postnewweek.php
+
+If the chosen weeks do not match in the DB then
+this script adds a new entry in the DB.
+
+Josh
+
+<?php
+	
+	$wk1 = $_GET["weeks1"];
+	$wk2 = $_GET["weeks2"];
+	$wk3 = $_GET["weeks3"];
+	$wk4 = $_GET["weeks4"];
+	$wk5 = $_GET["weeks5"];
+	$wk6 = $_GET["weeks6"];
+	$wk7 = $_GET["weeks7"];
+	$wk8 = $_GET["weeks8"];
+	$wk9 = $_GET["weeks9"];
+	$wk10 = $_GET["weeks10"];
+	$wk11 = $_GET["weeks11"];
+	$wk12 = $_GET["weeks12"];
+	$wk13 = $_GET["weeks13"];
+	$wk14 = $_GET["weeks14"];
+	$wk15 = $_GET["weeks15"];
+	
+	$sql = "INSERT INTO WeekTable(week1,week2,week3,week4,week5,week6,week7,";
+	$sql.= "week8,";
+	$sql .= "week9,week10,week11,week12,week13,week14,week15) VALUES "
+	$sql .="($wk1,$wk2,$wk3,";
+	$sql .= "$wk4,$wk5,$wk6,$wk7,$wk8,$wk9,$wk10,$wk11,$wk12,$wk13,"
+	$sql .= "$wk14,$wk15);";
+    include "DBquery.php";
+
+?>
+
+postroombooking.php
+
+This script adds a new entry to RoomBooking for the passed request id and room.
+In webpage javascript this is called several times if one or more roombookings
+are made for the same request.
+
+dan, josh
+<?php	
+	$editBool = $_GET["editBool"];
+	$requestid = $_GET["requestid"];
+	$room = $_GET["room"];
+	$modulecode = $_GET["modulecode"];
+	$sql = "INSERT INTO RoomBooking (RequestID, RoomID, ModuleCode) VALUES "
+	$sql .= "($requestid,'$room','$modulecode');";
+	include "DBquery.php";
+?>
+
+postviewingprefs.php
+
+This is getting the entered preferences of the user from the account page.
+The preferences are for default values while adding new requests.
+The details are then used to update the preferences table for that user.
+The user's details are stored once they log in.
+- Nikk Williams
+<?php
+	$username = $_GET['username'];
+	$per = $_GET["per"];
+	$hour = $_GET["hour"];
+	$start = $_GET["start"];
+	$end = $_GET["end"];
+	$location = $_GET["location"];
+	
+	$sql="UPDATE Preferences SET period=$per, hr24format=$hour, ";
+	$sql.="defaultstartweek=$start, defaultendweek=$end, ";
+	$sql.="defaultlocation='$location' WHERE username='$username'";
+	include "DBquery.php";
+?>
+
+viewrequests.php
+
+This page keeps the session data from the URL.
+Where JS variables are needed, they are assigned with PHP echoes.
+
+Nikk, Matt
+
+<?php
+    ini_set("session.use_cookies",0);
+    ini_set("session.use_only_cookies",0);
+    ini_set("session.use_trans_sid",1);
+    session_start();
+	$_SESSION["editBool"] = "false";
+?>		
+	function getUser(){
+		passedUsername = "<?php echo $_SESSION['username'] ?>";
+		seshId = "<?php echo session_id();?>";
+	}
+	function validateUser(){
+		var user= "<?php echo $_SESSION['username'] ?>";
+		var sessionid= "<?php echo session_id(); ?>";
+	}
