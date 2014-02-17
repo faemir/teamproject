@@ -1,5 +1,6 @@
 <?php
-	$sql="SELECT * FROM Rounds ORDER BY startdate";
+	$username = $_GET['username'];
+	$sql = "SELECT * FROM UserTable;";
 	include "DBquery.php";
 	$JSON = json_encode($res->fetchAll());
 	echo $JSON;

@@ -1,340 +1,319 @@
-    /******************************************************** 
-    GENERAL HTML, BODY 
-    ********************************************************/
-            
-    html *
-    {
-        font-family: 'Open Sans', sans-serif;
-    }
-    
-    body
-         {
-		background-image: url('crossword.png');
-		background-repeat: repeat;
-		color: #4B0082;
-    }
+/********************************************************
+    GENERAL HTML, BODY
+********************************************************/
 
-    /****************************************************** 
-    NAV BAR
-    *******************************************************/
-       
-    #topnav{
-        list-style:none;
-        width:720px;
-        margin:0 auto;
-        padding:0;
-        background: #f0f0f0;
-        border:1px solid #ddd;
-        display: table;
-    }
+html * {
+    font-family: 'Open Sans', sans-serif;
+}
 
-    #topnav li
-        {
-        border-right:1px solid #ddd;
-        margin:0;
-        padding:0; 
-        display: table-cell;
-        text-align:center;
-        
-    }
+body {
+    background-image: url('crossword.png');
+    background-repeat: repeat;
+    color: #4B0082;
+}
 
-    #topnav li a 
-        { 
-        display:block;
-        padding:10px;
-        color:#333;
-        text-decoration:none;
-        height:100%;
-		color:#431367;
-    }
+/******************************************************
+NAV BAR
+*******************************************************/
 
-    #topnav li a:hover {
-        background: #fff;
-    }
-    
-    #topnav li a img{
-        height:27px;
-        width:auto;
-    }
+#topnav {
+    list-style: none;
+    width: 720px;
+    margin: 0 auto;
+    padding: 0;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    display: table;
+}
 
-    /************************************************************************************************************* 
-    GENERAL LAYOUT STRUCTURE 
-    *************************************************************************************************************/
+#topnav li {
+    border-right: 1px solid #ddd;
+    margin: 0px;
+    padding: 0px;
+    display: table-cell;
+    text-align: center;
+}
 
-    .contentBox
-        {
-        min-height:300px;
-        border: solid 1px #ccc;
-        margin-bottom: 5px;
-    }
-    
-    #navwrap
-        {
-        position:fixed;  
-        height:60px;
-        width: 100%;
-        top:0;
-    }
+#topnav li a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    height: 100%;
+    color: #431367;
+}
+
+#topnav li:hover {
+    background: #fff;
+}
+
+#topnav li a img {
+    height: 27px;
+    width: auto;
+}
+
+/******************************************************
+GENERAL LAYOUT STRUCTURE
+*******************************************************/
+
+.contentBox {
+    min-height: 300px;
+    border: solid 1px #ccc;
+    margin-bottom: 5px;
+}
+
+#navwrap {
+    position: fixed;
+    height: 60px;
+    width: 100%;
+    top: 0;
+}
+
+#pagewrap {
+    padding: 5px;
+    width: 960px;
+    margin: 20px auto;
+    padding-top: 50px;
+}
+
+/***************** login page ******************/
+
+#loginBox {
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    margin: -100px 0 0 -150px;
+    text-align: center;
+    background: #fff;
+}
+
+/***************** view requests page *************/
+
+#detailsBox {
+    width: 290px;
+    float: left;
+    padding: 5px 15px;
+    margin: 0px 5px 0px 0px;
+    background: #f8f8f8;
+	max-height: 40px;
+	overflow-y:scroll;
+}
+
+#searchBox {
+    width: 244px;
+/* Account for margins + border values */
+    float: left;
+    padding: 5px 15px;
+    margin: 0px 5px 0px 0px;
+    background: #fff;
+}
+
+#roundsBox {
+    width: 320px;
+    padding: 5px 15px;
+    float: left;
+    background: #f0efef;
+}
+
+#tableBox {
+    clear: both;
+    padding: 10px;
+    margin-bottom: 0px;
+    background: #f0efef;
+    min-height: 0px;
+}
+
+/********************* add requests page ********************/
+
+#basicBox, #roomSelectorBox {
+    min-width: 445px;
+    float: left;
+    padding: 5px 15px;
+    background: #f8f8f8;
+    min-height: 380px;
+}
+
+#roomActionsBox {
+    width: 180px;
+ /* Account for margins + border values */
+    float: left;
+    padding: 5px 15px;
+    margin: 0px 5px 5px 5px;
+}
+
+#roomSelectorBox {
+    margin: 0px 0px 0px 6px;
+    background: #f0efef;
+}
+
+#inputWeeksBox {
+    clear: both;
+    padding: 5px 15px;
+    min-height: 40px;
+    background: #f8f8f8;
+}
+
+#inputTableBox {
+    clear: both;
+    padding: 5px 15px;
+    margin-bottom: 5px;
+    background: #f8f8f8;
+}
+
+#formControlsBox {
+    clear: both;
+    padding: 5px 15px;
+    min-height: 40px;
+    background: #f8f8f8;
+}
+
+/***************************** account/prefrences pages *******************/
+
+#userPrefBox {
+	height: 157px;
+    width: 441px;
+    float: left;
+    padding: 5px 15px;
+    background: #f8f8f8;
+    margin: 0px 0px 5px 0px;
+	border: solid 1px #ccc;
+}
+
+#prefDemoBox {
+    width: 450px;
+    padding: 5px 15px;
+    float: right;
+    background: #f0efef;
+	height:518px;
+
+}
+
+#prefBox {
+    float:left;
+    background: #f8f8f8;
+	padding:5px;
+	margin:0px;
+	width:461px;
+}
+
+/*** Timetable viewer page ***/
+
+#roomSelectorBox2 {
+    width: 234px;
+    float: left;
+    padding: 5px 15px;
+    background: #f8f8f8;
+    height: 700px;
+}
+
+#actiontimeBox {
+    width: 657px;
+ /* Account for margins + border values */
+    float: left;
+    padding: 5px 15px;
+    margin: 0px 0px 5px 5px;
+    min-height: 30px;
+}
+
+#timetableViewerBox {
+    width: 657px;
+    padding: 5px 15px;
+    float: left;
+    background: #f0efef;
+    margin-left: 5px;
+    height: 645px;
+}
+
+/************************************************************************************
+MEDIA QUERIES - currently incomplete
+*************************************************************************************/
+    /* for 980px or less */
+@media screen and (max-width: 980px) {
+
+	#topnav{
+	
+		width: 84%;
+	}
     #pagewrap {
-        padding: 5px;
-        width: 960px;
-        margin: 20px auto;
-        padding-top: 50px;
-        
+        width: 94%;
     }
-    
-    /***************** login page ******************/
-    
-    #loginBox
-        {
-        width:300px;
-        height:200px;
-        position:absolute;
-        left:50%;
-        top:30%;
-        margin:-100px 0 0 -150px;
-        text-align:center;
-		background: #fff;
-    }
-    
-    /***************** view requests page *************/
 
-    #detailsBox {
-        width: 290px;
-        float: left;
-        padding: 5px 15px;
-		margin: 0px 5px 0px 0px;
-        background: #f8f8f8;
+    #actionsBox {
+        width: 41%;
+        padding: 1% 4%;
     }
 
     #searchBox {
-        width: 244px; /* Account for margins + border values */
-        float: left;
-        padding: 5px 15px;
-        margin: 0px 5px 0px 0px;
-		background: #fff;
+        width: 41%;
+        padding: 1% 4%;
+        margin: 0px 0px 5px 5px;
+        float: right;
     }
 
     #roundsBox {
-        width: 320px;
-        padding: 5px 15px;
-        float: left;
-        background: #f0efef;
-    }
-    #tableBox {
         clear: both;
-        padding: 10px;
-        margin-bottom: 0px;
-		background: #f0efef;
-		min-height: 0px;
+        padding: 1% 4%;
+        width: auto;
+        float: none;
     }
-	.tableH
-	{
-		color:#431367;
-		cursor: pointer;
-	}
-	.tableHClick
-	{
-		color: #B32561;
-		cursor: pointer;
-	}
-	
-	.requestButtons
-	{
-		width:100%;
-	}
-    /********************* add requests page ********************/
-    
-    #basicBox, #roomSelectorBox 
-	{
-        min-width: 445px;	
-        float: left;
-        padding: 5px 15px;
-        background: #f8f8f8;
-		min-height:350px;
+
+    #tableBox {
+        padding: 1% 4%;
     }
-    
+
+		/** add requests page **/
+
+    #basicBox {
+        min-width: 96.3%;
+    }
+
     #roomActionsBox {
-        width: 180px; /* Account for margins + border values */
-        float: left;
-        padding: 5px 15px;
-        margin: 0px 5px 5px 5px;
     }
 
     #roomSelectorBox {
-		margin: 0px 0px 0px 6px;
-		background: #f0efef;
-    } 
-    
+        min-width: 96.3%;
+        margin: 0px 0px 5px 0px;
+    }
+
     #inputWeeksBox {
-        clear:both;
-        padding: 5px 15px;
-        min-height: 40px;
-        background: #f8f8f8;
-  
     }
+
     #inputTableBox {
-        clear:both;
-        padding: 5px 15px;
-        margin-bottom: 5px; 
-		background: #f8f8f8;
-
     }
-    
+
     #formControlsBox {
-        clear:both;
-        padding: 5px 15px;
-        min-height: 40px;
-        background: #f8f8f8;
-  
+    }
+}
+
+/* for 700px or less */
+@media screen and (max-width: 600px) {
+
+    #actionsBox {
+        width: auto;
+        float: none;
     }
 
-    /***************************** account/prefrences pages *******************/
-    
-    #userPrefBox
-	{
-        width: 441px;
-        float: left;
-        padding: 5px 15px;
-        background: #f8f8f8;
-        margin: 0px 5px 5px 0px;
-    }
-    
-    #prefDemoBox 
-	{
-        width: 450px;
-        padding: 5px 15px;
-        float: left;
-        background: #f0efef;
-    }
-	
-	#prefBox
-	{
-		clear:both;
-		background: #fff
-	}
-    
-    /*** Timetable viewer page ***/
-    
-    #roomSelectorBox2 {
-		background-color: #f5f5f5;
-        width: 234px;
-        float: left;
-        padding: 5px 15px;
-        background: #f8f8f8;
-        height:700px;
-    }
-    
-    #actiontimeBox {
-		background-color:#ccc;
-        width: 657px; /* Account for margins + border values */
-        float: left;
-        padding: 5px 15px;
-        margin: 0px 0px 5px 5px;
-        min-height:40px;
+    #searchBox {
+        width: auto;
+        float: none;
+        margin-left: 0px;
     }
 
-    #timetableViewerBox {
-        width: 657px;
-        padding: 5px 15px;
-        float: left;
-        background: #f0efef;
-        margin-left: 5px;
-        height:643px;
+    #roundsBox {
+        width: auto;
+        float: none;
     }
-    
-    /************************************************************************************
-    MEDIA QUERIES - currently incomplete
-    *************************************************************************************/
-    /* for 980px or less */
-    @media screen and (max-width: 980px) {
-        
-        #pagewrap {
-            width: 94%;
-        }
-        #actionsBox {
-            width: 41%;
-            padding: 1% 4%;
-        }
-        #searchBox {
-            width: 41%;
-            padding: 1% 4%;
-            margin: 0px 0px 5px 5px;
-            float: right;
-        }
-        
-        #roundsBox {
-            clear: both;
-            padding: 1% 4%;
-            width: auto;
-            float: none;
-        }
+}
 
-        #tableBox {
-            padding: 1% 4%;
-        }
-		
-		/** add requests page **/
-		
-		#basicBox
-		{
-			min-width: 96.3%;
-			
-		}
-		
-		#roomActionsBox {
+/* for 480px or less */
+@media screen and (max-width: 480px) {
 
-		}
-
-		#roomSelectorBox {
-			min-width: 96.3%;
-			margin: 0px 0px 5px 0px;
-		} 
-		
-		#inputWeeksBox {
-
-	  
-		}
-		#inputTableBox {
-
-		}
-		
-		#formControlsBox {
-
-	  
-		}
-					
+    #roundsBox {
+        display: none;
     }
-
-    /* for 700px or less */
-    @media screen and (max-width: 600px) {
-
-        #actionsBox {
-            width: auto;
-            float: none;
-        }
-        
-        #searchBox {
-            width: auto;
-            float: none;
-            margin-left: 0px;
-        }
-        
-        #roundsBox {
-            width: auto;
-            float: none;
-        }
-
-    }
-
-    /* for 480px or less */
-    @media screen and (max-width: 480px) {
-
-        #roundsBox {
-            display: none;
-        }
-
-    }
+}
 
 
     /*** Input Table ***/
@@ -360,6 +339,7 @@
 	}
 	.tableVT
 	{
+		max-height:600px;
 		height:100%;
 	}
 	#detailsth
@@ -368,31 +348,40 @@
 	}
 	.tabledaysVT
 	{
+		background-color: #f0efef;
 		width: 19%;
 	}
-	.tabletdVT,.tabletdVT
+	.tabletdVT
 	{
+		background-color: #fafafa;
+		min-height:50px;
 		width: 9%;
-		max-width: 50px;
+		max-width: 0px;
 	}
 	.tabletdVT:hover
 	{
-		
 		background-color:#f5f5f5;
-		width: 9%;
 	}
 	.changeVT
 	{
+		max-height:;0px;
 		cursor: pointer;
 		color:#fff;
-		background-color: #B32561;
+		background-color: #431367;
 		border-width: 2px;
 		width:  9%;
 	}
 	.changeVT:hover
 	{
 		cursor: pointer;
-		background-color: #431367;
+		background-color: #B32561;
+	}
+	.changeVTstored
+	{
+		max-height:10px;
+		color:#fff;
+		cursor: pointer;
+		background-color: #B32561;
 		border-width: 2px;
 		width:  9%;
 	}
@@ -415,6 +404,8 @@
     .grid
         {
         cursor: pointer;
+		max-width:40px;
+		min-width:30px;
     }
     .grid:hover
         {
@@ -425,8 +416,15 @@
         {
         background-color:#431367;
         border: 2px solid black;
+		max-width:40px;
+		min-width:30px;
     }
-    
+    .gridBooked
+        {
+        background-color:#aaa;
+        border: 1px solid black;
+		max-width:40px;
+    }
     .gridClicked:hover
         {
         background-color:#B32561;
@@ -435,200 +433,273 @@
             
     /** weeks input **/
 
-    .wkInput,.specReqR 
-        {
-         display:none;
-    }
 
-	.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.requestButtons,.specReqR + label 
+    /** weeks input **/
 
+.wkInput,.specReqR, .prefInput{
+    display: none;
+}
 
-        {
-        display:inline-block;
-        min-height:25px;
-        min-width:100%;
-		padding-top:5px;
-		font-size: 16px;
-		color: #431367;
-		text-align: center;
-		text-shadow: 0 1px 1px rgba(255,255,255,0.75);
-		vertical-align: middle;
-		background-color: #f5f5f5;
-		background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
-		background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
-		background-image: -webkit-linear-gradient(top,#fff,#e6e6e6);
-		background-image: -o-linear-gradient(top,#fff,#e6e6e6);
-		background-image: linear-gradient(to bottom,#fff,#e6e6e6);
-		background-repeat: repeat-x;
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe6e6e6',GradientType=0);
-		filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-		-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
-		-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
-		box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
-		border: 1px solid #ccc;
-		border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-		border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
-		border-bottom-color: #b3b3b3;
-	}
-    .wkInput + label, #wkLabel    
-        {
-        display:inline-block;
-        min-height:25px;
-        min-width:8px;
-		padding: 0px 15px;
-        padding-top:5px;
-		margin: 0;
-        margin-left:-6px;
-	}
-    
-    .wkInput + label
-        {
-        cursor: pointer;
-    }
-    
-    .wkInput:checked + label,.specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label,.specReqR:checked + label 
-        {
-		background-color:#dcdcdc;
-		color: #B32561;
-        background-image: none;
-		outline: 0;
-		-webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
-		-moz-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
-		box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
-    }
-	#SemWekTab td
-	{
-		padding: 0px 5px;
-	}
-	.specReqR + label 
-	{
-		min-width:50px;
-	}
+.specReq + label ,.specReqP + label,.roomSele + label, .wkInput + label, #wkLabel,.requestButtons,.specReqR + label, .prefInput  + label {
+    display: inline-block;
+    min-height: 25px;
+    min-width: 100%;
+    padding-top: 5px;
+    font-size: 16px;
+    color: #431367;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.75);
+    vertical-align: middle;
+    background-color: #f5f5f5;
+    background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
+    background-image: -webkit-linear-gradient(top,#fff,#e6e6e6);
+    background-image: -o-linear-gradient(top,#fff,#e6e6e6);
+    background-image: linear-gradient(to bottom,#fff,#e6e6e6);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe6e6e6',GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+    border: 1px solid #ccc;
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+    border-bottom-color: #b3b3b3;
+}
+
+.wkInput + label, .prefInput + label, #wkLabel {
+    display: inline-block;
+    min-height: 25px;
+    min-width: 8px;
+    padding: 0px 15px;
+    padding-top: 5px;
+    margin: 0;
+    margin-left: -6px;
+}
+
+.wkInput + label, .prefInput + label{
+    cursor: pointer;
+}
+
+.prefInput + label
+{
+	width:90%;
+}
+.wkInput:checked + label, .prefInput:checked + label, .specReq:checked + label  ,.specReqP:checked + label,.roomSele:checked + label,.specReqR:checked + label {
+    background-color: #dcdcdc;
+    color: #B32561;
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+    -moz-box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);
+}
+
+#SemWekTab td {
+    padding: 0px 5px;
+}
+
+.specReqR + label {
+    min-width: 50px;
+}
 	/* Module selector */
-	.modChooser
-	{
-		width:100%;
-		max-width: 445px;
-		color: #431367;
-	}
-	.modTable
-	{
-		width:100%;
-		border-collapse: collapse;
-		padding: 0px 0px;
-		color: #431367;
-		
-	}
+.modChooser {
+    width: 100%;
+    max-width: 445px;
+    color: #431367;
+}
+
+.modTable {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 0px 0px;
+    color: #431367;
+}
 	/** specReq input **/
 
-    .specReq, .specReqP, .roomSele
-        {
-         display:none;
-    }
+.specReq, .specReqP, .roomSele {
+    display: none;
+	cursor:pointer;
+}
+
+.roomSele +label {
+    min-width: 99%;
+}
+
+.specReqP + label {
+    min-width: 110px;
+}
+
+.specReq + label,.specReqR + label, .roomSele + label {
+    cursor: pointer;
+}
+
+.specReq:disabled + label , .specReqP:disabled+label, .wkInput:disabled+label {
+    color: #d9d9d9;
+    background-image: none;
+    outline: 0;
+    background-color: #fdfdfd;
+}
+
+.specReqText {
+    min-width: 98%;
+    color: #431367;
+}
+
+#charToGo, #cCR {
+    width: 100%;
+    font-size: 12px;
+    color: #B32561;
+    text-align: right;
+}
+
+#RequestsTable {
+    border: 1px solid black;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#RequestsTable * {
     
-	.roomSele +label
-	{
-		 min-width:99%;
-	}
-	
-	.specReqP + label
-	{
-        min-width:110px;
-	}
-	.specReq + label,.specReqR + label
-        {
-        cursor: pointer;
-    }
-    .specReq:disabled + label
-	{
-		color: #d9d9d9;
-		background-image: none;
-		outline: 0;
-		background-color:#fdfdfd;
-	}
-	.specReqText
-	{
-		min-width:98%;
-		color: #431367;
-		
-	}
-	#charToGo, #cCR
-	{
-		width:100%;
-		font-size: 12px;
-		color: #B32561;
-		text-align:right;
-		
+    text-align: center;
+
+}
+
+#RequestsTable th {
+    background-color: #f0efef;
+	border: 1px solid black;
+    cursor: pointer;
+	padding: 3px;
+}
+
+#RequestsTable th:hover {
+    background-color: #fff;
+}
+
+.tableH {
+    color: #431367;
+    cursor: pointer;
+}
+
+.tableHClick {
+    color: #B32561;
+    cursor: pointer;
+}
+
+.requestButtons {
+    width: 100%;
+	height:100%;
+}
+.requestButtons:hover {
+	background: #fff;
+}
+
+.requestButtonsClk
+{
+	color:#B32561;
+}
+
+.requestsRow {
+    background-color: #fff;
+	border: 1px solid black;
+}
+
+.requestsRowClk {
+    background-color: #f0efef;
+    color: #B32561;
+}
+
+.requestsRow:hover {
+    background-color: #f8f8f8;
+}
+
+.requestCells
+{
+	border: 1px solid black;
+}
+
+#celltrue
+{
+	color: green;
+}
+
+#cellrej
+{
+	color: red;
+}
+
+.butCells
+{
+	padding:0px;
+	border:0px solid white;
+}
+
+#roomsList {
+    height: 300px;
+    width: 100%;
+    border: 1px solid #AAA;
+    overflow-y: auto;
+}
+#roomsListReq{
+	height: 345px;
+    width: 100%;
+    border: 1px solid #AAA;
+    overflow-y: auto
+}
+#roomsList li {
+    display: block;
+    border: 1px solid #ddd;
+}
+
+#roundsInfoTable *{
+border:0.5px solid #333;
+height: 30px;
+}
+
+#roundsInfoTable  {
+    border-collapse: collapse;
+    text-align: center;
+	border: 1px solid #333;
+	height: 30px;
 	}
 
-     #RequestsTable
-        {
-        border: 1px solid black;
-        width: 100%;
-        border-collapse: collapse;
-        
-    }
+#roundsInfoTable th {
+    border-collapse: collapse;
+	background-color: #ddd;
+}
 
-    #RequestsTable *
-    {
-        border: 1px solid black;
-        text-align: center;
-		padding: 2px;
-    }
-	
-	#RequestsTable th
-        {
-		background-color:#f0efef;
-		cursor: pointer;
-		
-	}
-	#RequestsTable th:hover
-        {
-		background-color:#fff;
-	}
-	
-	.requestsRow
-	{
-		background-color: #fff;
-	}
-	.requestsRowClk
-	{
-		background-color:#f0efef;
-		color: #B32561;
 
-	}
-	
-	.requestsRow:hover
-	{
-		background-color:#f8f8f8;
-	}
-	
-    #roomsList, #details{
-        height:300px;
-        width:100%;
-        border:1px solid #AAA;
-        overflow-y:auto;
-    }
-    #details{
-		height:100%;
-	}
-    #roomsList li{
-        display:block;
-        border:1px solid #ddd;
-    }
-	
-	#roundsInfoTable *
-	{ 
-		border-collapse: collapse;
-		text-align:center;
-		border: 1px solid #333;
-		
-	}
+#roundsInfoTable tr{
+	border:1.5px solid#333;
+}
 
-	#roundsInfoTable td
-	{
-		border-collapse: collapse;
-	}
-	
 
+.requestsRow:hover
+{
+	background-color:#f8f8f8;
+}
+
+#details{
+	height:100%;
+	width:100%;
+	border:1px solid #AAA;
+	overflow-y:auto;
+	border:0px;
+	
+}
+	
+#formButs
+{
+	padding:0px;
+	margin:0px;
+	border-collapse: collapse;
+	border: 0px solid white;
+}
+
+h4
+{
+	padding: 2px;
+	margin: 2px;
+}
 

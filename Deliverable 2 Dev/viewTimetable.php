@@ -24,6 +24,9 @@
 			var endTimeList1 = ["09:50","10:50","11:50","12:50"];
 			var endTimeList2 = ["13:50","14:50","15:50","16:50","17:50"];
 			var endTimeList3 = ["01:50","02:50","03:50","04:50","05:50"];
+			var clickedID ="";
+			semesterNumber=0;
+			$(document).ready(function(){rdRoundData()});
 			$(document).ready(function(){validateUser();});
 			$(document).ready(function(){getUser();});
 			$(document).ready(function(){getUserPrefs()});
@@ -34,6 +37,13 @@
 			function getUser(){
 				passedUsername = "<?php echo $_SESSION['username'] ?>";
 			}
+			function rdRoundData(){
+				$.get("GETroundData.php",function(JSON){
+					if(JSON.length!=0){
+						semesterNumber=JSON[0].semester;
+					}
+				},'json');
+			}
 			function SelectWeek(week){
 				clearTbl();
 				getTable(week);
@@ -42,6 +52,7 @@
 				for(var i =1;i<=9;i++){
 					for(var j =1; j<=5;j++){
 						$('#t'+i+''+j).removeClass("changeVT");
+						$('#t'+i+''+j).removeClass("changeVTstored");
 						$('#t'+i+''+j).addClass("tabletdVT");
 						document.getElementById("t"+i+''+j).innerHTML="";
 					}
@@ -53,9 +64,10 @@
 				var sessionid= "<?php echo session_id(); ?>";
 				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
 					if (JSON.length==0)
-					window.location.replace("login.php");
+					window.location.replace("index.htm");
 				}, 'json');
-			}	
+			}
+
 			function MkActions(){
 				var tbl="";
 				tbl +="<table width='100%'><tr><td>Select a Week:<select id='weeksele' onchange='SelectWeek(this.value)' onclick='SelectWeek(this.value)' onkeypress='SelectWeek(this.value)' onkeyup='SelectWeek(this.value)'>";
@@ -78,6 +90,15 @@
 				tbl +="<input type='radio' class='wkInput' id='sem1' name='semester' onclick='semesters()'><label for='sem1'>1</label>";
 				tbl +="<input type='radio' class='wkInput' id='sem2' name='semester' onclick='semesters()'><label for='sem2'>2</label></td></tr></table>";
 				document.getElementById("actiontimeBox").innerHTML=tbl;
+				if (semesterNumber==1){
+				document.getElementById('sem1').checked=true;
+				}
+				else if (semesterNumber==2){
+				document.getElementById('sem2').checked=true;
+				}
+				else if (semesterNumber==0){
+				document.getElementById('sem1').checked=true;
+				}
 			}
 			function semesters(){	
 				var check = document.getElementById("weeksele").value
@@ -138,6 +159,8 @@
 			function clickedtable(value){
 				if($(value).attr('class')=='changeVT'){
 					if(reqID.length != 0){
+
+
 						var seleID =[];
 						var RoomArr=[];
 						var RoomIdArr = [];
@@ -148,6 +171,7 @@
 						}
 						codeStl = "";
 						for(var i = 0; i < seleID.length; i++){
+
 							$.ajax({
 								type: "GET",
 								dataType: "json",
@@ -207,7 +231,18 @@
 											}
 										}
 									}
+									
+									if(clickedID!=""){
+										$("#"+clickedID).removeClass('changeVTstored');
+										$("#"+clickedID).addClass('changeVT');
+									}
+									$("#"+value.id).removeClass('changeVT');
+									$("#"+value.id).addClass('changeVTstored');
+									
+									clickedID = value.id;
+									
 									wrTables(RoomArr);
+
 								}
 							});
 						}
@@ -350,6 +385,8 @@
 				codeStl += "</div>";
 				document.getElementById("roomSelectorBox2").innerHTML = (codeStl);
 			}
+
+
 			function getTable(week){
 				reqID= [];
 				var user = "CO";
@@ -404,6 +441,7 @@
 						}
 					}
 				});
+				
 			}
 		</script>
         <title>View Timetable</title>
@@ -415,9 +453,8 @@
                 <li><a href="viewRequests.php"><img src="LU-mark-rgb.png" alt="Home"></a></li>
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
-                <li><a href="helpPage.php">Help</a></li>
-                <li><a href="accountPage.php">Username(pref)</a></li>
-                <li><a href="login.php">Logout</a></li>
+                <li><a href="accountPage.php">My Account</a></li>
+                <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
         <div id="pagewrap">

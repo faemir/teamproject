@@ -10,4 +10,5 @@
 	$sql="UPDATE Preferences SET period=$per, hr24format=$hour, defaultstartweek=$start, defaultendweek=$end, defaultlocation='$location' WHERE username='$username'";
 	include "DBquery.php";
 
+
 ?>

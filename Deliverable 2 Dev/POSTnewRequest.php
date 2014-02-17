@@ -1,20 +1,26 @@
 <?php
+	require_once 'MDB2.php';
+	include "LTF.php"; //to provide $username,$password
+	
+	$host='co-project.lboro.ac.uk'; //accesses database
+	$dbName='team04';//login
+	$dsn = "mysql://$username:$password@$host/$dbName"; 
+	
+	$db =& MDB2::connect($dsn); 
+	if(PEAR::isError($db)){ 
+	   die($db->getMessage());
+	}
 	
 	$editBool = $_GET["editBool"];
 	$editRequestId = $_GET["editrequestid"];
 	$year = $_GET["year"]; 
-
     $modulecode = $_GET["modulecode"]; 
     $priority = $_GET["priority"];
     $semester = $_GET["semester"];
     $day = $_GET["day"];
-
 	$period = $_GET["period"];
     $duration = $_GET["duration"];
-    
     $weekid = $_GET["weekid"];
-
-    
     $noofstudents = $_GET["noofstudents"];
     $noofrooms = $_GET["noofrooms"];
     $preferredroom = $_GET["preferredroom"];
@@ -31,7 +37,7 @@
     $whiteboard = $_GET["whiteboard"];
     $chalkboard = $_GET["chalkboard"];
 	$nearestroom = $_GET["nearestroom"];
-	$other = $_GET["other"];
+	$other = mysql_real_escape_string($_GET["other"]);
 	
 	if($editBool == 'true'){
 
@@ -49,7 +55,11 @@
 		$sql .= "$preferredroom,'$requeststatus',$qualityroom,$wheelchair,$dataprojector,$doubleprojector,$visualiser,$videodvdbluray,";
 		$sql .= "$computer,$whiteboard,$chalkboard,$nearestroom,'$other');";
 	}
-	include "DBquery.php";
-	echo $sql;
+
+	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+	$res =& $db->query($sql);
+	if(PEAR::isError($res)){
+		die($res->getMessage());
+	} 
 
 ?>
