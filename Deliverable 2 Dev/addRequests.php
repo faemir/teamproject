@@ -44,14 +44,12 @@
 		var roomsQueue = [];
 		var roomsNamesQueue = [];
 		var roomsNames = [];
-		var bookedRoomsArr = [];
 		var roomsJSONchecker = true;
 		var sort = false; // for sorting my capacity
 		var ARooms = 0;
 		var AClick = 0;
 		var roomlen = 0;
 		var currentYear = 13;
-		var round = false;
 		//Selected periods from table - false = not selected.
 		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
@@ -67,7 +65,6 @@
         //FUNCTIONS --------------------------------------------------//
 		
 		function theOnload(){
-
 			getCurrentyear();
 			rdRoundData();
 			validateUser();
@@ -124,11 +121,16 @@
 				async: false,
 				success: function(JSON){
 					if (JSON.length==0){
-						window.location.replace("index.htm");
+						window.location.replace("login.php");
 					}
 				}
 			});
-
+			
+			
+			// $.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+				// if (JSON.length==0)
+				// window.location.replace("login.php");
+			// }, 'json');
 		}
 		
 		function rdRoundData(){
@@ -144,7 +146,12 @@
 					}				
 				}
 			});
-
+			// $.get("GETroundData.php",function(JSON){
+				// if(JSON.length!=0){
+				// semesterNumber=JSON[0].semester;
+				// roundsNumber=JSON[0].roundsnum;
+				// }
+			// },'json');
 		}
 		
 		function getCurrentyear(){
@@ -157,33 +164,32 @@
 					currentYear = JSON[0].year;
 				}
 			});
+			// $.get("GETcurrentYear.php",function(JSON){
+				// currentYear = JSON[0].year;
+			// },'json');
 		}
 		
 		function roundChanges(){
+			alert("whacky");
 			if (roundsNumber==1 && semesterNumber==1){
 				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
 				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
-				round = false;
 			}
 			else if (roundsNumber==2 && semesterNumber==1){
 				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
-				round = true;
 			}
 			else if (roundsNumber==1 && semesterNumber==2){
 				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
-				round = false;
 			}
-			else if (roundsNumber==2 && semesterNumber==2){
-				round = true;
-			}
+			//else if (roundsNumber==2 && semesterNumber==2){
+			//}
 			else {
 				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
-				round = true;
 			}
 		}		 
 
@@ -360,20 +366,15 @@
         function ClrTab(){
 			for(var k = 1;k<=pOrTChildren.length;k++){
 				if (mondaySele[k-1]==true)
-					{$("#t1"+ k).removeClass("gridClicked");}
-					{$("#t1"+ k).addClass("grid");}
+					{$("#t1"+ k).toggleClass("gridClicked");}
 				if (tuesdaySele[k-1]==true)
-					{$("#t2"+ k).removeClass("gridClicked");}
-					{$("#t2"+ k).addClass("grid");}
+					{$("#t2"+ k).toggleClass("gridClicked");}
 				if (wednesdaySele[k-1]==true)
-					{$("#t3"+ k).removeClass("gridClicked");}
-					{$("#t3"+ k).addClass("grid");}
+					{$("#t3"+ k).toggleClass("gridClicked");}
 				if (thursdaySele[k-1]==true)
-					{$("#t4"+ k).removeClass("gridClicked");}
-					{$("#t4"+ k).addClass("grid");}
+					{$("#t4"+ k).toggleClass("gridClicked");}
 				if (fridaySele[k-1]==true)
-					{$("#t5"+ k).removeClass("gridClicked");}
-					{$("#t5"+ k).addClass("grid");}
+					{$("#t5"+ k).toggleClass("gridClicked");}
 			}
 			mondaySele = [false,false,false,false,false,false,false,false,false];
 			tuesdaySele = [false,false,false,false,false,false,false,false,false];
@@ -400,32 +401,28 @@
 			document.getElementById("modCodeSelect").selectedIndex=0;
 			//defaults?
 		}
+		
 		function ClrRoom(){
 			if (roomsJSONchecker){
-				if (roomsQueue.length!=0){
-					for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
+				for(var j = 0; j < roomsQueue.length; j++){ //makes all rooms check = false
 						document.getElementById("r"+roomsQueue[j]).checked = false;
-					}
 				}
-				document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
-				ARooms=0;
-				document.getElementById("room1").checked = true;
 			}
-			
+			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
+			ARooms=0;
+			document.getElementById("room1").checked = true;
 		}
+		
 		function EmptyRoom(){
 			ClrRoom();
 			roomsQueue = [];
 			roomsNamesQueue = [];
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
-			resetBooked()
-			getBookedRooms();
-			
 		}
+		
 		function ClrAll(){
 			if (confirm("Are you sure you are want to clear this?")){
-				
-				EmptyRoom();
+				ClrRoom();
 				ClrTab();
 				ClrSpec();
 			}
@@ -434,70 +431,52 @@
 		//---------------------------------------------------------------------------------------------//
         //onclick for table buttons
         function tableSelect(gridRef){
-			if ($("#"+gridRef).attr('class')!='gridBooked'){
-				if($("#"+gridRef).attr('class')=='gridClicked'){
-					$("#"+ gridRef).removeClass("gridClicked");
-					$("#"+ gridRef).addClass("grid");
-				}else{
-					$("#"+ gridRef).removeClass("grid");
-					$("#"+ gridRef).addClass("gridClicked");
-				}
-			}
+            $("#"+ gridRef).toggleClass("gridClicked");
 			TFTable(gridRef.substring(1,gridRef.length));
         }	
         
         //toggles boolean value of each square in input table for other functions to use
 		function TFTable(gridRef){
-				var daySele = parseInt(gridRef.substring(0,1));
-				var periodSele = parseInt(gridRef.substring(1,gridRef.length)) -1;
-				switch (daySele){
-					case 1:
-					{
-						if (mondaySele[periodSele]==true)
-							{mondaySele[periodSele]=false;}
-						else{
-							if($("#t"+gridRef).attr('class')!='gridBooked'){mondaySele[periodSele]=true;}
-							}
-					}
-					break;
-					case 2:
-					{
-						if (tuesdaySele[periodSele]==true)
-							{tuesdaySele[periodSele]=false;}
-						else{
-							if($("#t"+gridRef).attr('class')!='gridBooked'){tuesdaySele[periodSele]=true;}
-							}
-					}
-					break;
-					case 3:
-					{
-						if (wednesdaySele[periodSele]==true)
-							{wednesdaySele[periodSele]=false;}
-						else{
-							if($("#t"+gridRef).attr('class')!='gridBooked'){wednesdaySele[periodSele]=true;}
-							}
-					}
-					break;
-					case 4:
-					{
-						if (thursdaySele[periodSele]==true)
-							{thursdaySele[periodSele]=false;}
-						else{
-							if($("#t"+gridRef).attr('class')!='gridBooked'){thursdaySele[periodSele]=true;}
-						}
-					}
-					break;
-					case 5:
-					{
-						if (fridaySele[periodSele]==true)
-							{fridaySele[periodSele]=false;}
-						else{
-							if($("#t"+gridRef).attr('class')!='gridBooked'){fridaySele[periodSele]=true;}
-							}
-					}
-					break;
+			var daySele = parseInt(gridRef.substring(0,1));
+			var periodSele = parseInt(gridRef.substring(1,gridRef.length)) -1;
+			switch (daySele){
+				case 1:
+				{
+					if (mondaySele[periodSele]==true)
+						{mondaySele[periodSele]=false;}
+					else{mondaySele[periodSele]=true;}
 				}
-			
+				break;
+				case 2:
+				{
+					if (tuesdaySele[periodSele]==true)
+						{tuesdaySele[periodSele]=false;}
+					else{tuesdaySele[periodSele]=true;}
+				}
+				break;
+				case 3:
+				{
+					if (wednesdaySele[periodSele]==true)
+						{wednesdaySele[periodSele]=false;}
+					else{wednesdaySele[periodSele]=true;}
+				}
+				break;
+				case 4:
+				{
+					if (thursdaySele[periodSele]==true)
+						{thursdaySele[periodSele]=false;}
+					else{thursdaySele[periodSele]=true;}
+				}
+				break;
+				case 5:
+				{
+					if (fridaySele[periodSele]==true)
+						{fridaySele[periodSele]=false;}
+					else{fridaySele[periodSele]=true;}
+				}
+				break;
+			}
+
 		}
         //collect day time and period information for all days
 		function timetableGetter(){
@@ -626,7 +605,6 @@
 				roomsNamesQueue.length = valuess;
 				ARooms = valuess;
 			}
-			getBookedRooms();
 			AClick = valuess;
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 			
@@ -684,110 +662,8 @@
 			}
 			document.getElementById("cCR").innerHTML  = roomsNamesQueue.length + " Rooms Selected";
 			
-			
-			getBookedRooms();
 		}
-		function getBookedRooms(){
-			if(round){
-				resetBooked();
-				bookedRoomsArr= [];
-				for(var i = 0; i <roomsNamesQueue.length; i++){
-					$.ajax({
-						type: "GET",
-						url: "GETbookedRooms2.php",
-						dataType: "json",
-						data: {'roomid': roomsNamesQueue[i]},
-						async: false,
-						success: function(JSON){
-							var timeSlotsArray = [];
-							if(JSON.length !=0){
-								for (var j = 0; j< JSON.length; j++){
-									var timeSlots = [];
-									timeSlots[0] = JSON[j].day ;
-									timeSlots[1] = JSON[j].period ;
-									timeSlots[2] = JSON[j].duration ;
-									timeSlots[3] = JSON[j].week1 ;
-									timeSlots[4] = JSON[j].week2 ;
-									timeSlots[5] = JSON[j].week3 ;
-									timeSlots[6] = JSON[j].week4 ;
-									timeSlots[7] = JSON[j].week5 ;
-									timeSlots[8] = JSON[j].week6 ;
-									timeSlots[9] = JSON[j].week7 ;
-									timeSlots[10] = JSON[j].week8 ;
-									timeSlots[11] = JSON[j].week9 ;
-									timeSlots[12] = JSON[j].week10 ;
-									timeSlots[13] = JSON[j].week11 ;
-									timeSlots[14] = JSON[j].week12 ;
-									timeSlots[15] = JSON[j].week13 ;
-									timeSlots[16] = JSON[j].week14 ;
-									timeSlots[17] = JSON[j].week15 ;
-									timeSlotsArray[timeSlotsArray.length]=timeSlots;
-								}
-								bookedRoomsArr[bookedRoomsArr.length]=[JSON[0].roomid,timeSlotsArray];
-								//alert(bookedRoomsArr);
-								displayBRooms();
-							}
-						}
-					});
-				}		
-			}
-			
-		}
-		function resetBooked(){
-			for(i=1;i<=9;i++){
-				for(j=1;j<=5;j++){
-					$("#t"+j+''+i).removeClass('gridBooked');
-					document.getElementById("t"+j+''+i).innerHTML="";
-				}
-			}
-		}
-		function displayBRooms(){
-			resetBooked();
-			for(i=0; i<bookedRoomsArr.length; i++){
-				for(j=0; j<bookedRoomsArr[i][1].length;j++){
-					var day =0;
-					switch (bookedRoomsArr[i][1][j][0]){
-						case "Monday":day = 1;break;
-						case "Tuesday":day = 2;break;
-						case "Wednesday":day = 3;break
-						case "Thursday":day = 4;break;
-						case "Friday":day = 5;break;
-					}
-					var checking = false;
-					var weekcheck = 0;
-					for(var t = 3; t <= 17; t++){
-						weekcheck = 0;
-						if(document.getElementById('wk'+(t-2)).checked){weekcheck = '1';}
-						if(bookedRoomsArr[i][1][j][t]==1&&weekcheck==1){
-							checking=true;
-						}
-					}
-					if(checking){
-						for (var k = 0; k < bookedRoomsArr[i][1][j][2]; k ++){
-							var bubble = parseInt(bookedRoomsArr[i][1][j][1])+k;
-							$("#t"+day+''+bubble).removeClass('grid');
-							
-							$("#t"+day+''+bubble).removeClass('grid');
-							$("#t"+day+''+bubble).removeClass('gridClicked');
-							$("#t"+day+''+bubble).addClass('gridBooked');
-							tableSelect("t"+day+''+bubble);
-							var weekshtml = "Weeks:";
-							for(p=3; p <=17;p++){
-								if(bookedRoomsArr[i][1][j][p]==1){
-									weekshtml += p-2 + ", ";
-								}
-							}
-							weekshtml=weekshtml.substring(0,weekshtml.length-2);
-							if (document.getElementById("t"+day+''+bubble).innerHTML==""){
-								document.getElementById("t"+day+''+bubble).innerHTML=bookedRoomsArr[i][0] + " " + weekshtml;
-							}else{
-								document.getElementById("t"+day+''+bubble).innerHTML = document.getElementById("t"+day+''+bubble).innerHTML + "<br>" + bookedRoomsArr[i][0] + " " + weekshtml;
-							}
-						}
-					}
-				}
-			}		
-		}
+
 		//-------------Change Room list accordingly
 		var SQLRoom = "SELECT roomid, building, capacity FROM RoomDetails ORDER BY roomid";// declares SQL for room
 		function GetRoom(type){
@@ -926,10 +802,10 @@
 				document.getElementById("CAP").value = parseInt(capTemp);}
 		}
 
+		
 		function countText(){
 			document.getElementById("charToGo").innerHTML = (280 - document.getElementById("ORE").value.length) + " Characters remaining"
 			if (document.getElementById("ORE").value.length >= 280){
-				document.getElementById("charToGo").innerHTML = 0 + " Characters remaining"
 				document.getElementById("ORE").value=document.getElementById("ORE").value.substring(0,280);
 			}
 		}
@@ -1162,12 +1038,11 @@
 							editBool = false;
 						}while(i<DPTArray.length);
 					
-						if(redirectBool){
-							window.location.replace("viewRequests.php?PHPSESSID=" + seshId);
-						}else{
-							window.location.replace("addRequests.php?PHPSESSID=" +seshId);
-						}	
-
+						// if(redirectBool){
+							// window.location.replace("viewRequests.php?PHPSESSID=" + seshId);
+						// }else{
+							// window.location.replace("addRequests.php?PHPSESSID=" +seshId);
+						// }	
 				
 					}
 				}
@@ -1183,6 +1058,7 @@
                 <li><a href="viewRequests.php"><img src="LU-mark-rgb.png" alt="Home"></a></li>
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
+                <li><a href="helpPage.php">Help</a></li>
                 <li><a href="accountPage.php">My Account</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
@@ -1207,21 +1083,21 @@
 							</td>
 							<td>
 								<label class="wkInput" id="wkLabel">Weeks</label>
-								<input type="checkbox" class="wkInput" id="wk1" onclick="getBookedRooms()"><label for="wk1">1</label>
-								<input type="checkbox" class="wkInput" id="wk2" onclick="getBookedRooms()"><label for="wk2">2</label>
-								<input type="checkbox" class="wkInput" id="wk3" onclick="getBookedRooms()"><label for="wk3">3</label>
-								<input type="checkbox" class="wkInput" id="wk4" onclick="getBookedRooms()"><label for="wk4">4</label>
-								<input type="checkbox" class="wkInput" id="wk5" onclick="getBookedRooms()"><label for="wk5">5</label>
-								<input type="checkbox" class="wkInput" id="wk6" onclick="getBookedRooms()"><label for="wk6">6</label>
-								<input type="checkbox" class="wkInput" id="wk7" onclick="getBookedRooms()"><label for="wk7">7</label>
-								<input type="checkbox" class="wkInput" id="wk8" onclick="getBookedRooms()"><label for="wk8">8</label>
-								<input type="checkbox" class="wkInput" id="wk9" onclick="getBookedRooms()"><label for="wk9">9</label>
-								<input type="checkbox" class="wkInput" id="wk10" onclick="getBookedRooms()"><label for="wk10">10</label>
-								<input type="checkbox" class="wkInput" id="wk11" onclick="getBookedRooms()"><label for="wk11">11</label>
-								<input type="checkbox" class="wkInput" id="wk12" onclick="getBookedRooms()"><label for="wk12">12</label>
-								<input type="checkbox" class="wkInput" id="wk13" onclick="getBookedRooms()"><label for="wk13">13</label>
-								<input type="checkbox" class="wkInput" id="wk14" onclick="getBookedRooms()"><label for="wk14">14</label>
-								<input type="checkbox" class="wkInput" id="wk15" onclick="getBookedRooms()"><label for="wk15">15</label>
+								<input type="checkbox" class="wkInput" id="wk1" ><label for="wk1">1</label>
+								<input type="checkbox" class="wkInput" id="wk2" ><label for="wk2">2</label>
+								<input type="checkbox" class="wkInput" id="wk3" ><label for="wk3">3</label>
+								<input type="checkbox" class="wkInput" id="wk4" ><label for="wk4">4</label>
+								<input type="checkbox" class="wkInput" id="wk5" ><label for="wk5">5</label>
+								<input type="checkbox" class="wkInput" id="wk6" ><label for="wk6">6</label>
+								<input type="checkbox" class="wkInput" id="wk7" ><label for="wk7">7</label>
+								<input type="checkbox" class="wkInput" id="wk8" ><label for="wk8">8</label>
+								<input type="checkbox" class="wkInput" id="wk9" ><label for="wk9">9</label>
+								<input type="checkbox" class="wkInput" id="wk10" ><label for="wk10">10</label>
+								<input type="checkbox" class="wkInput" id="wk11" ><label for="wk11">11</label>
+								<input type="checkbox" class="wkInput" id="wk12" ><label for="wk12">12</label>
+								<input type="checkbox" class="wkInput" id="wk13"><label for="wk13">13</label>
+								<input type="checkbox" class="wkInput" id="wk14"><label for="wk14">14</label>
+								<input type="checkbox" class="wkInput" id="wk15"><label for="wk15">15</label>
 							</td>
 						</tr>
 					</table>
