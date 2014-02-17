@@ -89,16 +89,20 @@
 			var sessionid= "<?php echo session_id(); ?>";
 			$.ajax({
 				type: "GET",
-				url: "GETuserpassdeets.php"
+				url: "GETuserpassdeets.php",
 				dataType: "JSON",
 				data: {'username':user, 'sessionid':sessionid},
 				async: false,
 				success: function(){
 					if (JSON.length==0){
-						window.location.replace("index.htm");
+						window.location.replace("login.php");
 					}
 				}
 			});
+			// $.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+				// if (JSON.length==0)
+					// window.location.replace("login.php");
+			// }, 'json');
 		}
 
 			
@@ -117,7 +121,7 @@
 		function getCurrentyear(){
 			$.ajax({
 				type: "GET",
-				url: "GETroundData.php",
+				url: "GETcurrentYear.php",
 				dataType: "JSON",
 				async: false,
 				success: function(JSON){
@@ -167,9 +171,10 @@
 			$("#tableBox").empty();
 			$.ajax({
                 type: "GET",
-                dataType: "json",
+                dataType: "JSON",
                 url: "GETallRequests.php",
 				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername, 'year': reqYear},
+				async: false,
                 success: function(JSON){
 					var codeStb = "";
 					if(JSON.length!=0){
@@ -352,8 +357,7 @@
 					document.getElementById("rejectedreq").innerHTML="No of Rejected: " + noofrejected;
                 }
             });
-			
-			 
+		 
 		}
 		
 	
@@ -568,11 +572,6 @@
 			//Empty and refill table's div tag.
 			document.getElementById("tableBox").innerHTML = "";
 			document.getElementById("tableBox").innerHTML = codeStr;
-			// if (lastHead!=""){
-				// $('#'+lastHead).toggleClass('tableH');
-			// }
-			// lastHead=$(JsonObj).parent().parent().attr('id');
-			//alert($(column).attr('id'));
 			$(heads).toggleClass("tableHClick");
 
 			
@@ -588,11 +587,11 @@
 					if(JSON.length!=0){
 						roundsNumber=JSON[0].roundsnum;
 					}
+				}
 			});
 		}
 		
 		function wrRoundsTable(){	
-
 			$.ajax({
 				type: "GET",
 				url: "GETRoundsDetails.php", 
@@ -646,6 +645,7 @@
                 <li><a href="viewRequests.php"><img src="LU-mark-rgb.png" alt="Home"></a></li>
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
+                <li><a href="helpPage.php">Help</a></li>
                 <li><a href="accountPage.php">My Account</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>

@@ -124,10 +124,16 @@
 				async: false,
 				success: function(JSON){
 					if (JSON.length==0){
-						window.location.replace("index.htm");
+						window.location.replace("login.php");
 					}
 				}
 			});
+			
+			
+			// $.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+				// if (JSON.length==0)
+				// window.location.replace("login.php");
+			// }, 'json');
 		}
 		
 		function rdRoundData(){
@@ -143,6 +149,12 @@
 					}				
 				}
 			});
+			// $.get("GETroundData.php",function(JSON){
+				// if(JSON.length!=0){
+				// semesterNumber=JSON[0].semester;
+				// roundsNumber=JSON[0].roundsnum;
+				// }
+			// },'json');
 		}
 		
 		function getCurrentyear(){
@@ -155,6 +167,9 @@
 					currentYear = JSON[0].year;
 				}
 			});
+			// $.get("GETcurrentYear.php",function(JSON){
+				// currentYear = JSON[0].year;
+			// },'json');
 		}
 		
 		function roundChanges(){
@@ -1180,6 +1195,7 @@
                 <li><a href="viewRequests.php"><img src="LU-mark-rgb.png" alt="Home"></a></li>
                 <li><a href="addRequests.php">Add New Requests</a></li>
                 <li><a href="viewTimetable.php">View Timetable</a></li>
+                <li><a href="helpPage.php">Help</a></li>
                 <li><a href="accountPage.php">My Account</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
