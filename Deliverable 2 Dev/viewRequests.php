@@ -13,15 +13,7 @@
         <title>View Current Requests</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
-        //onload ----------------------------------------------------------------//
-		$(document).ready(function(){getCurrentyear();});
-		$(document).ready(function(){validateUser();});
-		$(document).ready(function(){getUser();});
-		$(document).ready(function(){getUserPrefs();});
-		$(document).ready(function(){rdRoundData();});
-        $(document).ready(function(){wrRequestsTable(false);});
-		$(document).ready(function(){wrdetailsTitle();});
-		$(document).ready(function(){wrRoundsTable();});
+
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -53,7 +45,23 @@
 		var roundsNumber=0;
 		var currentYear = 13;
 		var prevBool = false;
+		//onload ----------------------------------------------------------------//
+		$(document).ready(function(){theOnLoad();});
+		
+		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
+		
+		function theOnLoad(){
+			getCurrentyear();
+			validateUser();
+			getUser();
+			getUserPrefs();
+			rdRoundData();
+			wrRequestsTable(false);
+			wrdetailsTitle();
+			wrRoundsTable();
+		}
+		
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username'] ?>";
 			seshId = "<?php echo session_id();?>";
@@ -77,14 +85,15 @@
 			});
 		}
 		function validateUser(){
-			var user= "<?php echo $_SESSION['username'] ?>";
-			var sessionid= "<?php echo session_id(); ?>";
-			$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
-				if (JSON.length==0)
-					window.location.replace("login.php");
-			}, 'json');
-		}
+				var user= "<?php echo $_SESSION['username'] ?>";
+				var sessionid= "<?php echo session_id(); ?>";
+				$.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
+					if (JSON.length==0)
+						window.location.replace("login.php");
+				}, 'json');
+			}
 
+			
 		function wrdetailsTitle(){
 			$("#detailsBox").empty();
 			
@@ -97,6 +106,7 @@
 
 		}
 
+			
 		function getCurrentyear(){
 			$.get("GETcurrentYear.php",function(JSON){
 				currentYear = JSON[0].year;
@@ -325,9 +335,12 @@
 					document.getElementById("acceptedreq").innerHTML="No of Accepted: " + noofaccepted;
 					document.getElementById("rejectedreq").innerHTML="No of Rejected: " + noofrejected;
                 }
-            });	 
+            });
+			
+			 
 		}
 		
+	
 		function showDetails(requestID,button){
 			$.get("GETdetailedRequests.php", {id: requestID}, function(JSON){
 				$("#detailsBox").empty();
@@ -369,75 +382,9 @@
 				codeStl += "<td>No. Rooms: " + JSON[0].noofrooms + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				codeStl +="<td colspan='2'>Preferred room: ";
-				var NAbool = true;
-				for(i=0;i<JSON.length;i++){
-					if(JSON[i].preferredrooms==1){
-						codeStl += JSON[i].roomid +", ";	
-					}
-					if(JSON[i].roomid=="NULL" && NAbool==true){
-						codeStl += "N/A";
-						NAbool = false;
-					}
+				if(JSON[0].preferredrooms==1){
+					codeStl += "<td colspan='2'>Preferred room: "+ JSON[0].roomid +"</td>";
 				}
-				codeStl +="</td>"
-				codeStl += "</tr><tr><td colspan='2'>Weeks: ";
-					$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: "GETweek.php",	
-					async: false,
-					data: {'id': JSON[0].weekid},
-					success: function(JSON2){
-						if (JSON2[0].week1==1){
-							codeStl += "1, ";
-						}
-						if (JSON2[0].week2==1){
-							codeStl += "2, ";
-						}
-						if (JSON2[0].week3==1){
-							codeStl += "3, ";
-						}
-						if (JSON2[0].week4==1){
-							codeStl += "4, ";
-						}
-						if (JSON2[0].week5==1){
-							codeStl += "5, ";
-						}
-						if (JSON2[0].week6==1){
-							codeStl += "6, ";
-						}
-						if (JSON2[0].week7==1){
-							codeStl += "7, ";
-						}
-						if (JSON2[0].week8==1){
-							codeStl += "8, ";
-						}
-						if (JSON2[0].week9==1){
-							codeStl += "9, ";
-						}
-						if (JSON2[0].week10==1){
-							codeStl += "10, ";
-						}
-						if (JSON2[0].week11==1){
-							codeStl += "11, ";
-						}
-						if (JSON2[0].week12==1){
-							codeStl += "12, ";
-						}
-						if (JSON2[0].week13==1){
-							codeStl += "13, ";
-						}
-						if (JSON2[0].week14==1){
-							codeStl += "14, ";
-						}
-						if (JSON2[0].week15==1){
-							codeStl += "15, ";
-						}
-						codeStl = codeStl.substring(0,codeStl.length-2);
-					}
-				});	
-				codeStl += "</td></tr>";
 				codeStl += "<tr><td colspan='2'>";
 				if(JSON[0].qualityroom==1){
 					codeStl += "Quality Room, ";

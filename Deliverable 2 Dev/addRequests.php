@@ -61,20 +61,23 @@
 		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 
         //ONLOAD FUNCTIONS -----------------------------------------//
-
-		$(document).ready(function(){getCurrentyear();});
-		$(document).ready(function(){rdRoundData()});
-		$(document).ready(function(){validateUser()});
-		$(document).ready(function(){getUser()});
-		$(document).ready(function(){GetPrefData()});
-        $(document).ready(function(){wrInputTable()});
-        $(document).ready(function(){loadDefaultWeeks()});
-		$(document).ready(function(){popModulesList(userDepartmentID)});
-		$(document).ready(function(){wrRoomsList()});
-		$(document).ready(function(){isEditreq()});
-		$(document).ready(function(){roundChanges()});
-		
+		$(document).ready(function(){theOnload()});
         //FUNCTIONS --------------------------------------------------//
+		
+		function theOnload(){
+			getCurrentyear();
+			rdRoundData();
+			validateUser();
+			getUser();
+			GetPrefData();
+			wrInputTable();
+			loadDefaultWeeks();
+			popModulesList(userDepartmentID);
+			wrRoomsList();
+			isEditreq();
+			roundChanges();
+		}
+		
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username']; ?>";
 			seshId = "<?php echo session_id();?>";
