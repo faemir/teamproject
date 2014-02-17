@@ -10,11 +10,10 @@
 	if(PEAR::isError($db)){ 
 	   die($db->getMessage());
 	}
-	$code= mysql_real_escape_string($_GET["code"]);
-	$title= mysql_real_escape_string($_GET["title"]);
-	$dept= mysql_real_escape_string($_GET["dept"]);
+	$code = mysql_real_escape_string($_GET["code"]);
+	$title = mysql_real_escape_string($_GET["title"]);
+	$dept = ($_GET["dept"]);
 	$sql="INSERT INTO ModuleTable VALUES ('$code', '$title', '$dept');";
-	
 	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
 	
 	$res =& $db->query($sql);

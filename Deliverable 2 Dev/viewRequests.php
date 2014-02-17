@@ -30,6 +30,7 @@
 		var userPrefHeader5 = "";
 		var userPrefHeader6 = "";
 		var lastHead ="";
+		var currentRow ="";
 		var lastRow = "";
 		var timeFormat;
 		var startTimeList1 = ["09:00","10:00","11:00","12:00"];
@@ -334,10 +335,17 @@
 					document.getElementById("cTR").innerHTML ="No of Requests: " + JSON.length;
 					document.getElementById("acceptedreq").innerHTML="No of Accepted: " + noofaccepted;
 					document.getElementById("rejectedreq").innerHTML="No of Rejected: " + noofrejected;
+					
                 }
             });
-			
-			 
+			if (lastRow!=""){
+				$('#' + lastRow).removeClass('requestRowClk');
+				$("#"+lastRow +" > .butCells > .requestButtons").removeClass('requestButtonsClk');
+				$("#"+lastRow +" > .butCells > #formButs > .requestButtons").removeClass('requestButtonsClk');
+			}
+			lastRow='';
+			$("#detailsBox").empty(); 
+			wrdetailsTitle();
 		}
 		
 	
@@ -459,6 +467,13 @@
 
 		//Sort functions. Asc, Desc alternating. Bubble sort.
 		function sortTable(colnumber,heads){
+			if (lastRow!=""){
+				$('#' + lastRow).removeClass('requestRowClk');
+				$("#"+lastRow +" > .butCells > .requestButtons").removeClass('requestButtonsClk');
+				$("#"+lastRow +" > .butCells > #formButs > .requestButtons").removeClass('requestButtonsClk');
+			}
+			lastRow='';
+			
 			//Fill 2D array with each row of table.
 			var value=new Array();
 			var rows = RequestsTable.getElementsByTagName('tr');
@@ -520,7 +535,7 @@
 			codeStr += '    <th onclick="sortTable(10,this)"id="h10" class="tableH">Status</th>';
             codeStr += '</tr>';
 			for(var l=1;l<value.length;l++){
-				codeStr += '	<tr class="requestsRow" id=r'+i+'>';
+				codeStr += '	<tr class="requestsRow" id=r'+l+'>';
 				codeStr += '    	<td class="requestCells">' + value[l][0] + '</td>';
 				codeStr += '    	<td class="requestCells">' + value[l][1] + '</td>';
 				codeStr += '    	<td class="requestCells">' + value[l][2] + '</td>';
@@ -538,11 +553,7 @@
 			//Empty and refill table's div tag.
 			document.getElementById("tableBox").innerHTML = "";
 			document.getElementById("tableBox").innerHTML = codeStr;
-			// if (lastHead!=""){
-				// $('#'+lastHead).toggleClass('tableH');
-			// }
-			// lastHead=$(JsonObj).parent().parent().attr('id');
-			//alert($(column).attr('id'));
+			
 			$(heads).toggleClass("tableHClick");
 
 			
