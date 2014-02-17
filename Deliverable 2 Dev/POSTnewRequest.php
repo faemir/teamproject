@@ -14,18 +14,13 @@
 	$editBool = $_GET["editBool"];
 	$editRequestId = $_GET["editrequestid"];
 	$year = $_GET["year"]; 
-
     $modulecode = $_GET["modulecode"]; 
     $priority = $_GET["priority"];
     $semester = $_GET["semester"];
     $day = $_GET["day"];
-
 	$period = $_GET["period"];
     $duration = $_GET["duration"];
-    
     $weekid = $_GET["weekid"];
-
-    
     $noofstudents = $_GET["noofstudents"];
     $noofrooms = $_GET["noofrooms"];
     $preferredroom = $_GET["preferredroom"];
@@ -62,11 +57,9 @@
 	}
 
 	$db->setFetchMode(MDB2_FETCHMODE_ASSOC);
-	
 	$res =& $db->query($sql);
 	if(PEAR::isError($res)){
 		die($res->getMessage());
 	} 
-
 
 ?>
