@@ -143,27 +143,18 @@
 					}				
 				}
 			});
-			// $.get("GETroundData.php",function(JSON){
-				// if(JSON.length!=0){
-				// semesterNumber=JSON[0].semester;
-				// roundsNumber=JSON[0].roundsnum;
-				// }
-			// },'json');
 		}
 		
 		function getCurrentyear(){
 			$.ajax({
 				type: "GET",
-				url: "GETroundData.php",
+				url: "GETcurrentYear.php",
 				dataType: "JSON",
 				async: false,
 				success: function(JSON){
 					currentYear = JSON[0].year;
 				}
 			});
-			// $.get("GETcurrentYear.php",function(JSON){
-				// currentYear = JSON[0].year;
-			// },'json');
 		}
 		
 		function roundChanges(){
@@ -1118,10 +1109,9 @@
 								type: "GET",
 								url: "POSTnewRequest.php",
 								async: false,
-								data: {'editrequestid': editrequestid,'editBool': eBool,'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':checkRoom , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value), 'year': currentYear},
+								data: {'editrequestid': editrequestid,'editBool': eBool,'year':currentYear, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':checkRoom , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value), 'year': currentYear},
 							});
-							i++;
-							
+							i++;						
 							// //get latest request id
 							var lReq = 0;
 							$.ajax({
@@ -1165,7 +1155,7 @@
 									});
 								}
 							}
-							editBool = false;
+							eBool = false;
 						}while(i<DPTArray.length);
 					
 						if(redirectBool){
@@ -1173,8 +1163,6 @@
 						}else{
 							window.location.replace("addRequests.php?PHPSESSID=" +seshId);
 						}	
-
-				
 					}
 				}
 			}
