@@ -95,14 +95,10 @@
 				async: false,
 				success: function(){
 					if (JSON.length==0){
-						window.location.replace("login.php");
+						window.location.replace("index.htm");
 					}
 				}
 			});
-			// $.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
-				// if (JSON.length==0)
-					// window.location.replace("login.php");
-			// }, 'json');
 		}
 
 			

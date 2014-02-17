@@ -124,16 +124,10 @@
 				async: false,
 				success: function(JSON){
 					if (JSON.length==0){
-						window.location.replace("login.php");
+						window.location.replace("index.htm");
 					}
 				}
 			});
-			
-			
-			// $.get("GETuserpassdeets.php", {'username':user, 'sessionid':sessionid}, function(JSON){
-				// if (JSON.length==0)
-				// window.location.replace("login.php");
-			// }, 'json');
 		}
 		
 		function rdRoundData(){
@@ -149,12 +143,6 @@
 					}				
 				}
 			});
-			// $.get("GETroundData.php",function(JSON){
-				// if(JSON.length!=0){
-				// semesterNumber=JSON[0].semester;
-				// roundsNumber=JSON[0].roundsnum;
-				// }
-			// },'json');
 		}
 		
 		function getCurrentyear(){
@@ -167,9 +155,6 @@
 					currentYear = JSON[0].year;
 				}
 			});
-			// $.get("GETcurrentYear.php",function(JSON){
-				// currentYear = JSON[0].year;
-			// },'json');
 		}
 		
 		function roundChanges(){
