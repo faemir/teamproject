@@ -993,12 +993,12 @@
 							
 						}while(i<DPTArray.length);
 					
-						// if(redirectBool){
-							// window.location.replace("viewRequests.php?PHPSESSID=" + seshId);
-						// }else{
-							// window.location.replace("addRequests.php?PHPSESSID=" +seshId);
-						// }	
-						alert("here");
+						if(redirectBool){
+							window.location.replace("viewRequests.php?PHPSESSID=" + seshId);
+						}else{
+							window.location.replace("addRequests.php?PHPSESSID=" +seshId);
+						}	
+				
 					}
 				}
 			}

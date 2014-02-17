@@ -299,7 +299,6 @@
 							parkValue = document.getElementsByName('park')[i].value;
 					}
 					//POST values in prefBox to Preferences table
-					alert(periodValue + ":" + timeValue + ":" + weeksValue + ":" + weekeValue + ":" + parkValue);
 					$.ajax({
 						type: "GET", 
 						url: "POSTviewingPrefs.php",
