@@ -340,6 +340,7 @@ MEDIA QUERIES - currently incomplete
 	.tableVT
 	{
 		max-height:600px;
+		height:100%;
 	}
 	#detailsth
 	{
@@ -568,7 +569,6 @@ MEDIA QUERIES - currently incomplete
 .tableH {
     color: #431367;
     cursor: pointer;
-	
 }
 
 .tableHClick {
@@ -660,38 +660,23 @@ height: 30px;
 
 
 #roundsInfoTable tr{
-border:1.5px solid#333;
+	border:1.5px solid#333;
 }
 
-	}
-	.requestsRow:hover
-	{
-		background-color:#f8f8f8;
-	}
-    #details{
-        height:100%;
-        width:100%;
-        border:1px solid #AAA;
-        overflow-y:auto;
-		border:0px;
-		
-    }
-    #roomsList li{
-        display:block;
-        border:1px solid #ddd;
-    }
-	#roundsInfoTable *
-	{ 
-		border-collapse: collapse;
-		text-align:center;
-		border: 1px solid #333;
-		
-	}
 
+.requestsRow:hover
+{
+	background-color:#f8f8f8;
+}
 
-#roundInfoTable td {
-	border:1px solid #333;
-	}
+#details{
+	height:100%;
+	width:100%;
+	border:1px solid #AAA;
+	overflow-y:auto;
+	border:0px;
+	
+}
 	
 #formButs
 {

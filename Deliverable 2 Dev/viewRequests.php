@@ -13,14 +13,7 @@
         <title>View Current Requests</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript">
-        //onload ----------------------------------------------------------------//
-		$(document).ready(function(){validateUser();});
-		$(document).ready(function(){getUser();});
-		$(document).ready(function(){getUserPrefs();});
-		$(document).ready(function(){rdRoundData();});
-        $(document).ready(function(){wrRequestsTable();});
-		$(document).ready(function(){wrdetailsTitle();});
-		$(document).ready(function(){wrRoundsTable();});
+
 		// GLOBALS -----------------------------------------------------------------//
 		var viewHeaders = new Array();
 		var headersArray = new Array("Module Code", "Module Title", "Priority", "Year", "Semester", "Day", "Start Time", "End Time", "Period", "Duration", "No Of Students", "No Of Rooms", "Preferred Rooms", "Quality Room", "Wheelchair Access", "Data Projector", "Double Projector", "Visualiser", "Video/DVD/BluRay", "Computer", "White Board", "Chalk Board");
@@ -50,9 +43,25 @@
 		var noofrejected = 0;
 		var seshId = "";
 		var roundsNumber=0;
-
+		var currentYear = 13;
+		var prevBool = false;
+		//onload ----------------------------------------------------------------//
+		$(document).ready(function(){theOnLoad();});
+		
 		
 		// MAIN FUNCTIONS ---------------------------------------------------------------------------------------//
+		
+		function theOnLoad(){
+			getCurrentyear();
+			validateUser();
+			getUser();
+			getUserPrefs();
+			rdRoundData();
+			wrRequestsTable(false);
+			wrdetailsTitle();
+			wrRoundsTable();
+		}
+		
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username'] ?>";
 			seshId = "<?php echo session_id();?>";
@@ -85,22 +94,33 @@
 			}
 
 			
-			function wrdetailsTitle(){
-				$("#detailsBox").empty();
-				
-				var codeStd = "<table>";
-				codeStd += "<tr>";
-				codeStd += 'Click details for more info';
-				codeStd += "</tr>";
-				codeStd += "<tr>";
-				$("#detailsBox").append(codeStd);
+		function wrdetailsTitle(){
+			$("#detailsBox").empty();
+			
+			var codeStd = "<table>";
+			codeStd += "<tr>";
+			codeStd += 'Click details for more info';
+			codeStd += "</tr>";
+			codeStd += "<tr>";
+			$("#detailsBox").append(codeStd);
 
-			}
+		}
 
 			
+		function getCurrentyear(){
+			$.get("GETcurrentYear.php",function(JSON){
+				currentYear = JSON[0].year;
+			},'json');
+		}		
+			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
-		function wrRequestsTable(){
+		function wrRequestsTable(bool){
 			//writes and populates Requests table. needs preferences input
+			prevBool = bool;
+			var reqYear  = currentYear;
+			if(prevBool){
+				reqYear = reqYear - 1;
+			}
 			noofaccepted=0;
 			var searchval = document.getElementById("search").value;
 			var searchtype = document.getElementById("colSelect").value;
@@ -133,7 +153,7 @@
                 type: "GET",
                 dataType: "json",
                 url: "GETallRequests.php",
-				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername},
+				data: {'type':searchtype, 'searchval': searchval, 'semsval': semsval, 'username': passedUsername, 'year': reqYear},
                 success: function(JSON){
 					var codeStb = "";
 					if(JSON.length!=0){
@@ -278,16 +298,22 @@
 									noofaccepted=noofaccepted+1;
 									codeStr += '    	<td class="butCells"><input type="button" class="requestButtons" value="Edit" onclick=" alert(\'Cannot edit accepted Request\'); "></td>';
 	
-								}
+							}
 							else if (JSON[i].requeststatus=="rejected"){
 									noofrejected=noofrejected+1;
 									codeStr += '    	<td class="butCells"><form id="formButs"  method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
-								}
+							}
 							else{
 								codeStr += '    	<td class="butCells"><form id="formButs"  method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="false"></input><input type="submit" class="requestButtons" value="Edit"></input></form></td>';
 							}
+							if(prevBool){
+								codeStr +='    	<td class="butCells"><input type="button" class="requestButtons" value="Delete" onclick="alert(\'Cannot Delete Requests From Previous Year\');"></td>';
 							
-							codeStr += '    	<td class="butCells"><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
+							}
+							else{
+								codeStr += '    	<td class="butCells"><input type="button" class="requestButtons" value="Delete" onclick="deleteRequest(' + JSON[i].requestid + ')"></td>';
+							}
+							
 							codeStr += '    	<td class="butCells"><form id="formButs"  method="POST" action="addRequests.php?PHPSESSID=' + seshId +'"><input type="hidden" name= "reqid" value="' + JSON[i].requestid + '"></input><input type="hidden" name="bool" value="true"></input><input type="hidden" name="similar" value="true"></input><input type="submit" class="requestButtons" value="+"></input></form></td>';
 							
 							if(JSON[i].requeststatus == "accepted"){
@@ -356,75 +382,9 @@
 				codeStl += "<td>No. Rooms: " + JSON[0].noofrooms + "</td>";
 				codeStl += "</tr>";
 				codeStl += "<tr>";
-				codeStl +="<td colspan='2'>Preferred room: ";
-				var NAbool = true;
-				for(i=0;i<JSON.length;i++){
-					if(JSON[i].preferredrooms==1){
-						codeStl += JSON[i].roomid +", ";	
-					}
-					if(JSON[i].roomid=="NULL" && NAbool==true){
-						codeStl += "N/A";
-						NAbool = false;
-					}
+				if(JSON[0].preferredrooms==1){
+					codeStl += "<td colspan='2'>Preferred room: "+ JSON[0].roomid +"</td>";
 				}
-				codeStl +="</td>"
-				codeStl += "</tr><tr><td colspan='2'>Weeks: ";
-					$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: "GETweek.php",	
-					async: false,
-					data: {'id': JSON[0].weekid},
-					success: function(JSON2){
-						if (JSON2[0].week1==1){
-							codeStl += "1, ";
-						}
-						if (JSON2[0].week2==1){
-							codeStl += "2, ";
-						}
-						if (JSON2[0].week3==1){
-							codeStl += "3, ";
-						}
-						if (JSON2[0].week4==1){
-							codeStl += "4, ";
-						}
-						if (JSON2[0].week5==1){
-							codeStl += "5, ";
-						}
-						if (JSON2[0].week6==1){
-							codeStl += "6, ";
-						}
-						if (JSON2[0].week7==1){
-							codeStl += "7, ";
-						}
-						if (JSON2[0].week8==1){
-							codeStl += "8, ";
-						}
-						if (JSON2[0].week9==1){
-							codeStl += "9, ";
-						}
-						if (JSON2[0].week10==1){
-							codeStl += "10, ";
-						}
-						if (JSON2[0].week11==1){
-							codeStl += "11, ";
-						}
-						if (JSON2[0].week12==1){
-							codeStl += "12, ";
-						}
-						if (JSON2[0].week13==1){
-							codeStl += "13, ";
-						}
-						if (JSON2[0].week14==1){
-							codeStl += "14, ";
-						}
-						if (JSON2[0].week15==1){
-							codeStl += "15, ";
-						}
-						codeStl = codeStl.substring(0,codeStl.length-2);
-					}
-				});	
-				codeStl += "</td></tr>";
 				codeStl += "<tr><td colspan='2'>";
 				if(JSON[0].qualityroom==1){
 					codeStl += "Quality Room, ";
@@ -492,7 +452,7 @@
 					}
 				});
 				$.get("GETdeleterequest.php", {'id': requestID, 'status': status});
-				$(document).ready(function(){wrRequestsTable();});
+				$(document).ready(function(){wrRequestsTable(prevBool);});
 				$("#detailsBox").empty();
 			}
 		}
@@ -600,7 +560,7 @@
 			$.get("GETRoundsDetails.php", function(JSON){
 				var codeStp = "<table id='roundsInfoTable'>";
 				codeStp += "<tr>";
-				codeStp += "<th colspan=4>Rounds Table</th>";
+				codeStp += "<th colspan='4'>Rounds Table</th>";
 				codeStp += "</tr>";
 				codeStp += "<tr>";
 				codeStp += "<th>" + "Semester" + "</th>";
@@ -653,7 +613,7 @@
             <div class="contentBox" id="searchBox">
 				<table>
 					<tr><td><label id="deptLabel" class="deptLabel"></label></td></tr>
-					<tr><td><input type="text" name="search" id="search" onkeyup="wrRequestsTable()" placeholder="Search by filter" /></td></tr>
+					<tr><td><input type="text" name="search" id="search" onkeyup="wrRequestsTable(prevBool)" placeholder="Search by filter" /></td></tr>
 					<tr><td>
 					<label>Search by: </label>
 					<select id="colSelect" name="colSelect" onclick="search.value=''">
@@ -680,13 +640,15 @@
 					</select>
 					</td></tr>
 					<tr><td><label id="wkLabel" class="wkInput">Semester</label>
-					<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable()" value="1" class="wkInput" /><label for="semester1">1</label>
-					<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable()" value="2" class="wkInput"/><label for="semester2">2</label>
-					<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable()" value="0" class="wkInput"/><label for="semester0">Both</label>
+					<input type="radio" name="Semester" id="semester1" onclick="wrRequestsTable(prevBool)" value="1" class="wkInput" /><label for="semester1">1</label>
+					<input type="radio" name="Semester" id="semester2" onclick="wrRequestsTable(prevBool)" value="2" class="wkInput"/><label for="semester2">2</label>
+					<input type="radio" name="Semester" id="semester0" onclick="wrRequestsTable(prevBool)" value="0" class="wkInput"/><label for="semester0">Both</label>
 					</td></tr>
 					<tr><td><label id="cTR"></label></td></tr>
 					<tr><td><label id="acceptedreq"></label></td></tr>
 					<tr><td><label id="rejectedreq"></label></td></tr>
+					<tr><td><input type="button" onclick="wrRequestsTable(true)" value="Show Previous Year Requests"></input></td></tr>
+					<tr><td><input type="button" onclick="wrRequestsTable(false)" value="Show Current Year Requests"></input></td></tr>
 				</table>
 
 			</div>

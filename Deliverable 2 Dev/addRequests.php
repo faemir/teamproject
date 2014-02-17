@@ -49,7 +49,7 @@
 		var ARooms = 0;
 		var AClick = 0;
 		var roomlen = 0;
-
+		var currentYear = 13;
 		//Selected periods from table - false = not selected.
 		//............................input table
 		var mondaySele = [false,false,false,false,false,false,false,false,false];
@@ -61,18 +61,24 @@
 		var specBoolArray =[0,0,0,0,0,0,0,0,0,0,0,0];
 
         //ONLOAD FUNCTIONS -----------------------------------------//
-		$(document).ready(function(){rdRoundData()});
-		$(document).ready(function(){validateUser()});
-		$(document).ready(function(){getUser()});
-		$(document).ready(function(){GetPrefData()});
-        $(document).ready(function(){wrInputTable()});
-        $(document).ready(function(){loadDefaultWeeks()});
-		$(document).ready(function(){popModulesList(userDepartmentID)});
-		$(document).ready(function(){wrRoomsList()});
-		$(document).ready(function(){isEditreq()});
-		$(document).ready(function(){roundChanges()});
-		
+		$(document).ready(function(){theOnload()});
         //FUNCTIONS --------------------------------------------------//
+		
+		function theOnload(){
+			rdRoundData();
+			getCurrentyear();
+			validateUser();
+			getUser();
+			GetPrefData();
+			wrInputTable();
+			loadDefaultWeeks();
+			popModulesList(userDepartmentID);
+			wrRoomsList();
+			roundChanges();
+			isEditreq();
+			
+		}
+		
 		function getUser(){
 			passedUsername = "<?php echo $_SESSION['username']; ?>";
 			seshId = "<?php echo session_id();?>";
@@ -123,8 +129,13 @@
 			},'json');
 		}
 		
+		function getCurrentyear(){
+			$.get("GETcurrentYear.php",function(JSON){
+				currentYear = JSON[0].year;
+			},'json');
+		}
+		
 		function roundChanges(){
-			
 			if (roundsNumber==1 && semesterNumber==1){
 				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;
@@ -188,145 +199,29 @@
 						//park
 						$("#PRK").val("ANY");
 						GetRoom(false);
-						editwkid = JSON[0].weekid;
-						
-						if(addSim != "true"){	
-							//DPT
-							var pdcnt = parseInt(JSON[0].period);
-							var dycnt = "";
-							if(JSON[0].day=="Monday"){dycnt=1;}
-							if(JSON[0].day=="Tuesday"){dycnt=2;}
-							if(JSON[0].day=="Wednesday"){dycnt=3;}
-							if(JSON[0].day=="Thursday"){dycnt=4;}
-							if(JSON[0].day=="Friday"){dycnt=5;}
-							for(var i=0;i<(parseInt(JSON[0].duration));i++){
-								var ref = "t" + String(dycnt) + String(pdcnt);
-								tableSelect(ref);
-								pdcnt++;
-							}
-							for(var j =0; j<JSON.length;j++){
-								for(var k =0; k<roomlen;k++){
-									if(($("#r"+k).val()) == JSON[j].roomid){
-										document.getElementById("r"+k).checked = true;
-										roomClick(document.getElementById("r"+k));
-									}
+						editwkid = JSON[0].weekid;			
+						//DPT
+						var pdcnt = parseInt(JSON[0].period);
+						var dycnt = "";
+						if(JSON[0].day=="Monday"){dycnt=1;}
+						if(JSON[0].day=="Tuesday"){dycnt=2;}
+						if(JSON[0].day=="Wednesday"){dycnt=3;}
+						if(JSON[0].day=="Thursday"){dycnt=4;}
+						if(JSON[0].day=="Friday"){dycnt=5;}
+						for(var i=0;i<(parseInt(JSON[0].duration));i++){
+							var ref = "t" + String(dycnt) + String(pdcnt);
+							tableSelect(ref);
+							pdcnt++;
+						}
+						for(var j =0; j<JSON.length;j++){
+							for(var k =0; k<roomlen;k++){
+								if(($("#r"+k).val()) == JSON[j].roomid){
+									document.getElementById("r"+k).checked = true;
+									roomClick(document.getElementById("r"+k));
 								}
 							}
 						}
-						else{
-							editBool = false;
-						}
-					}
-				});
-				$.ajax({
-					type: "GET",
-					url: "GETweek.php",
-					dataType: "JSON",
-					data:{'id': editwkid},
-					async: false,
-					success: function(JSON){
-						$("#wk1").prop('checked',false);
-						$("#wk2").prop('checked',false);
-						$("#wk3").prop('checked',false);
-						$("#wk4").prop('checked',false);
-						$("#wk5").prop('checked',false);
-						$("#wk6").prop('checked',false);
-						$("#wk7").prop('checked',false);
-						$("#wk8").prop('checked',false);
-						$("#wk9").prop('checked',false);
-						$("#wk10").prop('checked',false);
-						$("#wk11").prop('checked',false);
-						$("#wk12").prop('checked',false);
-						$("#wk13").prop('checked',false);
-						$("#wk14").prop('checked',false);
-						$("#wk15").prop('checked',false);
-						if(JSON[0].week1==1){$("#wk1").prop('checked',true);}
-						if(JSON[0].week2==1){$("#wk2").prop('checked',true);}
-						if(JSON[0].week3==1){$("#wk3").prop('checked',true);}
-						if(JSON[0].week4==1){$("#wk4").prop('checked',true);}
-						if(JSON[0].week5==1){$("#wk5").prop('checked',true);}
-						if(JSON[0].week6==1){$("#wk6").prop('checked',true);}
-						if(JSON[0].week7==1){$("#wk7").prop('checked',true);}
-						if(JSON[0].week8==1){$("#wk8").prop('checked',true);}
-						if(JSON[0].week9==1){$("#wk9").prop('checked',true);}
-						if(JSON[0].week10==1){$("#wk10").prop('checked',true);}
-						if(JSON[0].week11==1){$("#wk11").prop('checked',true);}
-						if(JSON[0].week12==1){$("#wk12").prop('checked',true);}
-						if(JSON[0].week13==1){$("#wk13").prop('checked',true);}
-						if(JSON[0].week14==1){$("#wk14").prop('checked',true);}
-						if(JSON[0].week15==1){$("#wk15").prop('checked',true);}	
-					}
-				});
-			}
-		}
-		
-		function isEditreq(){
-			editBool = "<?php echo $_SESSION['editBool']; ?>";
-			if(editBool == "true"){
-				editrequestid = "<?php echo $_SESSION["editreqid"]; ?>";
-				addSim = "<?php echo $_SESSION["addSim"]; ?>";
-				var editwkid = 0;
-				$.ajax({
-					type: "GET",
-					url: "GETeditRequest.php",
-					dataType: "JSON",
-					data:{'id': editrequestid},
-					async: false,
-					success: function(JSON){
-						
-						//module
-						$("#modCodeSelect").val(String(JSON[0].modulecode));
-						ModuleSelector(document.getElementById("modCodeSelect"));
-						//capacity
-						$("#CAP").val(JSON[0].noofstudents);
-						//semester
-						if(JSON[0].semester==1){$("#sem1").prop("checked",true);}
-						else if(JSON[0].semester==2){$("#sem2").prop("checked",true);}
-						//priority
-						if(JSON[0].priority==1){$("#PRY").prop("checked",true);}
-						else{$("#PRN").prop("checked",true);}
-						//other
-						if(JSON[0].other != "null"){$("#ORE").val(JSON[0].other);}
-						//spec reqs
-						if(JSON[0].qualityroom==1){$("#QUR").prop("checked",true);}
-						if(JSON[0].wheelchairaccess==1){$("#WHC").prop("checked",true);}
-						if(JSON[0].dataprojector==1){$("#DP1").prop("checked",true);}
-						if(JSON[0].doubleprojector==1){$("#DP2").prop("checked",true);}
-						if(JSON[0].visualiser==1){$("#VIS").prop("checked",true);}
-						if(JSON[0].videodvdbluray==1){$("#VDB").prop("checked",true);}
-						if(JSON[0].computer==1){$("#CMP").prop("checked",true);}
-						if(JSON[0].whiteboard==1){$("#WHB").prop("checked",true);}
-						if(JSON[0].chalkboard==1){$("#CHB").prop("checked",true);}
-						if(JSON[0].nearestroom==1){$("#NER").prop("checked",true);}
-						//park
-						$("#PRK").val("ANY");
-						GetRoom(false);
-						editwkid = JSON[0].weekid;
-						
-						if(addSim != "true"){	
-							//DPT
-							var pdcnt = parseInt(JSON[0].period);
-							var dycnt = "";
-							if(JSON[0].day=="Monday"){dycnt=1;}
-							if(JSON[0].day=="Tuesday"){dycnt=2;}
-							if(JSON[0].day=="Wednesday"){dycnt=3;}
-							if(JSON[0].day=="Thursday"){dycnt=4;}
-							if(JSON[0].day=="Friday"){dycnt=5;}
-							for(var i=0;i<(parseInt(JSON[0].duration));i++){
-								var ref = "t" + String(dycnt) + String(pdcnt);
-								tableSelect(ref);
-								pdcnt++;
-							}
-							for(var j =0; j<JSON.length;j++){
-								for(var k =0; k<roomlen;k++){
-									if(($("#r"+k).val()) == JSON[j].roomid){
-										document.getElementById("r"+k).checked = true;
-										roomClick(document.getElementById("r"+k));
-									}
-								}
-							}
-						}
-						else{
+						if(addSim == "true"){
 							editBool = false;
 						}
 					}
@@ -1056,7 +951,7 @@
 								type: "GET",
 								url: "POSTnewRequest.php",
 								async: false,
-								data: {'editrequestid': editrequestid,'editBool': eBool,'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':checkRoom , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value)},
+								data: {'editrequestid': editrequestid,'editBool': eBool,'year':yearID, 'modulecode':(document.getElementById("modCodeSelect").value), 'priority':pri, 'semester':sem, 'day':DPTArray[i][0], 'period':DPTArray[i][1], 'duration':DPTArray[i][2], 'weekid':weekID , 'noofstudents':specBoolArray[10], 'noofrooms':checkRoom , 'preferredroom':preferredRoom , 'qualityroom':specBoolArray[0], 'wheelchair':specBoolArray[1] , 'dataprojector':specBoolArray[2] , 'doubleprojector': specBoolArray[3], 'visualiser':specBoolArray[4] , 'videodvdbluray':specBoolArray[5], 'computer':specBoolArray[6] , 'whiteboard':specBoolArray[7], 'chalkboard':specBoolArray[8] , 'nearestroom':specBoolArray[9], 'other':(document.getElementById("ORE").value), 'year': currentYear},
 							});
 							i++;
 							// //get latest request id
@@ -1103,7 +998,7 @@
 						}else{
 							window.location.replace("addRequests.php?PHPSESSID=" +seshId);
 						}	
-
+				
 					}
 				}
 			}
