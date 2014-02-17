@@ -1129,7 +1129,7 @@
 								}
 							});
 							
-							if(editBool){
+							if(eBool){							
 								$.ajax({
 									type: "GET",
 									url: "POSTdeleteBooking.php",
@@ -1151,6 +1151,7 @@
 								}
 							}
 							else{
+							
 								for(var j =0; j < checkRoom;j++){
 									$.ajax({
 										type: "GET",
@@ -1162,7 +1163,6 @@
 							}
 							eBool = false;
 						}while(i<DPTArray.length);
-					
 						if(redirectBool){
 							window.location.replace("viewRequests.php?PHPSESSID=" + seshId);
 						}else{
