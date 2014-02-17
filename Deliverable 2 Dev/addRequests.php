@@ -128,7 +128,6 @@
 					}
 				}
 			});
-
 		}
 		
 		function rdRoundData(){
@@ -144,7 +143,12 @@
 					}				
 				}
 			});
-
+			// $.get("GETroundData.php",function(JSON){
+				// if(JSON.length!=0){
+				// semesterNumber=JSON[0].semester;
+				// roundsNumber=JSON[0].roundsnum;
+				// }
+			// },'json');
 		}
 		
 		function getCurrentyear(){
@@ -157,6 +161,9 @@
 					currentYear = JSON[0].year;
 				}
 			});
+			// $.get("GETcurrentYear.php",function(JSON){
+				// currentYear = JSON[0].year;
+			// },'json');
 		}
 		
 		function roundChanges(){
@@ -177,9 +184,8 @@
 				document.getElementById('PRN').disabled=true;
 				round = false;
 			}
-			else if (roundsNumber==2 && semesterNumber==2){
-				round = true;
-			}
+			//else if (roundsNumber==2 && semesterNumber==2){
+			//}
 			else {
 				document.getElementById('sem1').checked=true;
 				document.getElementById('sem2').disabled=true;
@@ -322,19 +328,19 @@
 
 			if(periodTime == 1){
 				for(var i = 0;i<pOrTChildren.length;i++){
-					codeStr += "<th class ='pOrTChildren'>" + pOrTChildren[i] + "</th>"; 
+					codeStr += "<th class ='pOrTChildren' alt='period_"+ i +" '>" + pOrTChildren[i] + "</th>"; 
 				}
 			}
 			else if(hr24format == 1){
 				var array = pOrTChildren2.concat(pOrTChildren3);
 				for(var i = 0;i<array.length;i++){
-					codeStr += "<th class ='pOrTChildren'>" + array[i] + "</th>"; 
+					codeStr += "<th class ='pOrTChildren' alt='period_"+ array[i] +">" + array[i] + "</th>"; 
 				}	
 			}
 			else{
 				var array2 = pOrTChildren2.concat(pOrTChildren4);
 				for(var i = 0;i<array2.length;i++){
-					codeStr += "<th class ='pOrTChildren'>" + array2[i] + "</th>"; 
+					codeStr += "<th class ='pOrTChildren'alt='period_"+ array2[i] +">" + array2[i] + "</th>"; 
 				}
 			}
 
@@ -344,9 +350,9 @@
             //days and grid
             for(var j = 1;j<=days.length;j++){
                 codeStr += "<tr>";
-                codeStr += "<th class ='daysChildren'>" + days[j-1] + "</th>";
+                codeStr += "<th class ='daysChildren' alt='"+days[j-1]+"'>" + days[j-1] + "</th>";
                 for(var k = 1;k<=pOrTChildren.length;k++){
-                    codeStr += "<td class='grid' onclick='tableSelect(this.id)' id='t" + j + k + "'></td>";
+                    codeStr += "<td class='grid' onclick='tableSelect(this.id)' alt='Day:"+days[j-1]+"+Period:"+k+"' id='t" + j + k + "'></td>";
                 }
                 codeStr += "</tr>";
             }

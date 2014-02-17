@@ -99,7 +99,6 @@
 					}
 				}
 			});
-
 		}
 
 			
@@ -125,6 +124,9 @@
 					currentYear = JSON[0].year;
 				}
 			});
+			// $.get("GETcurrentYear.php",function(JSON){
+				// currentYear = JSON[0].year;
+			// },'json');
 		}		
 			
 		//Rewrite with for loops from a GET from preferences table Header 1-6 changing number to writing..
@@ -368,7 +370,7 @@
 				
 					var codeStl = "<table>";
 					codeStl += "<tr>";
-					codeStl += "<td colspan='2'><h4>Selected room details</h4></td>";
+					codeStl += "<h4>Selected room details</h4>";
 					codeStl += "</tr>";
 					codeStl += "<tr>";
 					codeStl += "<td>Request ID: " + JSON[0].requestid + "</td>";
@@ -473,52 +475,40 @@
 				});	
 				codeStl += "</td></tr>";
 
-					var checker = false;
 					codeStl += "<tr><td colspan='2'>";
 					if(JSON[0].qualityroom==1){
 						codeStl += "Quality Room, ";
-						checker = true;
 					}
 					if(JSON[0].wheelchairaccess==1){
 						codeStl += "Wheelchair Access, ";
-						checker = true;
 					}
 					if(JSON[0].dataprojector==1){
 						codeStl += "Data Projector, ";
-						checker = true;
 					}
 					if(JSON[0].doubleprojector==1){
 						codeStl += "Double Projector, ";
-						checker = true;
 					}
 					if(JSON[0].visualiser==1){
 						codeStl += "Visualiser, ";
-						checker = true;
 					}
 					if(JSON[0].videodvdbluray==1){
 						codeStl += "Video/DVD/Bluray, ";
-						checker = true;
 					}
 					if(JSON[0].computer==1){
 						codeStl += "Computer, ";
-						checker = true;
 					}
 					if(JSON[0].whiteboard==1){
 						codeStl += "White Board, ";
-						checker = true;
 					}
 					if(JSON[0].chalkboard==1){
 						codeStl += "Chalk Board, ";
-						checker = true;
 					}
 					if(JSON[0].nearestroom==1){
 						codeStl += "Nearest Room, ";
-						checker = true;
 					}
-					if(checker){
-						codeStl = codeStl.substring(0,codeStl.length-2);
-					}
-					codeStl += "</td></tr></table>";					
+					codeStl = codeStl.substring(0,codeStl.length-2);
+					codeStl += ".</tr>";
+					
 					$("#detailsBox").append(codeStl);
 				}
 			});
