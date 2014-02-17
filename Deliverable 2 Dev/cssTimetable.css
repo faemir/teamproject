@@ -348,10 +348,12 @@ MEDIA QUERIES - currently incomplete
 	}
 	.tabledaysVT
 	{
+		background-color: #f0efef;
 		width: 19%;
 	}
 	.tabletdVT
 	{
+		background-color: #fafafa;
 		min-height:50px;
 		width: 9%;
 		max-width: 0px;
@@ -402,6 +404,8 @@ MEDIA QUERIES - currently incomplete
     .grid
         {
         cursor: pointer;
+		max-width:40px;
+		min-width:30px;
     }
     .grid:hover
         {
@@ -412,8 +416,15 @@ MEDIA QUERIES - currently incomplete
         {
         background-color:#431367;
         border: 2px solid black;
+		max-width:40px;
+		min-width:30px;
     }
-    
+    .gridBooked
+        {
+        background-color:#aaa;
+        border: 1px solid black;
+		max-width:40px;
+    }
     .gridClicked:hover
         {
         background-color:#B32561;
@@ -691,3 +702,4 @@ h4
 	padding: 2px;
 	margin: 2px;
 }
+
