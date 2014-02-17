@@ -386,15 +386,24 @@
 				document.getElementById("roomSelectorBox2").innerHTML = (codeStl);
 			}
 
-
 			function getTable(week){
+				var deptID = '';
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: "GETdepartmentID.php",
+					async: false,
+					data: {'username': passedUsername},
+					success: function(JSON){
+						deptID = JSON[0].departmentid;
+					}
+				});
 				reqID= [];
-				var user = "CO";
 				var SQL = "SELECT modulecode, semester, EntryRequestTable.requestid, day , period, duration, roomid ";
 				SQL += "FROM EntryRequestTable ";
 				SQL += "INNER JOIN WeekTable ON EntryRequestTable.weekid = WeekTable.weekid ";
 				SQL += "INNER JOIN ConfirmedBooking ON EntryRequestTable.requestid = ConfirmedBooking.requestid ";
-				SQL += "WHERE modulecode LIKE '"+user;
+				SQL += "WHERE modulecode LIKE '"+deptID;
 				if (document.getElementById('yearsele').value != 0){
 					SQL += document.getElementById('yearsele').value;
 				}
