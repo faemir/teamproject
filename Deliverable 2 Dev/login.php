@@ -28,9 +28,6 @@
                     <tr>
                         <td><input type="submit" id="submit" name="submit" value="Submit"></td>
                     </tr>
-                    <!--<tr>
-                        <td><a href="#">Forgot Password?</a></td>
-                    </tr>-->
                     </form>
                 </table>
         </div>
