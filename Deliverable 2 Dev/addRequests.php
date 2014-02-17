@@ -65,6 +65,7 @@
         //FUNCTIONS --------------------------------------------------//
 		
 		function theOnload(){
+
 			getCurrentyear();
 			rdRoundData();
 			validateUser();
@@ -74,8 +75,8 @@
 			loadDefaultWeeks();
 			popModulesList(userDepartmentID);
 			wrRoomsList();
-			isEditreq();
 			roundChanges();
+			isEditreq();
 		}
 		
 		function getUser(){
@@ -135,7 +136,6 @@
 		}
 		
 		function roundChanges(){
-			
 			if (roundsNumber==1 && semesterNumber==1){
 				document.getElementById('PRY').checked=true;
 				document.getElementById('PRN').disabled=true;

@@ -560,7 +560,7 @@
 			$.get("GETRoundsDetails.php", function(JSON){
 				var codeStp = "<table id='roundsInfoTable'>";
 				codeStp += "<tr>";
-				codeStp += "<th colspan=4>Rounds Table</th>";
+				codeStp += "<th colspan='4'>Rounds Table</th>";
 				codeStp += "</tr>";
 				codeStp += "<tr>";
 				codeStp += "<th>" + "Semester" + "</th>";
