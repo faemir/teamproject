@@ -60,7 +60,7 @@ $(document).ready ( function(){
 		//	window.location.replace("accountPage.php?" + sessid);
 		//}
 		else {
-			window.location.replace("login.php?" + sessid);
+			window.location.replace("index.htm");
 		}
 	},'JSON');
 });
