@@ -333,13 +333,13 @@
 			else if(hr24format == 1){
 				var array = pOrTChildren2.concat(pOrTChildren3);
 				for(var i = 0;i<array.length;i++){
-					codeStr += "<th class ='pOrTChildren' alt='period_"+ array[i] +">" + array[i] + "</th>"; 
+					codeStr += "<th class ='pOrTChildren' alt='period_"+ array[i] +" '>" + array[i] + "</th>"; 
 				}	
 			}
 			else{
 				var array2 = pOrTChildren2.concat(pOrTChildren4);
 				for(var i = 0;i<array2.length;i++){
-					codeStr += "<th class ='pOrTChildren'alt='period_"+ array2[i] +">" + array2[i] + "</th>"; 
+					codeStr += "<th class ='pOrTChildren'alt='period_"+ array2[i] +" '>" + array2[i] + "</th>"; 
 				}
 			}
 
